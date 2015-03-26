@@ -1,96 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/home_page"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp">
-
-    <TextView
+<ScrollView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/home_page"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:id="@+id/important_message"
-        android:layout_gravity="center_vertical"
-        android:text="Free Cats Saturday"
-        android:textSize="35sp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
 
-    <!-- I'm nesting a  horizontal layout to put the buttons for the selection -->
-    <!-- If you have a better idea on how to modify this please do -->
-    <!-- The images are not that great if you can find better one please add them to -->
-    <!-- drawable folder in the project here is the path if your lost -->
-    <!-- ...\app\src\main\res\drawable -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="15dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:id="@+id/important_message"
+            android:layout_gravity="center_vertical"
+            android:text="Free Cats Saturday"
+            android:textSize="35sp"/>
 
-        <ImageButton
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:id="@+id/cat_button"
-            android:src="@drawable/cat_logo"
-            android:layout_weight="0"
-            android:padding="1dp"/>
-
-        <ImageButton
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:id="@+id/dog_button"
-            android:src="@drawable/dog_logo"
-            android:layout_weight="0"
+        <!-- I'm nesting a  horizontal layout to put the buttons for the selection -->
+        <!-- If you have a better idea on how to modify this please do -->
+        <!-- The images are not that great if you can find better one please add them to -->
+        <!-- drawable folder in the project here is the path if your lost -->
+        <!-- ...\app\src\main\res\drawable -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:padding="1dp"/>
+           >
 
-        <ImageButton
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:id="@+id/rabbit_button"
-            android:src="@drawable/rabbit_logo"
-            android:padding="1dp"/>
 
-        <ImageButton
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:id="@+id/other_button"
-            android:padding="1dp"/>
+
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cat_button"
+                android:src="@drawable/cat_logo"
+                android:layout_weight="1"
+                android:padding="1dp"/>
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dog_button"
+                android:src="@drawable/dog_logo"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:padding="1dp"/>
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rabbit_button"
+                android:src="@drawable/rabbit_logo"
+                android:padding="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/other_button"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:src="@drawable/cat_logo"/>
+
+        </LinearLayout>
+
+        <!-- If you can find a custom seek bar for double seek bar please add it else -->
+        <!-- we have to add a checkbox next to the seek bar and reduce the width -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age"
+            android:textSize="25sp"/>
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/age_seek_bar"
+            android:padding="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textSize="25sp"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="                                                      Female"
+            android:textSize="20sp"
+            android:id="@+id/female_checkBox"
+            android:layout_gravity="left|center_horizontal|right" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="                                                         Male"
+            android:textSize="20sp"
+            android:id="@+id/male_checkBox"
+            android:layout_gravity="left|center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/search_button"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
-    <!-- If you can find a custom seek bar for double seek bar please add it else -->
-    <!-- we have to add a checkbox next to the seek bar and reduce the width -->
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/age_seek_bar"
-        android:padding="20dp"/>
+</ScrollView>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="                                                      Female"
-        android:textSize="20sp"
-        android:id="@+id/female_checkBox"
-        android:layout_gravity="left|center_horizontal|right" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="                                                         Male"
-        android:textSize="20sp"
-        android:id="@+id/male_checkBox"
-        android:layout_gravity="left|center_horizontal" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:id="@+id/search_button"
-        android:layout_gravity="center_horizontal" />
-
-</LinearLayout>
