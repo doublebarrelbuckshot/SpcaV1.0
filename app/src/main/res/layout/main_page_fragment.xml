@@ -30,9 +30,6 @@
             android:layout_gravity="center_horizontal"
            >
 
-
-
-
             <ImageButton
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
@@ -47,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/dog_button"
-                android:src="@drawable/dog_logo"
+                android:src="@drawable/dog_pressed"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
                 android:padding="1dp"/>
@@ -57,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rabbit_button"
-                android:src="@drawable/rabbit_logo"
+                android:src="@drawable/rabbit_pressed"
                 android:padding="1dp"
                 android:layout_weight="1" />
 
@@ -68,7 +65,7 @@
                 android:id="@+id/other_button"
                 android:padding="1dp"
                 android:layout_weight="1"
-                android:src="@drawable/cat_logo"/>
+                android:src="@drawable/other_pressed"/>
 
         </LinearLayout>
 
