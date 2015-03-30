@@ -96,6 +96,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
