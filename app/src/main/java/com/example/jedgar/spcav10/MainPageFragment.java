@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     ImageButton dogButton;
     ImageButton rabbitButton;
     ImageButton otherButton;
+    Button searchButton;
 
     public static MainPageFragment newInstance(){
 
@@ -54,8 +56,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         dogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainPageFragment.this.getActivity(), "dog selected!", Toast.LENGTH_SHORT).show();
-
                 if(!v.findViewById(R.id.dog_button).isSelected()){
                     v.findViewById(R.id.dog_button).setSelected(true);
                     Toast.makeText(MainPageFragment.this.getActivity(), "dog selected!", Toast.LENGTH_SHORT).show();}
@@ -70,7 +70,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         rabbitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(!v.findViewById(R.id.rabbit_button).isSelected()){
                     v.findViewById(R.id.rabbit_button).setSelected(true);
                     Toast.makeText(MainPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();}
@@ -92,6 +91,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+        searchButton = (Button)rootView.findViewById(R.id.search_button);
 
         return rootView;
     }
