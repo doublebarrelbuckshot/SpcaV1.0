@@ -15,7 +15,7 @@
             android:layout_height="130dp"
             android:id="@+id/important_message"
             android:layout_gravity="center_vertical"
-            android:text="Free Cats Saturday"
+            android:text="@string/important_message"
             android:textSize="35sp"/>
 
         <!-- I'm nesting a  horizontal layout to put the buttons for the selection -->
@@ -73,7 +73,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Age"
+            android:text="@string/age_text_view"
             android:textSize="25sp"/>
         <SeekBar
             android:layout_width="match_parent"
@@ -84,20 +84,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender"
+            android:text="@string/gender_text_view"
             android:textSize="25sp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="                                                      Female"
+            android:text="@string/checkbox_female"
             android:textSize="20sp"
+            android:textAlignment="center"
             android:id="@+id/female_checkBox"
             android:layout_gravity="left|center_horizontal|right" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="                                                         Male"
+            android:text="@string/checkbox_male"
             android:textSize="20sp"
             android:id="@+id/male_checkBox"
             android:layout_gravity="left|center_horizontal" />
@@ -105,7 +106,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="@string/search_button"
             android:id="@+id/search_button"
             android:layout_gravity="center_horizontal" />
 
