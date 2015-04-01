@@ -1,6 +1,7 @@
 package com.example.jedgar.spcav10;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -74,6 +75,11 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, NotificationPageFragment.newInstance())
                     .commit();
         }
+        else if(position == 5){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, DetailsPageFragment.newInstance())
+                    .commit();
+        }
     }
 
     public void onSectionAttached(int number) {
@@ -93,6 +99,8 @@ public class MainActivity extends ActionBarActivity
             case 5:
                 mTitle = getString(R.string.title_section5);
                 break;
+            case 6:
+                mTitle = "Details";
         }
     }
 
@@ -116,6 +124,7 @@ public class MainActivity extends ActionBarActivity
         }
         return super.onCreateOptionsMenu(menu);
     }
+
 
     /**
      * A placeholder fragment containing a simple view.

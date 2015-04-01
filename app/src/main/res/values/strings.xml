@@ -18,4 +18,12 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="animalDescriptionTemp">Gandalf \t\t\t\t Animal ID: 25057430\n MontrealSPCA\nOnHold:No\nDateOfSurrender:20150227\nLivedWithChildren: No\n LivedWithAnimals: No\n BodyWeight: 1KG\nStage:Adoptable\n\n\n\nMontrealSPCA\nOnHold:No\nDateOfSurrender:20150227\n</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_test">testActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

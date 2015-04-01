@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    >
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_weight="1"
+        />
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:layout_alignBottom="@id/pager"
+        app:fillColor="#FF888888"
+        app:pageColor="#88FFFFFF"
+        app:strokeColor="#FF000000"
+        />
+
+        <!-- http://w3facility.org/question/embed-viewpageindicator-inside-viewpager/ -->
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/pager"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+
+
+
+
+
+    <TextView
+        android:layout_weight="3"
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/animalDescriptionTemp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+
+
+    </LinearLayout>
+
+</ScrollView>
+
