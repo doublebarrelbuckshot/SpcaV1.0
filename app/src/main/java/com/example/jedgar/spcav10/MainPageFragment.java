@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,21 @@ import android.widget.Toast;
 
 public class MainPageFragment extends Fragment implements View.OnClickListener {
 
+
+    public interface OnSearchListener {
+        public void doSearch();
+    }
+
+
     //implemented onClick on each button when added to the inflater/// this one keep it empty else
     //you cant have multiple buttons selected at the same time
     @Override
     public void onClick(View v) {
+        if(v.getId()==R.id.search_button){
+
+            ((MainActivity)MainPageFragment.this.getActivity()).doSearch();
+
+        }
 
     }
 
@@ -93,6 +106,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         });
 
         searchButton = (Button)rootView.findViewById(R.id.search_button);
+        searchButton.setOnClickListener(this);
 
         return rootView;
     }

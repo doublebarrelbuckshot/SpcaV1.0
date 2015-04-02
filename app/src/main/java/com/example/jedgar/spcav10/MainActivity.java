@@ -1,6 +1,7 @@
 package com.example.jedgar.spcav10;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +24,9 @@ import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, LargeAnimalImageFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, LargeAnimalImageFragment.OnFragmentInteractionListener, MainPageFragment.OnSearchListener {
+
+    FragmentManager fragmentManager;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -39,6 +43,8 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fragmentManager = getSupportFragmentManager();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -52,8 +58,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
 
+        fragmentManager = getSupportFragmentManager();
         if(position == 0){
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MainPageFragment.newInstance())
@@ -112,6 +118,13 @@ public class MainActivity extends ActionBarActivity
     }
 
 
+//    public void browse(View view){
+//        Intent intent = new Intent(this, Browsing.class);
+//        startActivity(intent);
+//
+//
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -127,6 +140,20 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void doSearch() {
+        Log.d("main", "je cherche");
+        Fragment frag= DetailsPageFragment.newInstance();
+        Bundle args=new Bundle();
+        args.putInt("toto",10);
+        frag.setArguments(args);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container,frag)
+                .addToBackStack(null)
+                .commit();
 
     }
 
