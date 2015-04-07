@@ -27,4 +27,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_browsing">Browsing</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="title_activity_splash_page">SplashPage</string>
+
+    <string name="rsbAgeFrom">" between "</string>
+    <string name="rsbAgeTo">" to "</string>
+    <string name="rsbAgeYears">" years"</string>
 </resources>

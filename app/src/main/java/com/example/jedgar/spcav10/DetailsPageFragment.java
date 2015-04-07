@@ -3,6 +3,8 @@ package com.example.jedgar.spcav10;
 import android.app.Activity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.viewpagerindicator.CirclePageIndicator;
@@ -28,6 +31,13 @@ import com.viewpagerindicator.PageIndicator;
  * Created by a on 3/31/2015.
  */
 public class DetailsPageFragment extends Fragment implements View.OnClickListener {
+    DBHelper dbh;
+    SQLiteDatabase db;
+    public static final int C_ANIMAL_ID = 0;
+    public static final int C_ANIMAL_NAME = 2;
+    public static final int C_ANIMAL_PHOTO1 = 14;
+    public static final int C_ANIMAL_PHOTO2 = 15;
+    public static final int C_ANIMAL_PHOTO3 = 16;
 
     PagerAdapter mAdapter;
     ViewPager mPager;
@@ -47,10 +57,26 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
        // animalImage = (ViewPager) rootView.findViewById(R.id.pager);
         //animalImage.setOnClickListener(this);
 
+        dbh = new DBHelper(getActivity());
+        db = dbh.getWritableDatabase();
+
+        Cursor c = dbh.getAnimalList(db);
+        c.moveToPosition(0);
+        String t = Integer.toString(c.getInt(C_ANIMAL_ID));
+        String d = c.getString(C_ANIMAL_NAME);
+        String p1 = c.getString(C_ANIMAL_PHOTO1);
+        String p2 = c.getString(C_ANIMAL_PHOTO2);
+        String p3 = c.getString(C_ANIMAL_PHOTO3);
+
+        TextView detail = (TextView)rootView.findViewById(R.id.textView2);
+        detail.setText(t + d + " P1: " + p1 + " P2: " + p2 + " P3: " + p3);
 
 
 
-        mAdapter = new PagerAdapter(getActivity().getSupportFragmentManager());
+
+
+
+        mAdapter = new PagerAdapter(getActivity().getSupportFragmentManager());//, getActivity());
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mPager.setOnClickListener(this);
