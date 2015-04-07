@@ -61,7 +61,7 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
         db = dbh.getWritableDatabase();
 
         Cursor c = dbh.getAnimalList(db);
-        c.moveToPosition(0);
+        c.moveToPosition(1);
         String t = Integer.toString(c.getInt(C_ANIMAL_ID));
         String d = c.getString(C_ANIMAL_NAME);
         String p1 = c.getString(C_ANIMAL_PHOTO1);
@@ -76,7 +76,7 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
 
 
 
-        mAdapter = new PagerAdapter(getActivity().getSupportFragmentManager());//, getActivity());
+        mAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), getActivity());
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mPager.setOnClickListener(this);

@@ -31,33 +31,43 @@ public class PagerAdapter  extends FragmentPagerAdapter implements IconPagerAdap
     public static final int C_ANIMAL_PHOTO3 = 16;
     //MainActivity ma;
     //GOOD
-    private int[] Images = new int[] { R.drawable.testcat, R.drawable.testcat2,
-            R.drawable.testcat3, R.drawable.testcat4
+   // private int[] Images = new int[] { R.drawable.testcat, R.drawable.testcat2,
+   //         R.drawable.testcat3, R.drawable.testcat4
 
-    };
+  //  };
 
     //NEW
-    //private String[] Images = new String[3];
+    private String[] Images = new String[3];
 
     protected static final int[] ICONS = new int[] { R.drawable.dog_logo,
             R.drawable.dog_logo_selected, R.drawable.dog_pressed, R.drawable.dog_logo_selected };
 
-    private int mCount = Images.length;
+    private int mCount = 0;// = setMCount();//Images.length;
     public PagerAdapter(FragmentManager fm){
         super(fm);
+    }
+
+    public int setMCount(){
+        for(int i=0; i<Images.length; i++){
+            if(Images[i].equals("")){
+                return i;
+            }
+        }
+        return 3;
     }
     public PagerAdapter(FragmentManager fm, Context ctx){  //remove MainActivity ma
         super(fm);
        // this.ma = ma;
-       // dbh = new DBHelper(ctx);
-       // db = dbh.getWritableDatabase();
+        dbh = new DBHelper(ctx);
+        db = dbh.getWritableDatabase();
 
-      //  Cursor c = dbh.getAnimalList(db);
-      //  c.moveToPosition(0);
-       // Images[0] = c.getString(C_ANIMAL_PHOTO1);
-       // Images[1] = c.getString(C_ANIMAL_PHOTO2);
-       // Images[2] = c.getString(C_ANIMAL_PHOTO3);
+        Cursor c = dbh.getAnimalList(db);
+        c.moveToPosition(0);
+        Images[0] = c.getString(C_ANIMAL_PHOTO1);
+        Images[1] = c.getString(C_ANIMAL_PHOTO2);
+        Images[2] = c.getString(C_ANIMAL_PHOTO3);
         Log.d("pageAdapter", "Image0: " + Images[0]);
+        this.mCount = setMCount();
     }
 
     @Override
@@ -66,17 +76,10 @@ public class PagerAdapter  extends FragmentPagerAdapter implements IconPagerAdap
         return new ViewPagerImagesFragment(Images[position]);
     }
 
-    //new
-//    public Fragment getItem(int position) {
-//        //GOOD
-//       return new ViewPagerImagesFragment(Images[position]);
-//
-//        //return new ViewPagerImagesFragment(Images[0]);
-//    }
 
     @Override
     public int getCount() {
-        return mCount;
+        return setMCount();//mCount;
     }
 
     @Override
