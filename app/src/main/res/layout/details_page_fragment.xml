@@ -1,70 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/details_fragment"
-
-    >
-
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF" >
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_weight="1"
-        />
-
-    <com.viewpagerindicator.CirclePageIndicator
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dip"
-        android:layout_alignBottom="@id/pager"
-        app:fillColor="#FF888888"
-        app:pageColor="#88FFFFFF"
-        app:strokeColor="#FF000000"
-        />
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" >
 
-        <!-- http://w3facility.org/question/embed-viewpageindicator-inside-viewpager/ -->
-        <ListView
-            android:id="@id/android:list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/pager"
-            android:layout_alignParentBottom="true" />
+        <android.support.v4.view.ViewPager
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/imageViewPager"
+            android:background="#fffff000" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp">
+
+            <com.viewpagerindicator.CirclePageIndicator
+                android:id="@+id/pageIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:src="@android:drawable/radiobutton_off_background"
+                android:padding="5dip"
+                app:fillColor="#FF888888"
+                app:pageColor="#88FFFFFF"
+                app:strokeColor="#FF000000"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/boule0"
+                android:layout_gravity="bottom"
+                android:src="@android:drawable/radiobutton_off_background"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/boule1"
+                android:layout_gravity="bottom"
+                android:src="@android:drawable/radiobutton_off_background"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/boule2"
+                android:layout_gravity="bottom"
+                android:src="@android:drawable/radiobutton_off_background"
+                android:visibility="gone" />
+        </LinearLayout>
     </RelativeLayout>
 
-
-
-
-
-
     <TextView
-        android:layout_weight="3"
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="@string/animalDescriptionTemp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        />
-
-
-    </LinearLayout>
-
-</ScrollView>
-
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_weight="1"
+        android:text="Medium Text"
+        android:id="@+id/detailsText"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>

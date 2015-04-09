@@ -33,7 +33,7 @@ import java.net.URL;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, LargeAnimalImageFragment.OnFragmentInteractionListener, MainPageFragment.OnSearchListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainPageFragment.OnSearchListener {
 
     FragmentManager fragmentManager;
 
@@ -147,10 +147,7 @@ public class MainActivity extends ActionBarActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 
     @Override
     public void doSearch() {
