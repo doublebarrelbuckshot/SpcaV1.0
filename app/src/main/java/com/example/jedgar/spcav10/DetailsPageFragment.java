@@ -39,7 +39,7 @@ import java.util.ArrayList;
 /**
  * Created by a on 3/31/2015.
  */
-public class DetailsPageFragment extends Fragment implements View.OnClickListener {
+public class DetailsPageFragment extends Fragment{//} implements View.OnClickListener {
     DBHelper dbh;
     SQLiteDatabase db;
     public static final int C_ANIMAL_ID = 0;
@@ -48,6 +48,7 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
     public static final int C_ANIMAL_PHOTO2 = 15;
     public static final int C_ANIMAL_PHOTO3 = 16;
 
+    private int goToPosition;
     //PagerAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
@@ -86,45 +87,23 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
 
         this.inflater = inflater;// =(LayoutInflater) getActivity().getSystemService(getActivity().getBaseContext().LAYOUT_INFLATER_SERVICE);//.getLayoutInflater();
 
-        detailsAdapter = new DetailsPagerAdapter(3);
+        detailsAdapter = new DetailsPagerAdapter();
         detailsPager = (ViewPager) rootView.findViewById(R.id.detailsPager);
         detailsPager.setAdapter(detailsAdapter);
-        detailsPager.setCurrentItem(1);
-
-//        mAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), getActivity());
-//        mPager = (ViewPager) rootView.findViewById(R.id.awesomepager);
-//        mPager.setAdapter(mAdapter);
-//        mPager.setOnClickListener(this);
-
-//        mPager.setOnTouchListener(
-//                new View.OnTouchListener(){
-//                    private boolean moved;
-//
-//
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        if(event.getAction() == MotionEvent.ACTION_DOWN){
-//                            moved = false;
-//                        }
-//                        if(event.getAction() == MotionEvent.ACTION_MOVE){
-//                            moved = true;
-//                        }
-//                        if(event.getAction() == MotionEvent.ACTION_UP){
-//                            if(!moved){
-//                                v.performClick();
-//                            }
-//                        }
-//                        return false;
-//                    }
-//                }
-//        );
-        //  setContentView(R.layout.detail);
-
+        detailsPager.setCurrentItem(goToPosition);
         return rootView;
     }
 
     public static DetailsPageFragment newInstance() {
         DetailsPageFragment fragment = new DetailsPageFragment();
+        fragment.goToPosition = 0;
+        return fragment;
+    }
+
+    //come from browse list
+    public static DetailsPageFragment newInstance(int pos) {
+        DetailsPageFragment fragment = new DetailsPageFragment();
+        fragment.goToPosition = pos;
         return fragment;
     }
 
@@ -134,53 +113,51 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
 
         ((MainActivity) activity).onSectionAttached(6);
     }
-
-    @Override
-    public void onClick(View v) {
- //       Toast.makeText(DetailsPageFragment.this.getActivity(), "clickedImage", Toast.LENGTH_SHORT).show();
-//        Toast.makeText(DetailsPageFragment.this.getActivity(), "Count is: " + positionx, Toast.LENGTH_SHORT).show();
+//
+//    @Override
+//    public void onClick(View v) {
+// //       Toast.makeText(DetailsPageFragment.this.getActivity(), "clickedImage", Toast.LENGTH_SHORT).show();
+////        Toast.makeText(DetailsPageFragment.this.getActivity(), "Count is: " + positionx, Toast.LENGTH_SHORT).show();
+////
+////
+////        /////    mLargeAnimalImageFragment = (LargeAnimalImageFragment)
+////        //////        getFragmentManager().findFragmentById(R.id.large_animal_image);
+////
+////        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+////
+////// Replace whatever is in the fragment_container view with this fragment,
+////// and add the transaction to the back stack so the user can navigate back
+////        transaction.replace(R.id.container, LargeAnimalImageFragment.newInstance(mAdapter, positionx));
+////        transaction.addToBackStack(null);
+////        transaction.commit();
+////
 //
 //
-//        /////    mLargeAnimalImageFragment = (LargeAnimalImageFragment)
-//        //////        getFragmentManager().findFragmentById(R.id.large_animal_image);
+////        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+////
+////        transaction.replace(R.id.container,  mAdapter.getItem(positionx));
+////        transaction.addToBackStack(null);
+////        transaction.commit();
 //
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//// Replace whatever is in the fragment_container view with this fragment,
-//// and add the transaction to the back stack so the user can navigate back
-//        transaction.replace(R.id.container, LargeAnimalImageFragment.newInstance(mAdapter, positionx));
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-//
-
-
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//        transaction.replace(R.id.container,  mAdapter.getItem(positionx));
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-
-        // Fragment fg = LargeAnimalImageFragment.newInstance();
-        // adding fragment to relative layout by using layout id
-        //  getFragmentManager().beginTransaction().add(R.id.details_fragment, fg).commit();
-    }
+//        // Fragment fg = LargeAnimalImageFragment.newInstance();
+//        // adding fragment to relative layout by using layout id
+//        //  getFragmentManager().beginTransaction().add(R.id.details_fragment, fg).commit();
+//    }
 
     private class DetailsPagerAdapter extends android.support.v4.view.PagerAdapter {
 
         String blah;
         Boolean isFav;
-        private DetailsPagerAdapter(int i){ this.blah = ""+ i;}
+       // private DetailsPagerAdapter(){ }
         @Override
         public Object instantiateItem(View collection, int position) {
             LinearLayout detail = (LinearLayout) inflater.inflate(
                     R.layout.details_page_fragment /* date_page2 */, null);
             Log.d("pagerAdapter", "after linearlayout inflate");
-            // Button button = (Button)detail.findViewById(R.id.button);
-            //button.setText(blah + "29038572364578236945234");
-
 
             c = dbh.getAnimalList(db);
-            c.moveToPosition(position);
+
+                c.moveToPosition(position);
             String animalID = Integer.toString(c.getInt(C_ANIMAL_ID));
             String d = c.getString(C_ANIMAL_NAME);
             String p1 = c.getString(C_ANIMAL_PHOTO1);

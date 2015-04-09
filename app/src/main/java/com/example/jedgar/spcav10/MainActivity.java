@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainPageFragment.OnSearchListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainPageFragment.OnSearchListener, BrowsePageFragment.OnDetailsListener {
 
     FragmentManager fragmentManager;
     public static boolean firstRun = true;
@@ -79,33 +79,31 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
 
         fragmentManager = getSupportFragmentManager();
-        if(position == 0){
+        if (position == 0) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MainPageFragment.newInstance())
                     .commit();
-        }else if(position == 1){
+        } else if (position == 1) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, InfoPageFragment.newInstance())
                     .commit();
-        }else if(position == 2){
+        } else if (position == 2) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, FavoritesPageFragment.newInstance())
                     .commit();
-        }else if(position == 3){
+        } else if (position == 3) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, SearchPageFragment.newInstance())
                     .commit();
-        }else if(position == 4){
+        } else if (position == 4) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NotificationPageFragment.newInstance())
                     .commit();
-        }
-        else if(position == 5){
+        } else if (position == 5) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, DetailsPageFragment.newInstance())
                     .commit();
-        }
-        else if(position == 6){
+        } else if (position == 6) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
                     .commit();
@@ -137,7 +135,6 @@ public class MainActivity extends ActionBarActivity
     }
 
 
-
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -166,22 +163,44 @@ public class MainActivity extends ActionBarActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
     @Override
-    public void doSearch() {
-        Log.d("main", "je cherche");
-        Fragment frag= DetailsPageFragment.newInstance();
-        Bundle args=new Bundle();
-        args.putInt("toto",10);
+    public void doDetails(int pos) {
+        Log.d("main", "SHOWING DETAILS FRAGMENT");
+        Fragment frag = DetailsPageFragment.newInstance(pos);
+        Bundle args = new Bundle();
+        args.putInt("toto", 10);
         frag.setArguments(args);
         fragmentManager.beginTransaction()
-                .replace(R.id.container,frag)
+                .replace(R.id.container, frag)
                 .addToBackStack(null)
                 .commit();
-
     }
 
+    @Override
+         public void doSearch() {
+        Log.d("main", "je cherche");
+        Fragment frag = DetailsPageFragment.newInstance();
+        Bundle args = new Bundle();
+        args.putInt("toto", 10);
+        frag.setArguments(args);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, frag)
+                .addToBackStack(null)
+                .commit();
+    }
+
+
+
+
+//    @Override
+//    public void goDetails() {
+//        Log.d("Main", "Take me to the Details nigga");
+//        Fragment frag2 = DetailsPageFragment.newInstance();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.container, frag2)
+//                .addToBackStack(null)
+//                .commit();
+//    }
 
 
     /**
@@ -224,8 +243,5 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-
-
-
 }
+

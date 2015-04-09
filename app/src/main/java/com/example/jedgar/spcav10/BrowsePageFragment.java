@@ -81,8 +81,6 @@ public class BrowsePageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
-
-
     }
 
     @Override
@@ -96,8 +94,6 @@ public class BrowsePageFragment extends Fragment {
         // Getting adapter by passing xml data ArrayList
         BaseAdapter adapter=new LazyAdapter();
         list.setAdapter(adapter);
-
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -106,6 +102,9 @@ public class BrowsePageFragment extends Fragment {
 
                 Log.d("SHARE", "88888888888 SHARE");
                 Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
+
+                ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(position);
+
 
 
 
@@ -132,6 +131,10 @@ public class BrowsePageFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public interface OnDetailsListener {
+        public void doDetails(int pos);
     }
 
     /**
@@ -177,12 +180,12 @@ public class BrowsePageFragment extends Fragment {
             String t = Integer.toString(c.getInt(C_ANIMAL_ID));
             String d = c.getString(C_ANIMAL_NAME);
             String p1 = c.getString(C_ANIMAL_PHOTO1);
-            String p2 = c.getString(C_ANIMAL_PHOTO2);
-            String p3 = c.getString(C_ANIMAL_PHOTO3);
 
-            ImageView animalImage = (ImageView)vi.findViewById(R.id.animalImage);
 
+            if(!p1.equals("")) {
+                ImageView animalImage = (ImageView) vi.findViewById(R.id.animalImage);
                 Picasso.with(getActivity().getApplicationContext()).load(p1).into(animalImage);
+            }
 
 
             TextView animalID = (TextView) vi.findViewById(R.id.animalID);
