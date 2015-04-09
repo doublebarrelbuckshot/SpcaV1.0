@@ -48,7 +48,7 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
     public static final int C_ANIMAL_PHOTO2 = 15;
     public static final int C_ANIMAL_PHOTO3 = 16;
 
-    PagerAdapter mAdapter;
+    //PagerAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
     LayoutInflater inflater;
@@ -69,8 +69,6 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
 
         // View rootView = inflater.inflate(R.layout.details_page_fragment, container, false);
         View rootView = inflater.inflate(R.layout.details, container, false);
-
-
 
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();

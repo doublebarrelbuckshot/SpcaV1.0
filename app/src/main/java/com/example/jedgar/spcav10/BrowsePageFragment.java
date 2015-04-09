@@ -6,14 +6,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -95,7 +98,19 @@ public class BrowsePageFragment extends Fragment {
         list.setAdapter(adapter);
 
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView parent, View view,
+                                    int position, long id) {
+
+                Log.d("SHARE", "88888888888 SHARE");
+                Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        });
         return rootView;
     }
 
@@ -139,23 +154,14 @@ public class BrowsePageFragment extends Fragment {
 
     private class LazyAdapter extends BaseAdapter {
 
-
-
-
         public LazyAdapter() {
-
         }
-
-
 
         public int getCount() {
             return c.getCount();
         }
 
         public Object getItem(int position) {
-
-
-
             return position;
         }
 
@@ -164,12 +170,8 @@ public class BrowsePageFragment extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-           // LinearLayout vi=convertView;
-//            if(convertView==null)
-//                vi = inflater.inflate(R.layout.list_row, null);
-            LinearLayout vi = (LinearLayout) inflater.inflate(
-                    R.layout.browse_row /* date_page2 */, null);
 
+            LinearLayout vi = (LinearLayout) inflater.inflate(R.layout.browse_row /* date_page2 */, null);
 
             c.moveToPosition(position);
             String t = Integer.toString(c.getInt(C_ANIMAL_ID));
@@ -178,10 +180,9 @@ public class BrowsePageFragment extends Fragment {
             String p2 = c.getString(C_ANIMAL_PHOTO2);
             String p3 = c.getString(C_ANIMAL_PHOTO3);
 
-            //if(!p1.equals("")) {
-            //    ImageView animalImage = (ImageView) vi.findViewById(R.id.animalImage);
-           //     Picasso.with(getActivity().getApplicationContext()).load(p1).into(animalImage);
-           // }
+            ImageView animalImage = (ImageView)vi.findViewById(R.id.animalImage);
+
+                Picasso.with(getActivity().getApplicationContext()).load(p1).into(animalImage);
 
 
             TextView animalID = (TextView) vi.findViewById(R.id.animalID);
