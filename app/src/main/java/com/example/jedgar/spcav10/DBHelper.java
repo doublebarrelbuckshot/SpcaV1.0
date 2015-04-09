@@ -246,6 +246,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return c;
     }
 
+    public boolean isFavorite(SQLiteDatabase db, String animalID){
+        // pas testée
+        String sql = "SELECT " + T_FAVORITE_ANIMALS_ANIMAL_ID + " FROM " + TABLE_FAVORITE_ANIMALS + " WHERE " + T_FAVORITE_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
+        Log.d("DB", sql);
+        Cursor c = db.rawQuery(sql, null);
+
+        if (!(c.moveToFirst()) || c.getCount() ==0){
+            return false;
+        }
+        return true;
+    }
+
     public void deleteAll(SQLiteDatabase db) {
         String sql = "DELETE FROM " + TABLE_ANIMAL + ";";
         Log.d("DB", sql);

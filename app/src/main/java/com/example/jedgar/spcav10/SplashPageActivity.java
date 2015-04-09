@@ -75,9 +75,7 @@ public class SplashPageActivity extends ActionBarActivity  {//implementsView.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_page);
         currentAct = this;
-        // btn = (Button)findViewById(R.id.button);
-        //listv = (ListView)findViewById(R.id.activity_list);
-        // titre = (TextView)findViewById(R.id.activity_title);
+
         progressBar = (ProgressBar)findViewById(R.id.webProgressBar);
         progressBar.setVisibility(View.GONE);
 
@@ -124,8 +122,8 @@ public class SplashPageActivity extends ActionBarActivity  {//implementsView.OnC
         /* this was all for testing */
         if (toggle == false) {
             Toast.makeText(this, "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
-           new DownloadWebTask().execute();
-            //currentAct.loadMainActivity();
+           new DownloadWebTask().execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
+            //currentAct.loadMainActivity(); //SET COMMENT FOR PROPER FUNCTIONING
 
             toggle = true;
         }

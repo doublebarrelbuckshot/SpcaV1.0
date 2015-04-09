@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
 
     Cursor c;
     boolean parSections;
+
     private ViewPager detailsPager;
     private DetailsPagerAdapter detailsAdapter;
 
@@ -168,7 +170,7 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
     private class DetailsPagerAdapter extends android.support.v4.view.PagerAdapter {
 
         String blah;
-
+        Boolean isFav;
         private DetailsPagerAdapter(int i){ this.blah = ""+ i;}
         @Override
         public Object instantiateItem(View collection, int position) {
@@ -181,7 +183,7 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
 
             c = dbh.getAnimalList(db);
             c.moveToPosition(position);
-            String t = Integer.toString(c.getInt(C_ANIMAL_ID));
+            String animalID = Integer.toString(c.getInt(C_ANIMAL_ID));
             String d = c.getString(C_ANIMAL_NAME);
             String p1 = c.getString(C_ANIMAL_PHOTO1);
             String p2 = c.getString(C_ANIMAL_PHOTO2);
@@ -212,14 +214,54 @@ public class DetailsPageFragment extends Fragment implements View.OnClickListene
 
             Log.d("IMAGE PAGER", "" + imageCounterImages.size());
             TextView detailsText = (TextView)detail.findViewById(R.id.detailsText);
-            detailsText.setText(t + d + " P1: " + p1 + " P2: " + p2 + " P3: " + p3);
+            detailsText.setText(animalID + d + " P1: " + p1 + " P2: " + p2 + " P3: " + p3);
 
             ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, imageCounterImages, detail);
             ViewPager imageViewPager = (ViewPager) detail.findViewById(R.id.imageViewPager);
             imageViewPager.setAdapter(imageAdapter);
             imageViewPager.setCurrentItem(0);
 
+            final ImageButton btnShare = (ImageButton)detail.findViewById(R.id.btnShare);
+            btnShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Log.d("SHARE", "88888888888 SHARE");
+                        Toast.makeText(getActivity(), "SHARE IT", Toast.LENGTH_SHORT).show();
+                }
+            });
 
+            final ImageButton btnFav = (ImageButton)detail.findViewById(R.id.btnFav);
+            Log.d("ISFAV", ""+dbh.isFavorite(db, animalID));
+            if(dbh.isFavorite(db,animalID )){
+                isFav = true;
+                btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
+            }
+            else{
+                btnFav.setImageResource(R.drawable.ic_favorite_outline_black_36dp);
+                isFav = false;
+            }
+            btnFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String anID = Integer.toString(c.getInt(C_ANIMAL_ID));
+
+                    if(!isFav) {
+                        Log.d("FAV", "88888888888 FAV ACTIVATED");
+                        Toast.makeText(getActivity(), "FAVORITE ACTIVATED", Toast.LENGTH_SHORT).show();
+                        btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
+                        dbh.addToFavoriteList(db, anID);
+                        isFav = true;
+                    }
+                    else{
+                        Log.d("FAV", "88888888888 FAV DEACTIVATED");
+                        Toast.makeText(getActivity(), "FAVORITE DEACTIVATED", Toast.LENGTH_SHORT).show();
+                        btnFav.setImageResource(R.drawable.ic_favorite_outline_black_36dp);
+                        isFav = false;
+                        dbh.removeFromFavoriteList(db, anID);
+
+                    }
+                }
+            });
             CirclePageIndicator titleIndicator = (CirclePageIndicator)detail.findViewById(R.id.pageIndicator);
             titleIndicator.setViewPager(imageViewPager);
 
