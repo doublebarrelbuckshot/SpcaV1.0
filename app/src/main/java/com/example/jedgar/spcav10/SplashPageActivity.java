@@ -122,8 +122,8 @@ public class SplashPageActivity extends ActionBarActivity  {//implementsView.OnC
         /* this was all for testing */
         if (toggle == false) {
             Toast.makeText(this, "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
-           new DownloadWebTask().execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
-            //currentAct.loadMainActivity(); //SET COMMENT FOR PROPER FUNCTIONING
+          // new DownloadWebTask().execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
+            currentAct.loadMainActivity(); //SET COMMENT FOR PROPER FUNCTIONING
 
             toggle = true;
         }

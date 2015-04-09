@@ -95,6 +95,11 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, DetailsPageFragment.newInstance())
                     .commit();
         }
+        else if(position == 6){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .commit();
+        }
     }
 
     public void onSectionAttached(int number) {
@@ -116,6 +121,8 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 6:
                 mTitle = "Details";
+            case 7:
+                mTitle = "Browse";
         }
     }
 
