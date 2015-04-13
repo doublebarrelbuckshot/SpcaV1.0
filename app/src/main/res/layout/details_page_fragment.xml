@@ -34,7 +34,8 @@
             android:layout_alignRight="@+id/imageViewPager"
             android:layout_alignEnd="@+id/imageViewPager"
             android:background="#00ffffff"
-            android:layout_centerInParent="true" />
+            android:layout_alignTop="@+id/imageViewPager"
+             />
 
         <ImageButton
             android:layout_width="wrap_content"

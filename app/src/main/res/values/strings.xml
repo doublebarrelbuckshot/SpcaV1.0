@@ -33,4 +33,7 @@
     <string name="rsbAgeFrom">" between "</string>
     <string name="rsbAgeTo">" to "</string>
     <string name="rsbAgeYears">" years"</string>
+
+    <string name="share_with">Share Animal Details</string>
+
 </resources>

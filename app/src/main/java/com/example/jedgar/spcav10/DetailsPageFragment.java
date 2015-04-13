@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -34,6 +37,8 @@ import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import java.io.FileOutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -49,11 +54,10 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     public static final int C_ANIMAL_PHOTO3 = 16;
 
     private int goToPosition;
-    //PagerAdapter mAdapter;
-    ViewPager mPager;
-    PageIndicator mIndicator;
+
     LayoutInflater inflater;
     int positionx;
+
 
     Cursor c;
     boolean parSections;
@@ -165,44 +169,88 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             String p3 = c.getString(C_ANIMAL_PHOTO3);
 
             ArrayList<String> imagesUrl = new ArrayList<String>();
-            ArrayList<ImageView> imageCounterImages = new ArrayList<ImageView>();
+            //ArrayList<ImageView> imageCounterImages = new ArrayList<ImageView>();
             if(!p1.equals("")) {
                 imagesUrl.add(p1);
-                ImageView boule0 = (ImageView)detail.findViewById(R.id.boule0);
+               // ImageView boule0 = (ImageView)detail.findViewById(R.id.boule0);
                 //  boule0.setVisibility(View.VISIBLE);
                 // imageCounterImages.add((ImageView)detail.findViewById(R.id.boule0));
             }
             if(!p2.equals("")){
                 imagesUrl.add(p2);
-                ImageView boule1 = (ImageView)detail.findViewById(R.id.boule1);
+               // ImageView boule1 = (ImageView)detail.findViewById(R.id.boule1);
                 // boule1.setVisibility(View.VISIBLE);
                 //imageCounterImages.add((ImageView)detail.findViewById(R.id.boule1));
             }
             if(!p3.equals("")){
                 imagesUrl.add(p3);
-                ImageView boule2 = (ImageView)detail.findViewById(R.id.boule2);
+                //ImageView boule2 = (ImageView)detail.findViewById(R.id.boule2);
                 //  boule2.setVisibility(View.VISIBLE);
                 // imageCounterImages.add((ImageView)detail.findViewById(R.id.boule2));
             }
 
 
 
-            Log.d("IMAGE PAGER", "" + imageCounterImages.size());
+            //Log.d("IMAGE PAGER", "" + imageCounterImages.size());
             TextView detailsText = (TextView)detail.findViewById(R.id.detailsText);
             detailsText.setText(animalID + d + " P1: " + p1 + " P2: " + p2 + " P3: " + p3);
 
-            ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, imageCounterImages, detail);
+            ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, detail);
+
+           // ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, imageCounterImages, detail);
             ViewPager imageViewPager = (ViewPager) detail.findViewById(R.id.imageViewPager);
             imageViewPager.setAdapter(imageAdapter);
             imageViewPager.setCurrentItem(0);
 
+
             final ImageButton btnShare = (ImageButton)detail.findViewById(R.id.btnShare);
             btnShare.setOnClickListener(new View.OnClickListener() {
+
+
                 @Override
                 public void onClick(View v) {
-                        Log.d("SHARE", "88888888888 SHARE");
-                        Toast.makeText(getActivity(), "SHARE IT", Toast.LENGTH_SHORT).show();
+                    try{
+                        // Construct a ShareIntent
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        // type of file to share
+                        shareIntent.setType("text/html*");
+
+                    /* Parameter
+                    ImageAge:animal ID.
+                    ImageID:animal ID.
+                    Current_imageURl :URL of the image on the currentView.
+                    Image description:if you have futher information.Put it here
+                    Remove this <a>http://www.w3schools.com</a>":It's  just an example of link.
+
+                     */
+                        String html = "<!DOCTYPE html>" +
+                                "<html>" +
+                                "<body>" +
+                                "<p>ImageAge: </p>" + "<p>ImageID: </p>" +
+
+                                "<p>Image description:</p>" +
+                                "<p>To see the Animal,follow the link below</p>" +
+                                "<a>http://www.w3schools.com</a>" +
+
+                                "</body></html>";
+
+                        // Message subject
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Animal sharing");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(html));
+
+                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+
+
+                        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.share_with)));
+                    }catch (Exception e){
+                        // Log any error messages to LogCat using Log.e()
+                        e.printStackTrace();
+                    }
                 }
+
+
             });
 
             final ImageButton btnFav = (ImageButton)detail.findViewById(R.id.btnFav);
@@ -264,14 +312,15 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     private class ImagePagerAdapter extends android.support.v4.view.PagerAdapter {
 
         ArrayList<String> imagesUrl;
-        ArrayList<ImageView>imageCounterImages;
+       // ArrayList<ImageView>imageCounterImages;
         LinearLayout detailsPageFrag;
         boolean clicked = false;
         TextView detailsText;
+        private ImagePagerAdapter(ArrayList<String> imagesUrl, LinearLayout detailsPageFrag ){
 
-        private ImagePagerAdapter(ArrayList<String> imagesUrl, ArrayList<ImageView> imageCounterImages, LinearLayout detailsPageFrag ){
+      //  private ImagePagerAdapter(ArrayList<String> imagesUrl, ArrayList<ImageView> imageCounterImages, LinearLayout detailsPageFrag ){
             this.imagesUrl = imagesUrl;
-            this.imageCounterImages = imageCounterImages;
+            //this.imageCounterImages = imageCounterImages;
             this.detailsPageFrag = detailsPageFrag;
             detailsText = (TextView) detailsPageFrag.findViewById(R.id.detailsText);
 
@@ -316,9 +365,9 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             ImageView detailsText = (ImageView)detail.findViewById(R.id.animalImage);
             Picasso.with(getActivity().getApplicationContext()).load(imagesUrl.get(position)).into(detailsText);
-            for (int i =0; i<imageCounterImages.size(); i++){
-                imageCounterImages.get(i).setImageResource(android.R.drawable.radiobutton_off_background);
-            }
+          //  for (int i =0; i<imageCounterImages.size(); i++){
+          //      imageCounterImages.get(i).setImageResource(android.R.drawable.radiobutton_off_background);
+          //  }
             //  imageCounterImages.get(position).setImageResource(android.R.drawable.radiobutton_on_background);
 
             ((ViewPager) collection).addView(detail, 0);
