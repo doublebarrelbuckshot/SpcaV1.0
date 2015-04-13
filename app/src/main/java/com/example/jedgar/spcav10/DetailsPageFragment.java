@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,11 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by a on 3/31/2015.
@@ -48,10 +53,24 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     DBHelper dbh;
     SQLiteDatabase db;
     public static final int C_ANIMAL_ID = 0;
+    public static final int C_ANIMAL_SPECIES = 1;
     public static final int C_ANIMAL_NAME = 2;
+    public static final int C_ANIMAL_AGE = 3;
+    public static final int C_ANIMAL_PRIMARY_BREED = 4;
+    public static final int C_ANIMAL_SECONDARY_BREED = 5;
+    public static final int C_ANIMAL_SEX = 6;
+    public static final int C_ANIMAL_SIZE = 7;
+    public static final int C_ANIMAL_STERILE = 8;
+    public static final int C_ANIMAL_INTAKE_DATE = 9;
+    public static final int C_ANIMAL_PRIMARY_COLOR = 10;
+    public static final int C_ANIMAL_SECONDARY_COLOR = 11;
+    public static final int C_ANIMAL_DESCRIPTION = 12;
+    public static final int C_ANIMAL_DECLAWED = 13;
     public static final int C_ANIMAL_PHOTO1 = 14;
     public static final int C_ANIMAL_PHOTO2 = 15;
     public static final int C_ANIMAL_PHOTO3 = 16;
+
+
 
     private int goToPosition;
 
@@ -80,11 +99,13 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
         c = dbh.getAnimalList(db);
         c.moveToPosition(1);
-        String t = Integer.toString(c.getInt(C_ANIMAL_ID));
-        String d = c.getString(C_ANIMAL_NAME);
-        String p1 = c.getString(C_ANIMAL_PHOTO1);
-        String p2 = c.getString(C_ANIMAL_PHOTO2);
-        String p3 = c.getString(C_ANIMAL_PHOTO3);
+//        String t = Integer.toString(c.getInt(C_ANIMAL_ID));
+//        String d = c.getString(C_ANIMAL_NAME);
+
+//
+//        String p1 = c.getString(C_ANIMAL_PHOTO1);
+//        String p2 = c.getString(C_ANIMAL_PHOTO2);
+//        String p3 = c.getString(C_ANIMAL_PHOTO3);
 
         // TextView detail = (TextView)rootView.findViewById(R.id.textView2);
         //  detail.setText(t + d + " P1: " + p1 + " P2: " + p2 + " P3: " + p3);
@@ -152,7 +173,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
         String blah;
         Boolean isFav;
-       // private DetailsPagerAdapter(){ }
+        // private DetailsPagerAdapter(){ }
         @Override
         public Object instantiateItem(View collection, int position) {
             LinearLayout detail = (LinearLayout) inflater.inflate(
@@ -161,43 +182,171 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             c = dbh.getAnimalList(db);
 
-                c.moveToPosition(position);
+            c.moveToPosition(position);
             String animalID = Integer.toString(c.getInt(C_ANIMAL_ID));
-            String d = c.getString(C_ANIMAL_NAME);
+            String animalName = c.getString(C_ANIMAL_NAME);
+            String animalSpecies = c.getString(C_ANIMAL_SPECIES);
+            String animalAge = c.getString(C_ANIMAL_AGE);
+            String animalSex = c.getString(C_ANIMAL_SEX);
+            String animalPrimaryBreed = c.getString(C_ANIMAL_PRIMARY_BREED);
+            String animalIntake = c.getString(C_ANIMAL_INTAKE_DATE);
+            String animalSterilized = c.getString(C_ANIMAL_STERILE);
+            String animalDeclawed = c.getString(C_ANIMAL_DECLAWED);
+            String animalDescription = c.getString(C_ANIMAL_DESCRIPTION);
+
+            for(int i = 0; i<17; i++){
+                Log.d(i + "  !!!!:", c.getString(i));
+            }
+
+
+            TextView animalIDTV = (TextView)detail.findViewById(R.id.animalIDTV);
+            TextView animalNameTV = (TextView)detail.findViewById(R.id.animalNameTV);
+            TextView animalAgeTV = (TextView)detail.findViewById(R.id.animalAgeTV);
+            TextView animalSexTV = (TextView)detail.findViewById(R.id.animalSexTV);
+            TextView animalPrimaryBreedTV = (TextView)detail.findViewById(R.id.animalPrimaryBreedTV);
+            TextView animalIntakeTV = (TextView)detail.findViewById(R.id.animalIntakeTV);
+            TextView animalSterilizedTV = (TextView)detail.findViewById(R.id.animalSterilizedTV);
+            TextView animalDeclawedTV = (TextView)detail.findViewById(R.id.animalDeclawedTV);
+
+
+
+
+            animalIDTV.setText("ID: " + animalID);
+            animalNameTV.setText(animalName);
+            animalAgeTV.setText(animalAge);
+            animalPrimaryBreedTV.setText(animalPrimaryBreed);
+
+
+            /*
+            SET UP FOR INTAKE DATE
+             */
+            boolean dateConversionSuccess = true;
+            Date intakeDate = null;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                intakeDate = simpleDateFormat.parse(animalIntake);
+            } catch (ParseException ex)
+            {
+                Log.d("PARSEERROR", ex.getMessage());
+                dateConversionSuccess = false;
+                animalIntakeTV.setVisibility(View.GONE);
+            }
+
+            String formattedIntakeDate = "";
+            if(dateConversionSuccess){
+                formattedIntakeDate = new SimpleDateFormat("dd/MM/yyyy").format(intakeDate);
+                animalIntakeTV.setText("Intake: " + formattedIntakeDate);
+            }
+
+            /*
+//            SETUP FOR DESCRIPTION
+//             */
+
+            TextView detailsText = (TextView)detail.findViewById(R.id.detailsText);
+            detailsText.setText(Html.fromHtml(animalDescription));
+           // String htmlText = "<html><body><big><strong>" + animalName + "\t" + animalID + "</strong></big> </body> </html>";
+
+           // ;
+
+
+
+
+            //  if(animalSpecies.equalsIgnoreCase("Cat")) {
+//                if(animalDeclawed.equalsIgnoreCase("Y") || animalDeclawed.equalsIgnoreCase("Yes") ||
+//                        animalDeclawed.equalsIgnoreCase("Both") || animalDeclawed.equalsIgnoreCase("Front")
+//                        || animalDeclawed.equalsIgnoreCase("Back")) {
+//
+//                    animalDeclawedTV.setText(getResources().getText(R.string.declawed));
+//                }
+//                else if(animalDeclawed.equalsIgnoreCase("N") || animalDeclawed.equalsIgnoreCase("No")) {
+//
+//                    animalDeclawedTV.setText(getResources().getText(R.string.not_declawed));
+//                }
+//                else {
+//                    animalDeclawedTV.setVisibility(View.GONE);
+//
+//                }
+//                Log.d("DECLAWED", animalDeclawed);
+          //  }
+
+//             /*
+//            SETUP FOR DECLAWED
+//             */
+            if(animalSpecies.equalsIgnoreCase("Cat")) {
+                if(animalDeclawed.equalsIgnoreCase("Y") || animalDeclawed.equalsIgnoreCase("Yes") ||
+                        animalDeclawed.equalsIgnoreCase("Both") || animalDeclawed.equalsIgnoreCase("Front")
+                        || animalDeclawed.equalsIgnoreCase("Back")) {
+
+                    animalDeclawedTV.setText(getResources().getText(R.string.declawed));
+                }
+                else if(animalDeclawed.equalsIgnoreCase("N") || animalDeclawed.equalsIgnoreCase("No")) {
+
+                    animalDeclawedTV.setText(getResources().getText(R.string.not_declawed));
+                }
+                else {
+                    animalDeclawedTV.setVisibility(View.GONE);
+
+                }
+                Log.d("DECLAWED", animalDeclawed);
+            }
+            /*
+            SETUP FOR STERILIZED
+             */
+            if(animalSterilized.equalsIgnoreCase("Y")) {
+
+                animalSterilizedTV.setText(getResources().getText(R.string.sterilized));
+            }
+            else if(animalSterilized.equalsIgnoreCase("N")) {
+
+                animalSterilizedTV.setText(getResources().getText(R.string.not_sterilized));
+            }
+            else {
+                animalSterilizedTV.setVisibility(View.GONE);
+            }
+
+ /*
+            SETUP FOR SEX
+             */
+
+            if(animalSex.equalsIgnoreCase("M") || animalSex.equalsIgnoreCase("MALE") ) {
+                // Log.d("SEX", "SEX MALE");
+                animalSexTV.setText(getResources().getText(R.string.male));
+            }
+            else if(animalSex.equalsIgnoreCase("F")|| animalSex.equalsIgnoreCase("FEMALE")) {
+                //Log.d("SEX", "SEX FEMALE");
+                animalSexTV.setText(getResources().getText(R.string.female));
+            }
+            else {
+                // Log.d("SEX", "SEX NOT M OR F !!" + animalSex + "!!");
+                animalSexTV.setVisibility(View.GONE);
+            }
+
+
+
+            // TextView animalBlankTV = (TextView)detail.findViewById(R.id.animalBlankTV);
+            // animalBlankTV.setText(animalIntake + "blank");
             String p1 = c.getString(C_ANIMAL_PHOTO1);
             String p2 = c.getString(C_ANIMAL_PHOTO2);
             String p3 = c.getString(C_ANIMAL_PHOTO3);
 
             ArrayList<String> imagesUrl = new ArrayList<String>();
-            //ArrayList<ImageView> imageCounterImages = new ArrayList<ImageView>();
             if(!p1.equals("")) {
                 imagesUrl.add(p1);
-               // ImageView boule0 = (ImageView)detail.findViewById(R.id.boule0);
-                //  boule0.setVisibility(View.VISIBLE);
-                // imageCounterImages.add((ImageView)detail.findViewById(R.id.boule0));
             }
             if(!p2.equals("")){
                 imagesUrl.add(p2);
-               // ImageView boule1 = (ImageView)detail.findViewById(R.id.boule1);
-                // boule1.setVisibility(View.VISIBLE);
-                //imageCounterImages.add((ImageView)detail.findViewById(R.id.boule1));
             }
             if(!p3.equals("")){
                 imagesUrl.add(p3);
-                //ImageView boule2 = (ImageView)detail.findViewById(R.id.boule2);
-                //  boule2.setVisibility(View.VISIBLE);
-                // imageCounterImages.add((ImageView)detail.findViewById(R.id.boule2));
             }
 
 
 
             //Log.d("IMAGE PAGER", "" + imageCounterImages.size());
-            TextView detailsText = (TextView)detail.findViewById(R.id.detailsText);
-            detailsText.setText(animalID + d + " P1: " + p1 + " P2: " + p2 + " P3: " + p3);
 
             ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, detail);
 
-           // ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, imageCounterImages, detail);
+            // ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, imageCounterImages, detail);
             ViewPager imageViewPager = (ViewPager) detail.findViewById(R.id.imageViewPager);
             imageViewPager.setAdapter(imageAdapter);
             imageViewPager.setCurrentItem(0);
@@ -312,17 +461,22 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     private class ImagePagerAdapter extends android.support.v4.view.PagerAdapter {
 
         ArrayList<String> imagesUrl;
-       // ArrayList<ImageView>imageCounterImages;
+        // ArrayList<ImageView>imageCounterImages;
         LinearLayout detailsPageFrag;
         boolean clicked = false;
         TextView detailsText;
+        LinearLayout detailsLayout;
+        LinearLayout detailsScrollLayout;
         private ImagePagerAdapter(ArrayList<String> imagesUrl, LinearLayout detailsPageFrag ){
 
-      //  private ImagePagerAdapter(ArrayList<String> imagesUrl, ArrayList<ImageView> imageCounterImages, LinearLayout detailsPageFrag ){
+            //  private ImagePagerAdapter(ArrayList<String> imagesUrl, ArrayList<ImageView> imageCounterImages, LinearLayout detailsPageFrag ){
             this.imagesUrl = imagesUrl;
             //this.imageCounterImages = imageCounterImages;
             this.detailsPageFrag = detailsPageFrag;
             detailsText = (TextView) detailsPageFrag.findViewById(R.id.detailsText);
+            //detailsScrollLayout = (LinearLayout)detailsPageFrag.findViewById(R.id.detailsScrollLayout);
+            detailsLayout = (LinearLayout) detailsPageFrag.findViewById(R.id.detailsLayout);
+
 
 
         }
@@ -338,19 +492,19 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
                 @Override
                 public void onClick(View v) {
                     if(!clicked) {
-                        Log.d("BLAH", "clicklistener99999999999999999999");
-                        detailsText.setVisibility(View.GONE);
+                        //Log.d("BLAH", "clicklistener99999999999999999999");
+                        detailsLayout.setVisibility(View.GONE);
                         clicked = true;
                     }
                     else{
-                        detailsText.setVisibility(View.VISIBLE);
+                        detailsLayout.setVisibility(View.VISIBLE);
                         clicked = false;
                     }
                     // Toast.makeText(getActivity(), "clickedImage", Toast.LENGTH_SHORT).show();
 
                 }
             });
-            Log.d("pagerAdapter", "after linearlayout inflate");
+            // Log.d("pagerAdapter", "after linearlayout inflate");
             // Button button = (Button)detail.findViewById(R.id.button);
             //button.setText(blah + "29038572364578236945234");
 
@@ -365,9 +519,9 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             ImageView detailsText = (ImageView)detail.findViewById(R.id.animalImage);
             Picasso.with(getActivity().getApplicationContext()).load(imagesUrl.get(position)).into(detailsText);
-          //  for (int i =0; i<imageCounterImages.size(); i++){
-          //      imageCounterImages.get(i).setImageResource(android.R.drawable.radiobutton_off_background);
-          //  }
+            //  for (int i =0; i<imageCounterImages.size(); i++){
+            //      imageCounterImages.get(i).setImageResource(android.R.drawable.radiobutton_off_background);
+            //  }
             //  imageCounterImages.get(position).setImageResource(android.R.drawable.radiobutton_on_background);
 
             ((ViewPager) collection).addView(detail, 0);

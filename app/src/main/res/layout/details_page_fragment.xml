@@ -1,106 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp" >
 
 
-
-
-        <android.support.v4.view.ViewPager
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/imageViewPager"
-            android:background="#fffff000"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnFav"
-            android:src="@drawable/ic_favorite_outline_black_36dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/imageViewPager"
-            android:layout_alignEnd="@+id/imageViewPager"
-            android:background="#00ffffff"
-            android:layout_alignTop="@+id/imageViewPager"
-             />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnShare"
-            android:src="@drawable/ic_share_black_36dp"
-            android:background="#00ffffff"
-            android:layout_alignTop="@+id/imageViewPager"
-            android:layout_toLeftOf="@+id/btnFav"
-            android:layout_toStartOf="@+id/btnFav" />
 
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
 
-            <com.viewpagerindicator.CirclePageIndicator
-                android:id="@+id/pageIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:src="@android:drawable/radiobutton_off_background"
-                android:padding="5dip"
-                app:fillColor="#FF888888"
-                app:pageColor="#88FFFFFF"
-                app:strokeColor="#FF000000"
-                />
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/boule0"
-                android:layout_gravity="bottom"
-                android:src="@android:drawable/radiobutton_off_background"
-                android:visibility="gone" />
+                >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/boule1"
-                android:layout_gravity="bottom"
-                android:src="@android:drawable/radiobutton_off_background"
-                android:visibility="gone" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/boule2"
-                android:layout_gravity="bottom"
-                android:src="@android:drawable/radiobutton_off_background"
-                android:visibility="gone" />
+
+
+                <android.support.v4.view.ViewPager
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/imageViewPager"
+                    android:background="#fffff000"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnFav"
+                    android:src="@drawable/ic_favorite_outline_black_36dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignRight="@+id/imageViewPager"
+                    android:layout_alignEnd="@+id/imageViewPager"
+                    android:background="#00ffffff"
+                    android:layout_alignTop="@+id/imageViewPager"
+                    />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnShare"
+                    android:src="@drawable/ic_share_black_36dp"
+                    android:background="#00ffffff"
+                    android:layout_alignTop="@+id/imageViewPager"
+                    android:layout_toLeftOf="@+id/btnFav"
+                    android:layout_toStartOf="@+id/btnFav" />
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp">
+
+                    <com.viewpagerindicator.CirclePageIndicator
+                        android:id="@+id/pageIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:src="@android:drawable/radiobutton_off_background"
+                        android:padding="5dip"
+                        app:fillColor="#FF888888"
+                        app:pageColor="#88FFFFFF"
+                        app:strokeColor="#FF000000"
+                        />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
         </LinearLayout>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:id="@+id/detailsLayout"
+            >
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:fillViewport="true"
+                android:layout_weight="1"
+                >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_weight="1"
-        android:text="Medium Text"
-        android:id="@+id/detailsText"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalNameTV"
+                        android:id="@+id/animalNameTV"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalIDTV"
+                        android:id="@+id/animalIDTV"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalSexTV"
+                        android:id="@+id/animalSexTV"
+                        android:layout_above="@+id/animalPrimaryBreedTV"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalAgeTV"
+                        android:id="@+id/animalAgeTV"
+                        android:layout_below="@+id/animalNameTV"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalIntakeTV"
+                        android:id="@+id/animalIntakeTV"
+                        android:layout_below="@+id/animalPrimaryBreedTV"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalPrimaryBreedTV"
+                        android:id="@+id/animalPrimaryBreedTV"
+                        android:layout_below="@+id/animalAgeTV"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalSterilizedTV"
+                        android:id="@+id/animalSterilizedTV"
+                        android:layout_below="@+id/animalPrimaryBreedTV"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="animalDeclawedTV"
+                        android:id="@+id/animalDeclawedTV"
+                        android:layout_below="@+id/animalIntakeTV"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/detailsText"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_below="@+id/animalDeclawedTV"
+                        android:layout_alignRight="@+id/animalSexTV"
+                        android:layout_alignEnd="@+id/animalSexTV"
+                        android:layout_alignParentBottom="true" />
+
+
+                </RelativeLayout>
+            </ScrollView>
+        </LinearLayout>
+
+    </LinearLayout>
+
