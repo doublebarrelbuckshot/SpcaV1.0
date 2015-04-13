@@ -49,6 +49,7 @@ public class BrowsePageFragment extends Fragment {
     public static final int C_ANIMAL_PHOTO1 = 14;
     public static final int C_ANIMAL_PHOTO2 = 15;
     public static final int C_ANIMAL_PHOTO3 = 16;
+    public static final int C_ANIMAL_AGE = 3;
 
     private Cursor c;
     /**
@@ -180,6 +181,7 @@ public class BrowsePageFragment extends Fragment {
             String t = Integer.toString(c.getInt(C_ANIMAL_ID));
             String d = c.getString(C_ANIMAL_NAME);
             String p1 = c.getString(C_ANIMAL_PHOTO1);
+            String a = c.getString(C_ANIMAL_AGE);
 
 
             if(!p1.equals("")) {
@@ -189,7 +191,12 @@ public class BrowsePageFragment extends Fragment {
 
 
             TextView animalID = (TextView) vi.findViewById(R.id.animalID);
-            animalID.setText(d);
+            TextView animalName = (TextView) vi.findViewById(R.id.animalName);
+            TextView animalAge = (TextView) vi.findViewById(R.id.animalAge);
+
+            animalID.setText("ID: "+t);
+            animalName.setText("Name: "+d);
+            animalAge.setText("Age: :"+a);
             return vi;
         }
     }

@@ -5,23 +5,44 @@
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-    <TextView
+        <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/animalImage" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/animalName"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/animalImage"
+            android:layout_toEndOf="@+id/animalImage" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/animalAge"
+            android:layout_below="@+id/animalImage"
+            android:layout_toRightOf="@+id/animalImage"
+            android:layout_toEndOf="@+id/animalImage" />
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/animalID"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/animalImage"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/animalImage" />
     </RelativeLayout>
     </LinearLayout>
