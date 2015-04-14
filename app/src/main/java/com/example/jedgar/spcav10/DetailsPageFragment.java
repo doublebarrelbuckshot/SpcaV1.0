@@ -172,7 +172,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     private class DetailsPagerAdapter extends android.support.v4.view.PagerAdapter {
 
         String blah;
-        Boolean isFav;
+        //Boolean isFav;
         // private DetailsPagerAdapter(){ }
         @Override
         public Object instantiateItem(View collection, int position) {
@@ -402,8 +402,9 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             });
 
-            final ImageButton btnFav = (ImageButton)detail.findViewById(R.id.btnFav);
+            ImageButton btnFav = (ImageButton)detail.findViewById(R.id.btnFav);
             Log.d("ISFAV", ""+dbh.isFavorite(db, animalID));
+            boolean isFav;
             if(dbh.isFavorite(db,animalID )){
                 isFav = true;
                 btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
@@ -412,26 +413,40 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
                 btnFav.setImageResource(R.drawable.ic_favorite_outline_black_36dp);
                 isFav = false;
             }
+            btnFav.setTag(R.id.favTag, Boolean.valueOf(isFav));
+            btnFav.setTag(R.id.anIDTag, animalID);
             btnFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String anID = Integer.toString(c.getInt(C_ANIMAL_ID));
+                   // String anID = Integer.toString(c.getInt(C_ANIMAL_ID));
+                    ImageButton btnFav=(ImageButton)v;
+                    boolean isFav=((Boolean)btnFav.getTag(R.id.favTag)).booleanValue();
+                    String anID = (String)btnFav.getTag(R.id.anIDTag);
 
                     if(!isFav) {
                         Log.d("FAV", "88888888888 FAV ACTIVATED");
-                        Toast.makeText(getActivity(), "FAVORITE ACTIVATED", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "FAVORITE ACTIVATED", Toast.LENGTH_SHORT).show();
                         btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
                         dbh.addToFavoriteList(db, anID);
+                        Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
+
+                        Log.d("ISFAV", ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID);
+
                         isFav = true;
                     }
                     else{
                         Log.d("FAV", "88888888888 FAV DEACTIVATED");
-                        Toast.makeText(getActivity(), "FAVORITE DEACTIVATED", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(), "FAVORITE DEACTIVATED", Toast.LENGTH_SHORT).show();
                         btnFav.setImageResource(R.drawable.ic_favorite_outline_black_36dp);
                         isFav = false;
                         dbh.removeFromFavoriteList(db, anID);
+                        Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
+
+                        Log.d("ISFAV", ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID);
+
 
                     }
+                    btnFav.setTag(R.id.favTag, Boolean.valueOf(isFav));
                 }
             });
             CirclePageIndicator titleIndicator = (CirclePageIndicator)detail.findViewById(R.id.pageIndicator);

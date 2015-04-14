@@ -204,7 +204,11 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.clear();
         cv.put(DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID, animalID);
-        db.insertOrThrow(DBHelper.TABLE_FAVORITE_ANIMALS, null, cv);
+        try {
+            db.insertOrThrow(DBHelper.TABLE_FAVORITE_ANIMALS, null, cv);
+        } catch (SQLException sq) {
+            Log.d("DB","favorite already added");
+        }
     }
 
     public void removeFromFavoriteList(SQLiteDatabase db, String animalID){

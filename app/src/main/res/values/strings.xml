@@ -41,7 +41,8 @@
     <string name="not_declawed">Not Declawed</string>
 
 
-
+    <item type="id" name="favTag"/>
+    <item type="id" name="anIDTag"/>
 
     <string name="share_with">Share Animal Details</string>
 
