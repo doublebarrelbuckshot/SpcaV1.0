@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:background="#CC0000">
 
         <ImageView
         android:layout_width="75dp"
@@ -30,7 +31,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/animalAge"
-            android:layout_below="@+id/animalImage"
+            android:layout_alignBottom="@+id/animalImage"
             android:layout_toRightOf="@+id/animalImage"
             android:layout_toEndOf="@+id/animalImage" />
 
@@ -40,7 +41,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/animalID"
-            android:layout_below="@+id/animalImage"
+            android:layout_alignTop="@+id/animalAge"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
