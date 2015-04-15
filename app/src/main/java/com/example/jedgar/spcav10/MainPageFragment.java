@@ -204,8 +204,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         /* this was all for testing */
         if (toggle == false) {
             Toast.makeText(getActivity(), "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
-            new DownloadWebTask().execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
-            // currentAct.loadMainActivity(); //SET COMMENT FOR PROPER FUNCTIONING
+            //new DownloadWebTask().execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
 
             toggle = true;
         }

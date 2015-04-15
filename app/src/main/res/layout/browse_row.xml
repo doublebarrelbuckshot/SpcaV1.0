@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#CC0000">
+        android:background="#ffb70006">
 
         <ImageView
         android:layout_width="75dp"
@@ -23,7 +23,8 @@
             android:id="@+id/animalName"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/animalImage"
-            android:layout_toEndOf="@+id/animalImage" />
+            android:layout_toEndOf="@+id/animalImage"
+            android:textColor="#ff000000" />
 
         <TextView
             android:layout_width="wrap_content"

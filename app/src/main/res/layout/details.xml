@@ -10,6 +10,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:id="@+id/detailsPager"
-        android:background="#fffff000" />
+        android:background="#ffb70006" />
 
 </LinearLayout>

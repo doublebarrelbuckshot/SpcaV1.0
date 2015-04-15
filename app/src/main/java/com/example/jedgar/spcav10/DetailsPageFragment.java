@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,16 +100,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
         c = dbh.getAnimalList(db);
         c.moveToPosition(1);
-//        String t = Integer.toString(c.getInt(C_ANIMAL_ID));
-//        String d = c.getString(C_ANIMAL_NAME);
 
-//
-//        String p1 = c.getString(C_ANIMAL_PHOTO1);
-//        String p2 = c.getString(C_ANIMAL_PHOTO2);
-//        String p3 = c.getString(C_ANIMAL_PHOTO3);
-
-        // TextView detail = (TextView)rootView.findViewById(R.id.textView2);
-        //  detail.setText(t + d + " P1: " + p1 + " P2: " + p2 + " P3: " + p3);
 
         this.inflater = inflater;// =(LayoutInflater) getActivity().getSystemService(getActivity().getBaseContext().LAYOUT_INFLATER_SERVICE);//.getLayoutInflater();
 
@@ -116,6 +108,10 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         detailsPager = (ViewPager) rootView.findViewById(R.id.detailsPager);
         detailsPager.setAdapter(detailsAdapter);
         detailsPager.setCurrentItem(goToPosition);
+
+
+
+
         return rootView;
     }
 
@@ -138,47 +134,20 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
         ((MainActivity) activity).onSectionAttached(6);
     }
-//
-//    @Override
-//    public void onClick(View v) {
-// //       Toast.makeText(DetailsPageFragment.this.getActivity(), "clickedImage", Toast.LENGTH_SHORT).show();
-////        Toast.makeText(DetailsPageFragment.this.getActivity(), "Count is: " + positionx, Toast.LENGTH_SHORT).show();
-////
-////
-////        /////    mLargeAnimalImageFragment = (LargeAnimalImageFragment)
-////        //////        getFragmentManager().findFragmentById(R.id.large_animal_image);
-////
-////        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-////
-////// Replace whatever is in the fragment_container view with this fragment,
-////// and add the transaction to the back stack so the user can navigate back
-////        transaction.replace(R.id.container, LargeAnimalImageFragment.newInstance(mAdapter, positionx));
-////        transaction.addToBackStack(null);
-////        transaction.commit();
-////
-//
-//
-////        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-////
-////        transaction.replace(R.id.container,  mAdapter.getItem(positionx));
-////        transaction.addToBackStack(null);
-////        transaction.commit();
-//
-//        // Fragment fg = LargeAnimalImageFragment.newInstance();
-//        // adding fragment to relative layout by using layout id
-//        //  getFragmentManager().beginTransaction().add(R.id.details_fragment, fg).commit();
-//    }
 
     private class DetailsPagerAdapter extends android.support.v4.view.PagerAdapter {
 
-        String blah;
-        //Boolean isFav;
-        // private DetailsPagerAdapter(){ }
+        boolean textClicked = false;
+
         @Override
         public Object instantiateItem(View collection, int position) {
             LinearLayout detail = (LinearLayout) inflater.inflate(
                     R.layout.details_page_fragment /* date_page2 */, null);
             Log.d("pagerAdapter", "after linearlayout inflate");
+
+            LinearLayout detailImages = (LinearLayout) detail.findViewById(R.id.detailsImageLayout);
+
+
 
             c = dbh.getAnimalList(db);
 
@@ -208,6 +177,27 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             TextView animalSterilizedTV = (TextView)detail.findViewById(R.id.animalSterilizedTV);
             TextView animalDeclawedTV = (TextView)detail.findViewById(R.id.animalDeclawedTV);
 
+            double rawAge = Double.parseDouble(animalAge);
+            int yrs = (int) Math.floor(rawAge / 12);
+            Toast.makeText(getActivity(), ""+ animalAge, Toast.LENGTH_LONG).show();
+
+            if(rawAge < 12){
+                animalAge =  animalAge + " " + getResources().getText(R.string.months);
+            }
+            else if((rawAge % 12) == 0){
+                animalAge = String.valueOf(Integer.parseInt(animalAge) / 12);
+                animalAge += " " + getResources().getText(R.string.years);
+            }
+            else{
+                String animalYrsStr = String.valueOf(yrs);
+
+                String monthStr = String.valueOf( (int) (rawAge - (yrs * 12)));
+
+
+                animalAge = animalYrsStr + " " + getResources().getText(R.string.years) + " " + monthStr + " " + getResources().getText(R.string.months);
+
+
+            }
 
 
 
@@ -235,7 +225,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             String formattedIntakeDate = "";
             if(dateConversionSuccess){
                 formattedIntakeDate = new SimpleDateFormat("dd/MM/yyyy").format(intakeDate);
-                animalIntakeTV.setText("Intake: " + formattedIntakeDate);
+                animalIntakeTV.setText(getResources().getText(R.string.abandoned) + ": " + formattedIntakeDate);
             }
 
             /*
@@ -244,61 +234,51 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             TextView detailsText = (TextView)detail.findViewById(R.id.detailsText);
             detailsText.setText(Html.fromHtml(animalDescription));
-           // String htmlText = "<html><body><big><strong>" + animalName + "\t" + animalID + "</strong></big> </body> </html>";
-
-           // ;
 
 
 
 
-            //  if(animalSpecies.equalsIgnoreCase("Cat")) {
-//                if(animalDeclawed.equalsIgnoreCase("Y") || animalDeclawed.equalsIgnoreCase("Yes") ||
-//                        animalDeclawed.equalsIgnoreCase("Both") || animalDeclawed.equalsIgnoreCase("Front")
-//                        || animalDeclawed.equalsIgnoreCase("Back")) {
-//
-//                    animalDeclawedTV.setText(getResources().getText(R.string.declawed));
-//                }
-//                else if(animalDeclawed.equalsIgnoreCase("N") || animalDeclawed.equalsIgnoreCase("No")) {
-//
-//                    animalDeclawedTV.setText(getResources().getText(R.string.not_declawed));
-//                }
-//                else {
-//                    animalDeclawedTV.setVisibility(View.GONE);
-//
-//                }
-//                Log.d("DECLAWED", animalDeclawed);
-          //  }
 
 //             /*
 //            SETUP FOR DECLAWED
 //             */
             if(animalSpecies.equalsIgnoreCase("Cat")) {
-                if(animalDeclawed.equalsIgnoreCase("Y") || animalDeclawed.equalsIgnoreCase("Yes") ||
-                        animalDeclawed.equalsIgnoreCase("Both") || animalDeclawed.equalsIgnoreCase("Front")
-                        || animalDeclawed.equalsIgnoreCase("Back")) {
+                if(animalDeclawed.equalsIgnoreCase("Y") || animalDeclawed.equalsIgnoreCase("Yes")){
+                    animalDeclawedTV.setText(getResources().getText(R.string.declawed) + ": " + getResources().getText(R.string.yes));
 
-                    animalDeclawedTV.setText(getResources().getText(R.string.declawed));
+                }
+                        else if (animalDeclawed.equalsIgnoreCase("Both")){
+                    animalDeclawedTV.setText(getResources().getText(R.string.declawed) + ": " + getResources().getText(R.string.both));
+                }
+                else if (animalDeclawed.equalsIgnoreCase("Front")){
+                    animalDeclawedTV.setText(getResources().getText(R.string.declawed) + ": " + getResources().getText(R.string.front));
+                }
+                else if(animalDeclawed.equalsIgnoreCase("Back")) {
+                    animalDeclawedTV.setText(getResources().getText(R.string.declawed) + ": " + getResources().getText(R.string.back));
                 }
                 else if(animalDeclawed.equalsIgnoreCase("N") || animalDeclawed.equalsIgnoreCase("No")) {
-
-                    animalDeclawedTV.setText(getResources().getText(R.string.not_declawed));
+                    animalDeclawedTV.setText(getResources().getText(R.string.declawed) + ": " + getResources().getText(R.string.no));
                 }
                 else {
                     animalDeclawedTV.setVisibility(View.GONE);
-
                 }
                 Log.d("DECLAWED", animalDeclawed);
             }
+            else {
+                animalDeclawedTV.setVisibility(View.GONE);
+            }
+
+
             /*
             SETUP FOR STERILIZED
              */
             if(animalSterilized.equalsIgnoreCase("Y")) {
 
-                animalSterilizedTV.setText(getResources().getText(R.string.sterilized));
+                animalSterilizedTV.setText(getResources().getText(R.string.sterilized) + ": " + getResources().getText(R.string.yes));
             }
             else if(animalSterilized.equalsIgnoreCase("N")) {
 
-                animalSterilizedTV.setText(getResources().getText(R.string.not_sterilized));
+                animalSterilizedTV.setText(getResources().getText(R.string.sterilized) + ": " + getResources().getText(R.string.no));
             }
             else {
                 animalSterilizedTV.setVisibility(View.GONE);
@@ -346,18 +326,59 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, detail);
 
-            // ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, imageCounterImages, detail);
             ViewPager imageViewPager = (ViewPager) detail.findViewById(R.id.imageViewPager);
             imageViewPager.setAdapter(imageAdapter);
             imageViewPager.setCurrentItem(0);
 
 
-            final ImageButton btnShare = (ImageButton)detail.findViewById(R.id.btnShare);
+            /*
+            Make text/description bigger if clicked
+             */
+            RelativeLayout detailRelative = (RelativeLayout) detail.findViewById(R.id.detailRelative);
+            detailRelative.setTag(detailImages);
+            detailRelative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout vp = (LinearLayout)v.getTag();
+                    TextView descriptionTV = (TextView)v.findViewById(R.id.detailsText);
+
+                    if(!textClicked) {
+                        vp.setVisibility(LinearLayout.GONE);
+                        descriptionTV.setTextAppearance(getActivity(), android.R.style.TextAppearance_Large);
+                        textClicked = true;
+                    }
+                    else {
+                        textClicked = false;
+                        descriptionTV.setTextAppearance(getActivity(), android.R.style.TextAppearance_DeviceDefault_Medium);
+                        vp.setVisibility(LinearLayout.VISIBLE);
+
+                    }
+                }
+            });
+
+
+            ImageButton btnShare = (ImageButton)detail.findViewById(R.id.btnShare);
+            btnShare.setTag(R.id.animalIDTag, animalID);
+            btnShare.setTag(R.id.animalNameTag, animalID);
+            btnShare.setTag(R.id.animalAgeTag, animalAge);
+            btnShare.setTag(R.id.animalSexTag, animalSex);
+
+            btnShare.setTag(R.id.animalDescriptionTag, animalDescription);
+            btnShare.setTag(R.id.animalURLTag, imagesUrl);
+
+
             btnShare.setOnClickListener(new View.OnClickListener() {
 
 
                 @Override
                 public void onClick(View v) {
+                    String animalIDT = (String)v.getTag(R.id.animalIDTag);
+                    String animalNameT = (String)v.getTag(R.id.animalNameTag);
+                    String animalAgeT = (String)v.getTag(R.id.animalAgeTag);
+                    String animalSexT = (String)v.getTag(R.id.animalSexTag);
+                    String animalDescriptionT = (String)v.getTag(R.id.animalDescriptionTag);
+                    ArrayList<String> animalURLT = (ArrayList<String>)v.getTag(R.id.animalURLTag);
+
                     try{
                         // Construct a ShareIntent
                         Intent shareIntent = new Intent();
@@ -365,27 +386,44 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
                         // type of file to share
                         shareIntent.setType("text/html*");
 
-                    /* Parameter
-                    ImageAge:animal ID.
-                    ImageID:animal ID.
-                    Current_imageURl :URL of the image on the currentView.
-                    Image description:if you have futher information.Put it here
-                    Remove this <a>http://www.w3schools.com</a>":It's  just an example of link.
-
-                     */
                         String html = "<!DOCTYPE html>" +
                                 "<html>" +
                                 "<body>" +
-                                "<p>ImageAge: </p>" + "<p>ImageID: </p>" +
+                               // "<p>" +getResources().getText(R.string.lookAtWhatIFound)+ "</p>" +
+                                "<p>" +getResources().getText(R.string.name)+ ": " +  animalNameT + "</p>" +
+                                "<p>" + getResources().getText(R.string.animalID) +": " + animalIDT + "</p>" +
+                                "<p>" + getResources().getText(R.string.age)+ ": " + animalAgeT + "</p>" +
+                                "<p>" + getResources().getText(R.string.sex) + ": " + animalSexT + "</p>";
 
-                                "<p>Image description:</p>" +
-                                "<p>To see the Animal,follow the link below</p>" +
-                                "<a>http://www.w3schools.com</a>" +
+                        if(!animalDescriptionT.equals("")){
+                            html += "<p>" +  getResources().getText(R.string.description)+": " + animalDescriptionT + "</p>";
+                        }
 
-                                "</body></html>";
+                              if(animalURLT.size() >0){
+                                  //html += "<p>" + getResources().getText(R.string.images)+"</p>";
+                                  html +=  getResources().getText(R.string.images)+ ":\n";
+
+
+                                for(int i=0; i<animalURLT.size(); i++){
+                                  html+= "<p>" + animalURLT.get(i) + "</p>";
+                                }
+                              }
+                        html+="<p></p>";
+                        html+="<p></p>";
+                                html+= "<p>" +"\n\n" + getResources().getText(R.string.spcaMontreal) + "</p>" +
+                                       "<p>" + getResources().getText(R.string.spcaAddress) + "</p>";// +
+
+                                        html+="<br>";
+                                       html += "<p>" + getResources().getText(R.string.spcaPhone) + "</p>" +
+                                        "<p>" +getResources().getText(R.string.spcaEmail) + "</p>";
+
+
+                                     //   "<a>http://www.w3schools.com</a>" +
+
+                               html += "</body></html>";
 
                         // Message subject
-                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Animal sharing");
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.spcaMontreal) + " - " + getResources().getText(R.string.helpMeFindAHome));
                         shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(html));
 
                         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -403,7 +441,6 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             });
 
             ImageButton btnFav = (ImageButton)detail.findViewById(R.id.btnFav);
-            Log.d("ISFAV", ""+dbh.isFavorite(db, animalID));
             boolean isFav;
             if(dbh.isFavorite(db,animalID )){
                 isFav = true;
@@ -418,33 +455,23 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             btnFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // String anID = Integer.toString(c.getInt(C_ANIMAL_ID));
                     ImageButton btnFav=(ImageButton)v;
                     boolean isFav=((Boolean)btnFav.getTag(R.id.favTag)).booleanValue();
                     String anID = (String)btnFav.getTag(R.id.anIDTag);
 
                     if(!isFav) {
-                        Log.d("FAV", "88888888888 FAV ACTIVATED");
-                        //Toast.makeText(getActivity(), "FAVORITE ACTIVATED", Toast.LENGTH_SHORT).show();
                         btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
                         dbh.addToFavoriteList(db, anID);
-                        Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
-
+                       // Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
                         Log.d("ISFAV", ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID);
-
                         isFav = true;
                     }
                     else{
-                        Log.d("FAV", "88888888888 FAV DEACTIVATED");
-                       // Toast.makeText(getActivity(), "FAVORITE DEACTIVATED", Toast.LENGTH_SHORT).show();
                         btnFav.setImageResource(R.drawable.ic_favorite_outline_black_36dp);
                         isFav = false;
                         dbh.removeFromFavoriteList(db, anID);
-                        Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
-
+                        //Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
                         Log.d("ISFAV", ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID);
-
-
                     }
                     btnFav.setTag(R.id.favTag, Boolean.valueOf(isFav));
                 }
@@ -497,17 +524,12 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         }
         @Override
         public Object instantiateItem(View collection, int position) {
-
-
-
             LinearLayout detail = (LinearLayout) inflater.inflate(R.layout.images /* date_page2 */, null);
-
             detail.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     if(!clicked) {
-                        //Log.d("BLAH", "clicklistener99999999999999999999");
                         detailsLayout.setVisibility(View.GONE);
                         clicked = true;
                     }
@@ -521,7 +543,6 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             });
             // Log.d("pagerAdapter", "after linearlayout inflate");
             // Button button = (Button)detail.findViewById(R.id.button);
-            //button.setText(blah + "29038572364578236945234");
 
 
 //            c = dbh.getAnimalList(db);
