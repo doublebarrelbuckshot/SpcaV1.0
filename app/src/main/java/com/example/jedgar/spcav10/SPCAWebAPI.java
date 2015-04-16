@@ -70,27 +70,27 @@ public class SPCAWebAPI {
         String url = "http://www.petango.com/webservices/wsadoption.asmx";
         String soapEnvelope = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
                 "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-                "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-                "<soap:Body>" +
-                "<AdoptableSearch xmlns=\"http://www.petango.com/\">" +
-                "<authkey>iiwolk70d54va4bxa5qcnokemt6utc7oplyys0ijld6svm2vgu</authkey>" +
-                "<speciesID></speciesID>" +
-                "<sex></sex>" +
-                "<ageGroup>all</ageGroup>" +
-                "<location></location>" +
-                "<site></site>" +
-                "<onHold></onHold>" +
-                "<orderBy>Name</orderBy>" +
-                "<primaryBreed></primaryBreed>" +
-                "<secondaryBreed></secondaryBreed>" +
-                "<specialNeeds></specialNeeds>" +
-                "<noDogs></noDogs>" +
-                "<noCats></noCats>" +
-                "<noKids></noKids>" +
-                "<stageID></stageID>" +
-                "</AdoptableSearch>" +
-                "</soap:Body>" +
+                               "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
+                               "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                  "<soap:Body>" +
+                    "<AdoptableSearch xmlns=\"http://www.petango.com/\">" +
+                      "<authkey>iiwolk70d54va4bxa5qcnokemt6utc7oplyys0ijld6svm2vgu</authkey>" +
+                      "<speciesID></speciesID>" +
+                      "<sex></sex>" +
+                      "<ageGroup>all</ageGroup>" +
+                      "<location></location>" +
+                      "<site></site>" +
+                      "<onHold></onHold>" +
+                      "<orderBy>ID</orderBy>" +
+                      "<primaryBreed></primaryBreed>" +
+                      "<secondaryBreed></secondaryBreed>" +
+                      "<specialNeeds></specialNeeds>" +
+                      "<noDogs></noDogs>" +
+                      "<noCats></noCats>" +
+                      "<noKids></noKids>" +
+                      "<stageID></stageID>" +
+                    "</AdoptableSearch>" +
+                  "</soap:Body>" +
                 "</soap:Envelope>";
 
         DefaultHttpClient client = new DefaultHttpClient();
@@ -110,13 +110,13 @@ public class SPCAWebAPI {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(ent.getContent());
         Node root = doc.getDocumentElement();
-        Log.d("WEB: ", "root name:" + root.getNodeName());
+        //Log.d("WEB: ", "root name:" + root.getNodeName());
         Node node = root.getFirstChild();
-        Log.d("WEB: ", "node name:" + node.getNodeName());
+        //Log.d("WEB: ", "node name:" + node.getNodeName());
         node = node.getFirstChild();
-        Log.d("WEB: ", "node child name:" + node.getNodeName());
+        //Log.d("WEB: ", "node child name:" + node.getNodeName());
         node = node.getFirstChild();
-        Log.d("WEB: ", "node grandchild name:" + node.getNodeName());
+        //Log.d("WEB: ", "node grandchild name:" + node.getNodeName());
         int i = 0;
         for(Node animal_node = node.getFirstChild();
             animal_node != null;
@@ -134,6 +134,7 @@ public class SPCAWebAPI {
                 //Log.d("WEB: ", "temp name:" + temp.getNodeName());
                 if (temp.getNodeName().compareTo(ID_ID) == 0) {
                     animal.id = temp.getTextContent();
+                    Log.d("WEB: ", "ID:" + animal.id);
                 }
                 else if (temp.getNodeName().compareTo(ID_NAME) == 0) {
                     animal.name = temp.getTextContent();
@@ -262,15 +263,15 @@ public class SPCAWebAPI {
                     }
                 } else if (nodeName.compareTo(ID_PHOTO1) == 0) {
                     String text  = temp.getTextContent();
-                    Log.d("WEB: ", animal.id + ":" + ID_PHOTO1 + ":" + text);
+                    //Log.d("WEB: ", animal.id + ":" + ID_PHOTO1 + ":" + text);
                     animal.photo1 = temp.getTextContent();
                 } else if (nodeName.compareTo(ID_PHOTO2) == 0) {
                     String text  = temp.getTextContent();
-                    Log.d("WEB: ", animal.id + ":" + ID_PHOTO2 + ":" + text);
+                    //Log.d("WEB: ", animal.id + ":" + ID_PHOTO2 + ":" + text);
                     animal.photo2 = temp.getTextContent();
                 } else if (nodeName.compareTo(ID_PHOTO3) == 0) {
                     String text  = temp.getTextContent();
-                    Log.d("WEB: ", animal.id + ":" + ID_PHOTO3 + ":" + text);
+                    //Log.d("WEB: ", animal.id + ":" + ID_PHOTO3 + ":" + text);
                     animal.photo3 = temp.getTextContent();
                 }
             }
@@ -280,6 +281,7 @@ public class SPCAWebAPI {
         return animal;
     }
 
+    /*
     public void downloadFile(String url, String filename) throws Exception {
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet http = new HttpGet(url);
@@ -299,5 +301,5 @@ public class SPCAWebAPI {
         inputStream.close();
         outputStream.close();
     }
-
+*/
 }
