@@ -33,27 +33,10 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     DBHelper dbh;
     SQLiteDatabase db;
     SPCAWebAPI web;
-    static final int downloadRangeSizePerThread = 1;
     ImageView img;
     static private boolean toggle = false;
     int action = 0;
 
-    // Indexes des champs dans les cursors
-    // si c'est pas les bons indexes, corriger stp.
-    public static final int C_ANIMAL_ID = 0;
-    public static final int C_ANIMAL_SPECIES = 1;
-    public static final int C_ANIMAL_NAME = 2;
-    public static final int C_ANIMAL_AGE = 3;
-    public static final int C_ANIMAL_PRIMARY_BREED = 4;
-    public static final int C_ANIMAL_SECONDARY_BREED = 5;
-    public static final int C_ANIMAL_SEX = 6;
-    public static final int C_ANIMAL_SIZE = 7;
-    public static final int C_ANIMAL_STERILE = 8;
-    public static final int C_ANIMAL_INTAKE_DATE = 9;
-    public static final int C_ANIMAL_PRIMARY_COLOR = 10;
-    public static final int C_ANIMAL_SECONDARY_COLOR = 11;
-    public static final int C_ANIMAL_DECLAWED = 12;
-    public static final int C_ANIMAL_DESCRIPTION = 13;
 
 
     public interface OnSearchListener {
@@ -66,13 +49,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.search_button){
-
             ((MainActivity)MainPageFragment.this.getActivity()).doSearch();
-
         }
-
-
-
     }
 
     ImageButton catButton;
@@ -185,53 +163,42 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         progressText = (TextView)rootView.findViewById(R.id.progressText);
         progressText.setVisibility(View.GONE);
 
-
-        if(MainActivity.firstRun){
-            getData();
-            MainActivity.firstRun = false;
-        }
-
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
         Cursor c = dbh.getAnimalList(db);
 
+        getData();
 
         return rootView;
     }
 
     public void getData(){//View v) {
-
-        /* this was all for testing */
-        if (toggle == false) {
+        Log.d("D", "in getData()");
+        if (dbh.appFirstTime(db)) {
             Toast.makeText(getActivity(), "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
-            //new DownloadWebTask().execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
-
-            toggle = true;
+            try {
+                new DownloadAdoptableSearch(progressBar, progressText, searchButton, getActivity()).execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
+            } catch (Exception e) {
+                Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
+                return;
+            }
+            dbh.appFirstTimeFalse(db);
         }
+        /*
         else {
-            // btn.setEnabled(false);
-            toggle = false;
-            if (action == 0) {
-                Log.d("onClick:", "action == " + action);
-                dbh.addToFavoriteList(db, "25289349");
-                dbh.addToFavoriteList(db, "24296807");
-                dbh.addToFavoriteList(db, "25020484");
+            //Toast.makeText(getActivity(), "Chargement des favoris", Toast.LENGTH_SHORT).show();
+            Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
+            try {
+                Log.d("DownloadAdoptableSearch", "About to call trigger AdopdatableSearch in update mode.");
+                new DownloadAdoptableSearch(progressBar, progressText, searchButton, getActivity(), animalList).execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
+            } catch (Exception e) {
+                Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
+                return;
             }
-            else if (action == 1) {
-                Log.d("onClick:", "action == " + action);
-                dbh.removeFromFavoriteList(db, "24296807");
-            }
-            else if (action == 2) {
-                Log.d("onClick:", "action == " + action);
-                dbh.removeAllFromFavoriteList(db);
-                action = 0;
-            }
-            action++;
-            Toast.makeText(getActivity(), "Chargement des favoris", Toast.LENGTH_SHORT).show();
-            Cursor c = dbh.getFavoriteList(db);
-            //adapter.changeCursor(c);
+
+            //adapter.changeCursor(animalList);
             //btn.setEnabled(true);
-        }
+        }*/
     }
 
 
@@ -242,6 +209,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         ((MainActivity)activity).onSectionAttached(1);
     }
 
+    /*
     public class DownloadWebTask extends AsyncTask<Void, Void, Void> {
 
         public DownloadWebTask(){
@@ -344,10 +312,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPreExecute() {
             // btn.setEnabled(false);
-            /* for testing
-            if (action == 0) {
-                dbh.deleteAll(db);
-            }*/
             super.onPreExecute();
         }
 
@@ -358,5 +322,5 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
             //  currentAct.loadMainActivity();
         }
-    }
+    }*/
 }
