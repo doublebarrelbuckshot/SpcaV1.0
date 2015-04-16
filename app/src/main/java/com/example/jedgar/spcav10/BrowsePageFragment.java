@@ -29,6 +29,10 @@ import com.squareup.picasso.Picasso;
  * Use the {@link BrowsePageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+
+
+
 public class BrowsePageFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +63,7 @@ public class BrowsePageFragment extends Fragment {
 
      * @return A new instance of fragment BrowsePageFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static BrowsePageFragment newInstance() {
         BrowsePageFragment fragment = new BrowsePageFragment();
@@ -148,6 +153,7 @@ public class BrowsePageFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
@@ -175,8 +181,7 @@ public class BrowsePageFragment extends Fragment {
 
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            LinearLayout vi = (LinearLayout) inflater.inflate(R.layout.browse_row /* date_page2 */, null);
-
+            LinearLayout vi = (LinearLayout) inflater.inflate(R.layout.browse_row, null);
             c.moveToPosition(position);
             String t = Integer.toString(c.getInt(C_ANIMAL_ID));
             String d = c.getString(C_ANIMAL_NAME);
