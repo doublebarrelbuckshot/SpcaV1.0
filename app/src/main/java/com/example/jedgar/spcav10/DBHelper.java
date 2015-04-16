@@ -14,7 +14,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "SPCA.DB";
-    static final int DB_VERSION = 17;
+    static final int DB_VERSION = 21;
 
     // table AdoptableSearch Results
     static final String TABLE_ANIMAL_MATCHED = "animalMatched";
@@ -41,6 +41,23 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String T_ANIMAL_PHOTO3 = "photo3";
     static final String TABLE_ANIMAL_SPECIES_IDX = "speciesIdx";
 
+    // Indexes des champs dans les cursors
+    // si c'est pas les bons indexes, corriger stp.
+    public static final int C_ANIMAL_ID = 0;
+    public static final int C_ANIMAL_SPECIES = 1;
+    public static final int C_ANIMAL_NAME = 2;
+    public static final int C_ANIMAL_AGE = 3;
+    public static final int C_ANIMAL_PRIMARY_BREED = 4;
+    public static final int C_ANIMAL_SECONDARY_BREED = 5;
+    public static final int C_ANIMAL_SEX = 6;
+    public static final int C_ANIMAL_SIZE = 7;
+    public static final int C_ANIMAL_STERILE = 8;
+    public static final int C_ANIMAL_INTAKE_DATE = 9;
+    public static final int C_ANIMAL_PRIMARY_COLOR = 10;
+    public static final int C_ANIMAL_SECONDARY_COLOR = 11;
+    public static final int C_ANIMAL_DECLAWED = 12;
+    public static final int C_ANIMAL_DESCRIPTION = 13;
+
 
     // table photos
     static final String TABLE_ANIMAL_PHOTOS = "animalPhotos";
@@ -65,7 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //table preferences
     static final String TABLE_PREFERENCES = "preferences";
     static final String T_PREFERENCES_ID = "_id";
-    static final String T_PREFERENCES_STATE = "state";
+    static final String T_PREFERENCES_APP_STATE = "app_state";
     static final String T_PREFERENCES_NOTICE_ENABLED = "notice_enabled";
     static final String T_PREFERENCES_NOTICE_FREQUENCY = "notice_frequency";
     static final String T_PREFERENCES_DOWNLOAD_IMAGE = "download_image";
@@ -73,6 +90,8 @@ public class DBHelper extends SQLiteOpenHelper {
     //table favorites
     static final String TABLE_FAVORITE_ANIMALS = "favorites";
     static final String T_FAVORITE_ANIMALS_ANIMAL_ID = "_id";
+
+    public static final int C_PREFERENCES_APP_STATE = 0;
 
     public DBHelper(Context context)
     {
@@ -131,13 +150,22 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("DB", TABLE_ADOPTABLE_SEARCH + " table created");
 
         sql = "CREATE TABLE " + TABLE_PREFERENCES + "(" +
-                T_PREFERENCES_STATE            + " int  CHECK(state IN ('New','Default','Set'))," +
-                T_PREFERENCES_NOTICE_ENABLED   + " char CHECK(notice_enabled IN('Y','N'))," +
-                T_PREFERENCES_NOTICE_FREQUENCY + " int  CHECK(notice_frequency IN (1,60,1440,10080))," +
-                T_PREFERENCES_DOWNLOAD_IMAGE   + " text check (download_image IN ('All','First Only', 'None'))" +
+                T_PREFERENCES_APP_STATE        + " int  CHECK(" + T_PREFERENCES_APP_STATE + " IN ('New','InitialLoadDone'))," +
+                T_PREFERENCES_NOTICE_ENABLED   + " char CHECK(" + T_PREFERENCES_NOTICE_ENABLED + " IN('Y','N'))," +
+                T_PREFERENCES_NOTICE_FREQUENCY + " int  CHECK(" + T_PREFERENCES_NOTICE_FREQUENCY + " IN (1,60,1440,10080))" +
                 ");";
         db.execSQL(sql);
         Log.d("DB", TABLE_PREFERENCES + " table created");
+        ContentValues cv = new ContentValues();
+        cv.clear();
+        cv.put(DBHelper.T_PREFERENCES_APP_STATE, "New");
+        cv.put(DBHelper.T_PREFERENCES_NOTICE_ENABLED, "Y");
+        cv.put(DBHelper.T_PREFERENCES_NOTICE_FREQUENCY, 1440);
+        try {
+            db.insertOrThrow(DBHelper.TABLE_PREFERENCES, null, cv);
+        } catch (SQLException e) {
+            Log.d("DB","Default prefs init failed.  Reason:" + e.getMessage());
+        }
 
         sql = "CREATE TABLE " + TABLE_FAVORITE_ANIMALS + "(" +
                 T_FAVORITE_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ")" +
@@ -161,12 +189,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAnimalList(SQLiteDatabase db){
         String sql = "select * from " + TABLE_ANIMAL +
-                " order by " + T_ANIMAL_NAME + " asc;";
+                " order by " + T_ANIMAL_ID + " desc;";
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
 
-    public void addAnimal(SQLiteDatabase db, com.example.jedgar.spcav10.Animal animal) {
+    public Cursor getAnimalListOrdered(SQLiteDatabase db, String orderClause){
+        String sql = "select * from " + TABLE_ANIMAL +
+                " order by " + orderClause + ";";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public void addAnimal(SQLiteDatabase db, Animal animal) {
         ContentValues cv = new ContentValues();
         cv.clear();
         cv.put(DBHelper.T_ANIMAL_ID, animal.id);
@@ -262,6 +297,33 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean appFirstTime(SQLiteDatabase db) {
+        String sql = "SELECT " + T_PREFERENCES_APP_STATE + " FROM " + TABLE_PREFERENCES + ";";
+        Cursor c = db.rawQuery(sql, null);
+        c.moveToFirst();
+        String app_state = c.getString(C_PREFERENCES_APP_STATE);
+        if (app_state.equals("New"))
+            return true;
+        return false;
+    }
+
+    public void appFirstTimeFalse(SQLiteDatabase db) {
+        String sql = "UPDATE "  + TABLE_PREFERENCES +  " SET " + T_PREFERENCES_APP_STATE + "=" + "'InitialLoadDone';";
+        try {
+            db.execSQL(sql);
+        } catch (SQLException e) {
+            Log.d("DB","UPDATE appFirstTimeFalse failed.  Reason:" + e.getMessage());
+        }
+    }
+
+    public void deleteAnimalList(SQLiteDatabase db, String where) {
+        try {
+            db.delete(TABLE_ANIMAL, where, null);
+        } catch (SQLException e) {
+            Log.d("DB","deleteAnimalList failed.  Reason:" + e.getMessage());
+        }
+    }
+
     public void deleteAll(SQLiteDatabase db) {
         String sql = "DELETE FROM " + TABLE_ANIMAL + ";";
         Log.d("DB", sql);
@@ -276,75 +338,3 @@ public class DBHelper extends SQLiteOpenHelper {
         //db.rawQuery(sql, null);
     }
 }
-
-/*
-public class SearchCriteria {
-    public static final int SPECIES_DOG = 1;         // 0001
-    public static final int SPECIES_CAT = 2;         // 0010
-    public static final int SPECIES_RABBIT = 4;      // 0100
-    public static final int SPECIES_SMALLFURRY = 8;  // 1000
-    public static final int SPECIES_ALL  = 15;       // 1111
-
-    public static final int SEX_MALE  = 1;       // 1111
-    public static final int SEX_FEMALE= 2;       // 1111
-
-    public static final int BOOL_YES  = 1;       // 1111
-    public static final int BOOL_NO   = 2;       // 1111
-
-    int species;        //('Dog = 1', 'Cat = 2', 'Rabbit = 4', 'Small&Furry = 8')
-    int ageGroup;       //('Adult = 1', 'Young = 2', 'Baby = 3')
-    int sex;            // ('Male = 1','Female = 2')
-    int sterile;        // ('Y = 1','N = 2')
-    int declawed;       //('Y = 1','N = 2')
-
-    SearchCriteria() {
-        species = 0;
-        ageGroup = 0;
-        sex = 0;
-        sterile = 0;
-        declawed = 0;
-    }
-
-    void searchDeclawed() {
-        declawed = (declawed & BOOL_YES) ^ BOOL_YES;
-    }
-    void searchNonDeclawed() {
-        declawed = (declawed & BOOL_NO) ^ BOOL_NO;
-    }
-    void searchSteriles() {
-        sterile = (sterile & BOOL_YES) ^ BOOL_YES;
-    }
-    void searchNonSteriles() {
-        sterile = (sterile & BOOL_NO) ^ BOOL_NO;
-    }
-    void searchMales() {
-        sex = (sex & SEX_MALE) ^ SEX_MALE;
-    }
-    void searchFemales() {
-        sex = (sex & SEX_FEMALE) ^ SEX_FEMALE;
-    }
-    void searchDogs() {
-        species = (species & SPECIES_DOG) ^ SPECIES_DOG;
-    }
-    void searchCats() {
-        species = (species & SPECIES_CAT) ^ SPECIES_CAT;
-    }
-    void searchRabbits() {
-        species = (species & SPECIES_RABBIT) ^ SPECIES_RABBIT;
-    }
-    void searchSmallFurry() {
-        species = (species & SPECIES_SMALLFURRY) ^ SPECIES_SMALLFURRY;
-    }
-
-    void setSearchCriteria() {
-        if (species == 0xFF)
-            species = 0;
-        if (sex == 0x03)
-            sex = 0;
-        if (sterile == 0x03)
-            sterile = 0;
-        if (declawed == 0x03)
-            declawed = 0;
-    }
-};
-*/
