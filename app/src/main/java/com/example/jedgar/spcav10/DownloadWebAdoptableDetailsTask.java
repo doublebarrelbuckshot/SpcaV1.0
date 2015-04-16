@@ -14,12 +14,10 @@ public class DownloadWebAdoptableDetailsTask implements Runnable {
     public SPCAWebAPI web;
     public int range_from = -1;
     public int range_to = -1;
-    String localStorage;
     SQLiteDatabase db;
     DBHelper dbh;
 
     public DownloadWebAdoptableDetailsTask(SPCAWebAPI web_inst,
-                                           String localStoragePath,
                                            DBHelper dbh_param,
                                            SQLiteDatabase db_param,
                                            int from,
@@ -28,20 +26,18 @@ public class DownloadWebAdoptableDetailsTask implements Runnable {
         web = web_inst;
         range_from = from;
         range_to = to;
-        localStorage = localStoragePath;
         db = db_param;
         dbh = dbh_param;
-        localStorage = localStoragePath;
     }
 
     @Override
     public void run() {
 
-        Log.d("DownloadWebAnimalTask:", "Processing list from " + range_from + " to " + range_to);
+        //Log.d("DownloadWebAnimalTask:", "Processing list from " + range_from + " to " + range_to);
         ContentValues cv = new ContentValues();
         for (int i = range_from; i < range_to; i++) {
 
-            Log.d("DownloadWebAnimalTask:", "Processing animal:" + web.animals.get(i).id);
+            //Log.d("DownloadWebAnimalTask:", "Processing animal:" + web.animals.get(i).id);
             Animal a;
             try {
                 a = web.callAdoptableDetails(i);
@@ -53,6 +49,6 @@ public class DownloadWebAdoptableDetailsTask implements Runnable {
 
             dbh.addAnimal(db, a);
         }
-        Log.d("DownloadWebAnimalTask", "Done with range from " + range_from + " to " + range_to);
+        //Log.d("DownloadWebAnimalTask", "Done with range from " + range_from + " to " + range_to);
     }
 }
