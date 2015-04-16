@@ -16,9 +16,10 @@ public class SearchPageFragment extends Fragment implements View.OnClickListener
     ImageButton dogButton;
     ImageButton rabbitButton;
     ImageButton otherButton;
+    static SearchCriteria sc;
 
     public static SearchPageFragment newInstance(){
-
+        sc = new SearchCriteria();
         SearchPageFragment fragment = new SearchPageFragment();
         return fragment;
     }
@@ -33,11 +34,14 @@ public class SearchPageFragment extends Fragment implements View.OnClickListener
         catButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sc.searchCats();
                 if(!v.findViewById(R.id.cat_button).isSelected()){
                     v.findViewById(R.id.cat_button).setSelected(true);
-                    Toast.makeText(SearchPageFragment.this.getActivity(), "cat selected!", Toast.LENGTH_SHORT).show();}
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "cats selected!", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     v.findViewById(R.id.cat_button).setSelected(false);
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "cats deselected!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -46,11 +50,14 @@ public class SearchPageFragment extends Fragment implements View.OnClickListener
         dogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sc.searchDogs();
                 if(!v.findViewById(R.id.dog_button).isSelected()){
                     v.findViewById(R.id.dog_button).setSelected(true);
-                    Toast.makeText(SearchPageFragment.this.getActivity(), "dog selected!", Toast.LENGTH_SHORT).show();}
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "dogs selected!", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     v.findViewById(R.id.dog_button).setSelected(false);
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "dogs deselected!", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -60,11 +67,14 @@ public class SearchPageFragment extends Fragment implements View.OnClickListener
         rabbitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sc.searchRabbits();
                 if(!v.findViewById(R.id.rabbit_button).isSelected()){
                     v.findViewById(R.id.rabbit_button).setSelected(true);
-                    Toast.makeText(SearchPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();}
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "rabbits selected!", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     v.findViewById(R.id.rabbit_button).setSelected(false);
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "rabbits deselected!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -73,11 +83,14 @@ public class SearchPageFragment extends Fragment implements View.OnClickListener
         otherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sc.searchSmallFurry();
                 if(!v.findViewById(R.id.other_button).isSelected()){
                     v.findViewById(R.id.other_button).setSelected(true);
-                    Toast.makeText(SearchPageFragment.this.getActivity(), "others selected!", Toast.LENGTH_SHORT).show();}
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "others selected!", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     v.findViewById(R.id.other_button).setSelected(false);
+                    Toast.makeText(SearchPageFragment.this.getActivity(), "others deselected!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
