@@ -53,6 +53,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     //you cant have multiple buttons selected at the same time
     @Override
     public void onClick(View v) {
+        sc.saveSearchCriteria(db);
         ((MainActivity)MainPageFragment.this.getActivity()).doSearch(sc);
     }
 
@@ -191,14 +192,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 sc.searchMales();
-                /*
-                if(!v.findViewById(R.id.male_checkBox).isSelected()){
-                    v.findViewById(R.id.male_checkBox).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "males selected!", Toast.LENGTH_SHORT).show();}
-                else{
-                    v.findViewById(R.id.male_checkBox).setSelected(false);
-                }
-                */
             }
         });
 
@@ -212,15 +205,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 sc.searchFemales();
-                /*
-                if(!v.findViewById(R.id.female_checkBox).){
-                    v.findViewById(R.id.female_checkBox).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "females selected!", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    v.findViewById(R.id.female_checkBox).setSelected(false);
-                }
-                */
             }
         });
 
