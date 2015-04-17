@@ -14,7 +14,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "SPCA.DB";
-    static final int DB_VERSION = 21;
+    static final int DB_VERSION = 23;
 
     // table AdoptableSearch Results
     static final String TABLE_ANIMAL_MATCHED = "animalMatched";
@@ -57,6 +57,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int C_ANIMAL_SECONDARY_COLOR = 11;
     public static final int C_ANIMAL_DECLAWED = 12;
     public static final int C_ANIMAL_DESCRIPTION = 13;
+    public static final int C_ANIMAL_PHOTO1 = 14;
+    public static final int C_ANIMAL_PHOTO2 = 15;
+    public static final int C_ANIMAL_PHOTO3 = 16;
 
 
     // table photos
@@ -67,10 +70,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // table search params
     static final String TABLE_ADOPTABLE_SEARCH = "adoptableSearchParams";
-    static final String T_ADOPTABLE_SEARCH_ID = "_id";
+    //static final String T_ADOPTABLE_SEARCH_ID = "_id";
     static final String T_ADOPTABLE_SEARCH_SPECIES = "species";
     static final String T_ADOPTABLE_SEARCH_NAME = "name";
     static final String T_ADOPTABLE_SEARCH_AGE = "age";
+    static final String T_ADOPTABLE_SEARCH_AGE_MIN = "age_min";
+    static final String T_ADOPTABLE_SEARCH_AGE_MAX = "age_max";
     static final String T_ADOPTABLE_SEARCH_BREED = "breed";
     static final String T_ADOPTABLE_SEARCH_SEX = "sex";
     static final String T_ADOPTABLE_SEARCH_SIZE = "size";
@@ -78,6 +83,20 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String T_ADOPTABLE_SEARCH_STERILE = "sterile";
     static final String T_ADOPTABLE_SEARCH_INTAKE_DATE = "intake_date";
     static final String T_ADOPTABLE_SEARCH_DECLAWED  = "declawed";
+
+    //static final int C_ADOPTABLE_SEARCH_ID = "_id";
+    static final int C_ADOPTABLE_SEARCH_SPECIES = 0;
+    //static final int C_ADOPTABLE_SEARCH_NAME = "name";
+    //static final int C_ADOPTABLE_SEARCH_AGE = "age";
+    static final int C_ADOPTABLE_SEARCH_AGE_MIN = 1;
+    static final int C_ADOPTABLE_SEARCH_AGE_MAX = 2;
+    //static final int C_ADOPTABLE_SEARCH_BREED = "breed";
+    static final int  C_ADOPTABLE_SEARCH_SEX = 3;
+    //static final int C_ADOPTABLE_SEARCH_SIZE = "size";
+    //static final int C_ADOPTABLE_SEARCH_COLOR = "color";
+    //static final int C_ADOPTABLE_SEARCH_STERILE = "sterile";
+    //static final int C_ADOPTABLE_SEARCH_INTAKE_DATE = "intake_date";
+    //static final int C_ADOPTABLE_SEARCH_DECLAWED  = "declawed";
 
     //table preferences
     static final String TABLE_PREFERENCES = "preferences";
@@ -141,10 +160,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE " + TABLE_ADOPTABLE_SEARCH + "(" +
                 T_ADOPTABLE_SEARCH_SPECIES     + " INT    NOT NULL," +
-                T_ADOPTABLE_SEARCH_AGE         + " INT    NOT NULL," +
-                T_ADOPTABLE_SEARCH_SEX         + " INT    NOT NULL," +
-                T_ADOPTABLE_SEARCH_STERILE     + " INT    NOT NULL," +
-                T_ADOPTABLE_SEARCH_DECLAWED    + " INT    NOT NULL" +
+                //T_ADOPTABLE_SEARCH_AGE         + " INT    NOT NULL," +
+                T_ADOPTABLE_SEARCH_AGE_MIN     + " INT    NOT NULL," +
+                T_ADOPTABLE_SEARCH_AGE_MAX     + " INT    NOT NULL," +
+                T_ADOPTABLE_SEARCH_SEX         + " INT    NOT NULL" +
+                //T_ADOPTABLE_SEARCH_STERILE     + " INT    NOT NULL," +
+                //T_ADOPTABLE_SEARCH_DECLAWED    + " INT    NOT NULL" +
                 ");";
         db.execSQL(sql);
         Log.d("DB", TABLE_ADOPTABLE_SEARCH + " table created");
@@ -192,6 +213,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 " order by " + T_ANIMAL_ID + " desc;";
         Cursor c = db.rawQuery(sql, null);
         return c;
+    }
+
+    public Cursor getCursorForSelect(SQLiteDatabase db, String sql) {
+        return db.rawQuery(sql, null);
     }
 
     public Cursor getAnimalListOrdered(SQLiteDatabase db, String orderClause){
