@@ -70,7 +70,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         if (!loaded) {
-            dbh = new DBHelper(getActivity());
+            dbh = DBHelper.getInstance(getActivity());
             db = dbh.getWritableDatabase();
             sc = new SearchCriteria(db);
             loaded = true;

@@ -31,7 +31,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                                    TextView pProgressText,
                                    Button psearchButton,
                                    Context activity){
-        dbh = new DBHelper(activity);
+        dbh = DBHelper.getInstance(activity);
         progressBar = pProgressBar;
         progressText = pProgressText;
         searchButton = psearchButton;
@@ -44,7 +44,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                                    Button psearchButton,
                                    Context activity,
                                    Cursor panimalList){
-        dbh = new DBHelper(activity);
+        dbh = DBHelper.getInstance(activity);
         progressBar = pProgressBar;
         progressText = pProgressText;
         searchButton = psearchButton;

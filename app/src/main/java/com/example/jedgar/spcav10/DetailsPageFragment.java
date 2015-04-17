@@ -76,7 +76,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         // View rootView = inflater.inflate(R.layout.details_page_fragment, container, false);
         View rootView = inflater.inflate(R.layout.details, container, false);
 
-        dbh = new DBHelper(getActivity());
+        dbh = DBHelper.getInstance(getActivity());
         db = dbh.getWritableDatabase();
 
         /*

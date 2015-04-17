@@ -77,7 +77,8 @@ public class BrowsePageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbh = new DBHelper(getActivity());
+        //dbh = new DBHelper(getActivity());
+        dbh = DBHelper.getInstance(getActivity());
         db = dbh.getWritableDatabase();
     }
 
