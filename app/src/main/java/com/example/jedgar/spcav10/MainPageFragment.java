@@ -184,34 +184,43 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
         maleCheckBox = (CheckBox)rootView.findViewById(R.id.male_checkBox);
         if ((sc.sex & SearchCriteria.SEX_MALE) == SearchCriteria.SEX_MALE)
-            maleCheckBox.setSelected(true);
+            maleCheckBox.setChecked(true);
+        else
+            maleCheckBox.setChecked(false);
         maleCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sc.searchMales();
+                /*
                 if(!v.findViewById(R.id.male_checkBox).isSelected()){
                     v.findViewById(R.id.male_checkBox).setSelected(true);
                     Toast.makeText(MainPageFragment.this.getActivity(), "males selected!", Toast.LENGTH_SHORT).show();}
                 else{
                     v.findViewById(R.id.male_checkBox).setSelected(false);
                 }
+                */
             }
         });
 
         femaleCheckBox = (CheckBox)rootView.findViewById(R.id.female_checkBox);
-        if ((sc.sex & SearchCriteria.SEX_FEMALE) == SearchCriteria.SEX_FEMALE)
-            femaleCheckBox.setSelected(true);
+        if ((sc.sex & SearchCriteria.SEX_FEMALE) == SearchCriteria.SEX_FEMALE) {
+            femaleCheckBox.setChecked(true);
+        }else {
+            femaleCheckBox.setChecked(false);
+        }
         femaleCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sc.searchFemales();
-                if(!v.findViewById(R.id.female_checkBox).isSelected()){
+                /*
+                if(!v.findViewById(R.id.female_checkBox).){
                     v.findViewById(R.id.female_checkBox).setSelected(true);
                     Toast.makeText(MainPageFragment.this.getActivity(), "females selected!", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     v.findViewById(R.id.female_checkBox).setSelected(false);
                 }
+                */
             }
         });
 

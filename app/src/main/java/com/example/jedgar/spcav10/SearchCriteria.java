@@ -34,6 +34,10 @@ public class SearchCriteria implements Parcelable {
     int ageMin;
     int ageMax;
 
+    public void dump() {
+        Log.d("SC", "species:" + species + " ageMin:" + ageMin + " ageMax:" + ageMax + " sex:" + sex);
+    }
+
     public SearchCriteria() {
         zeroAll();
     }
@@ -57,6 +61,8 @@ public class SearchCriteria implements Parcelable {
             ageMax = c.getInt(DBHelper.C_ADOPTABLE_SEARCH_AGE_MAX);
             sex = c.getInt(DBHelper.C_ADOPTABLE_SEARCH_SEX);
         }
+        Log.d("SC", "SearchCriteria(SQLiteDatabase db)");
+        dump();
     }
 
     void searchDeclawed() {
@@ -140,7 +146,9 @@ public class SearchCriteria implements Parcelable {
 
     String getSelectCommand() {
 
+        dump();
         int reqAgeMax;
+
         if (ageMax == 0)
             reqAgeMax = 1000;
         else
@@ -151,7 +159,6 @@ public class SearchCriteria implements Parcelable {
 
         boolean and_or = false;
 
-        Log.d("SearchCriteria", "" + species);
         if (species != 0 && species != SPECIES_ALL) {
             where += " AND (";
             if ((species & SPECIES_DOG) == SPECIES_DOG) {
@@ -189,6 +196,8 @@ public class SearchCriteria implements Parcelable {
                 where += " " + DBHelper.T_ADOPTABLE_SEARCH_SEX + "='Male'";
         }
 
+
+        Log.d("SC", "SELECT * FROM " + DBHelper.TABLE_ANIMAL + where + ";");
         return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + where + ";";
     }
 
