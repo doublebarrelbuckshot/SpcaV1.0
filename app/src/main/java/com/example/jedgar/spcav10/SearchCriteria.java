@@ -1,9 +1,18 @@
 package com.example.jedgar.spcav10;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 /**
  * Created by pascal on 15/04/15.
  */
-public class SearchCriteria {
+public class SearchCriteria implements Parcelable {
     public static final int SPECIES_DOG = 1;         // 0001
     public static final int SPECIES_CAT = 2;         // 0010
     public static final int SPECIES_RABBIT = 4;      // 0100
@@ -12,6 +21,7 @@ public class SearchCriteria {
 
     public static final int SEX_MALE  = 1;       // 1111
     public static final int SEX_FEMALE= 2;       // 1111
+    public static final int SEX_ALL   = 3;
 
     public static final int BOOL_YES  = 1;       // 1111
     public static final int BOOL_NO   = 2;       // 1111
@@ -21,6 +31,8 @@ public class SearchCriteria {
     int sex;            // ('Male = 1','Female = 2')
     int sterile;        // ('Y = 1','N = 2')
     int declawed;       //('Y = 1','N = 2')
+    int ageMin;
+    int ageMax;
 
     SearchCriteria() {
         species = 0;
@@ -28,41 +40,41 @@ public class SearchCriteria {
         sex = 0;
         sterile = 0;
         declawed = 0;
+        ageMin = 0;
+        ageMax = 0;
     }
 
     void searchDeclawed() {
-        declawed = (declawed & BOOL_YES) ^ BOOL_YES;
+        declawed ^= BOOL_YES;
     }
-    void searchNonDeclawed() {
-        declawed = (declawed & BOOL_NO) ^ BOOL_NO;
-    }
+    void searchNonDeclawed() {declawed ^= BOOL_NO;}
     void searchSteriles() {
-        sterile = (sterile & BOOL_YES) ^ BOOL_YES;
+        sterile ^= BOOL_YES;
     }
-    void searchNonSteriles() {
-        sterile = (sterile & BOOL_NO) ^ BOOL_NO;
-    }
+    void searchNonSteriles() {sterile ^= BOOL_NO;}
     void searchMales() {
-        sex = (sex & SEX_MALE) ^ SEX_MALE;
+        sex ^= SEX_MALE;
     }
     void searchFemales() {
-        sex = (sex & SEX_FEMALE) ^ SEX_FEMALE;
+        sex ^= SEX_FEMALE;
     }
     void searchDogs() {
-        species = (species & SPECIES_DOG) ^ SPECIES_DOG;
+        species ^= SPECIES_DOG;
     }
     void searchCats() {
-        species = (species & SPECIES_CAT) ^ SPECIES_CAT;
+        species ^= SPECIES_CAT;
     }
     void searchRabbits() {
-        species = (species & SPECIES_RABBIT) ^ SPECIES_RABBIT;
+        species ^= SPECIES_RABBIT;
     }
     void searchSmallFurry() {
-        species = (species & SPECIES_SMALLFURRY) ^ SPECIES_SMALLFURRY;
+        species ^= SPECIES_SMALLFURRY;
     }
+    void setAgeMin(int min) {ageMin = min;}
+    void setAgeMax(int max) {ageMax = max;}
 
     void setSearchCriteria() {
-        if (species == 0xFF)
+        if (species == SPECIES_ALL)
             species = 0;
         if (sex == 0x03)
             sex = 0;
@@ -70,5 +82,135 @@ public class SearchCriteria {
             sterile = 0;
         if (declawed == 0x03)
             declawed = 0;
+    }
+
+    void saveSearchCriteria(SQLiteDatabase db) {
+        String sql = "SELECT * FROM " + DBHelper.TABLE_ADOPTABLE_SEARCH + ";";
+        Cursor c = db.rawQuery(sql, null);
+        if (c.moveToFirst()) {
+            Log.d("SearchCriteria", "Updating: " +
+                    " species:" + c.getInt(DBHelper.C_ADOPTABLE_SEARCH_SPECIES) +
+                    " ageMin:" + c.getInt(DBHelper.C_ADOPTABLE_SEARCH_AGE_MIN) +
+                    " ageMax:" + c.getInt(DBHelper.C_ADOPTABLE_SEARCH_AGE_MAX) +
+                    " sex:" + c.getInt(DBHelper.C_ADOPTABLE_SEARCH_SEX));
+
+            Log.d("SearchCriteria", "Updating to: " + " species:" + species + " ageMin:" + ageMin + " ageMax:" + ageMax + " sex:" + sex);
+            sql = "UPDATE " + DBHelper.TABLE_ADOPTABLE_SEARCH + " SET " +
+                    DBHelper.T_ADOPTABLE_SEARCH_SPECIES + "=" + species + ", " +
+                    DBHelper.T_ADOPTABLE_SEARCH_AGE_MIN + "=" + ageMin + ", " +
+                    DBHelper.T_ADOPTABLE_SEARCH_AGE_MAX + "=" + ageMax + ", " +
+                    DBHelper.T_ADOPTABLE_SEARCH_SEX + "=" + sex +
+                    //DBHelper.T_ADOPTABLE_SEARCH_STERILE + "=" + sterile + ", " +
+                    //DBHelper.T_ADOPTABLE_SEARCH_DECLAWED + "=" + declawed + ", " +
+                    ";";
+            db.execSQL(sql);
+            Log.d("SearchCriteria", "Updating: " + sql);
+        }
+        else {
+            Log.d("SearchCriteria", "INSERT");
+            ContentValues cv = new ContentValues();
+            cv.clear();
+            cv.put(DBHelper.T_ADOPTABLE_SEARCH_SPECIES, species);
+            cv.put(DBHelper.T_ADOPTABLE_SEARCH_AGE_MIN, ageMin);
+            cv.put(DBHelper.T_ADOPTABLE_SEARCH_AGE_MAX, ageMax);
+            cv.put(DBHelper.T_ADOPTABLE_SEARCH_SEX, sex);
+            Log.d("SearchCriteria", "Inserting: " + " species:" + species + " ageMin:" + ageMin + " ageMax:" + ageMax + " sex:" + sex);
+            try {
+                db.insertOrThrow(DBHelper.TABLE_ADOPTABLE_SEARCH, null, cv);
+            } catch (SQLException e) {
+                Log.d("SearchCriteria", "Insert failed.  Reason:" + e.getMessage());
+            }
+        }
+    }
+
+    String getSelectCommand() {
+
+        int reqAgeMax;
+        if (ageMax == 0)
+            reqAgeMax = 1000;
+        else
+            reqAgeMax = ageMax;
+
+        String where = " WHERE " + DBHelper.T_ANIMAL_AGE + ">=" + ageMin +
+                         " AND " + DBHelper.T_ANIMAL_AGE + "<=" + reqAgeMax;
+
+        boolean and_or = false;
+
+        Log.d("SearchCriteria", "" + species);
+        if (species != 0 && species != SPECIES_ALL) {
+            where += " AND (";
+            if ((species & SPECIES_DOG) == SPECIES_DOG) {
+                where += " " + DBHelper.T_ANIMAL_SPECIES + "='Dog'";
+                and_or = true;
+            }
+            if ((species & SPECIES_CAT) == SPECIES_CAT) {
+                if (and_or)
+                    where += " OR";
+                where += " " + DBHelper.T_ANIMAL_SPECIES + "='Cat'";
+                and_or = true;
+            }
+            if ((species & SPECIES_RABBIT) == SPECIES_RABBIT) {
+                if (and_or)
+                    where += " OR";
+                where += " " + DBHelper.T_ANIMAL_SPECIES + "='Rabbit'";
+                and_or = true;
+            }
+            if ((species & SPECIES_SMALLFURRY) == SPECIES_SMALLFURRY) {
+                if (and_or)
+                    where += " OR";
+                where += " (" +
+                        DBHelper.T_ANIMAL_SPECIES + "!='Dog' AND " +
+                        DBHelper.T_ANIMAL_SPECIES + "!='Cat' AND " +
+                        DBHelper.T_ANIMAL_SPECIES + "!='Rabbit')";
+                and_or = true;
+            }
+            where += ")";
+        }
+        if (sex != 0 && sex != SEX_ALL) {
+            where += " AND ";
+            if ((sex & SEX_FEMALE) == SEX_FEMALE)
+                where += " " + DBHelper.T_ADOPTABLE_SEARCH_SEX + "='Female'";
+            if ((sex & SEX_MALE) == SEX_MALE)
+                where += " " + DBHelper.T_ADOPTABLE_SEARCH_SEX + "='Male'";
+        }
+
+        return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + where + ";";
+    }
+
+
+    public SearchCriteria (Parcel in){
+        int[] data = new int[4];
+
+        Log.d("SC","SearchCriterai(Parcel in)");
+        in.readIntArray(data);
+        //Bundle b = in.readBundle();
+        //b.getParcelable("SearchCriteria")
+        this.sex = data[0];
+        this.species = data[1];
+        this.ageMax = data[2];
+        this.ageMin = data[3];
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public SearchCriteria createFromParcel(Parcel in) {
+            return new SearchCriteria(in);
+        }
+
+        public SearchCriteria[] newArray(int size) {
+            return new SearchCriteria[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        Log.d("SC","writeToParcel(Parcel dest, int flags)");
+        dest.writeInt(sex);
+        dest.writeInt(species);
+        dest.writeInt(ageMax);
+        dest.writeInt(ageMin);
     }
 };
