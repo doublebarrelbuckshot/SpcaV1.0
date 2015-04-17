@@ -25,7 +25,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
     DBHelper dbh;
     Button searchButton;
     boolean refresh;
-    Cursor animalList;
+    Cursor animalList = null;
 
     public DownloadAdoptableSearch(ProgressBar pProgressBar,
                                    TextView pProgressText,
@@ -36,6 +36,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
         progressText = pProgressText;
         searchButton = psearchButton;
         refresh = false;
+        animalList = null;
     }
 
     public DownloadAdoptableSearch(ProgressBar pProgressBar,
@@ -64,7 +65,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             Log.d("Reason        :", e.getMessage());
             return null;
         }
-        publishProgress(new Integer[]{1, web.animals.size()});
+        publishProgress(new Integer[]{1, web.animals.size() + 5});
 
         ThreadPoolExecutor executor =
                 new ThreadPoolExecutor(4,
@@ -74,6 +75,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                         new LinkedBlockingQueue<Runnable>()
                 );
 
+        publishProgress(5);
         Log.d("DownloadWebTask:", "Processing list of " + web.animals.size() + " elements.");
         int size = web.animals.size();
         long threadCount = 0;
@@ -92,16 +94,18 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             String where = "";
             Log.d("DownloadAdoptableSearch", "animalList item count is " + animalList.getCount());
             animalList.moveToFirst();
+            int animals = animalList.getCount();
             int i = 0;
-            while (i < size && animalList.isAfterLast() == false) {
+            int aidx = 0;
+            while (i < size && !animalList.isAfterLast()) {
                 String aID = animalList.getString(DBHelper.C_ANIMAL_ID);
                 Animal animal = web.animals.get(i);
                 if (aID.equals(animal.id)) {
                     animalList.moveToNext();
                     i++;
                 } else {
-                    int db_id =  Integer.getInteger(aID);
-                    int web_id = Integer.getInteger(animal.id);
+                    int db_id =  Integer.parseInt(aID);
+                    int web_id = Integer.parseInt(animal.id);
                     if (db_id < web_id) {
                         where += " a.id = '" + db_id + "'";
                         animalList.moveToNext();
@@ -146,7 +150,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             }
             completed = executor.getCompletedTaskCount();
             final int finalCompleted = (int)completed;
-            publishProgress(finalCompleted);
+            publishProgress(finalCompleted + 5);
             Log.d("DownloadWebTask:", executor.getCompletedTaskCount() + " completed out of " + threadCount + " scheduled...");
         }
 
