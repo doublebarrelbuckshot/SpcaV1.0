@@ -177,11 +177,13 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-         public void doSearch() {
+    public void doSearch(SearchCriteria sc) {
         Log.d("main", "je cherche");
-        Fragment frag = DetailsPageFragment.newInstance();
+        //Fragment frag = DetailsPageFragment.newInstance();
+        Fragment frag = BrowsePageFragment.newInstance();
+        getIntent().putExtra("SearchCriteria", sc);
         Bundle args = new Bundle();
-        args.putInt("toto", 10);
+        args.putParcelable("SearchCriteria", sc);
         frag.setArguments(args);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, frag)
