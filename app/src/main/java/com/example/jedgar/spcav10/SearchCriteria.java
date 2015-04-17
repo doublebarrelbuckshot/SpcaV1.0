@@ -34,7 +34,11 @@ public class SearchCriteria implements Parcelable {
     int ageMin;
     int ageMax;
 
-    SearchCriteria() {
+    public SearchCriteria() {
+        zeroAll();
+    }
+
+    void zeroAll() {
         species = 0;
         ageGroup = 0;
         sex = 0;
@@ -42,6 +46,17 @@ public class SearchCriteria implements Parcelable {
         declawed = 0;
         ageMin = 0;
         ageMax = 0;
+    }
+
+    public SearchCriteria(SQLiteDatabase db) {
+        zeroAll();
+        Cursor c = DBHelper.getSearchCriteria(db);
+        if (c.moveToFirst()) {
+            species = c.getInt(DBHelper.C_ADOPTABLE_SEARCH_SPECIES);
+            ageMin = c.getInt(DBHelper.C_ADOPTABLE_SEARCH_AGE_MIN);
+            ageMax = c.getInt(DBHelper.C_ADOPTABLE_SEARCH_AGE_MAX);
+            sex = c.getInt(DBHelper.C_ADOPTABLE_SEARCH_SEX);
+        }
     }
 
     void searchDeclawed() {
@@ -181,10 +196,7 @@ public class SearchCriteria implements Parcelable {
     public SearchCriteria (Parcel in){
         int[] data = new int[4];
 
-        Log.d("SC","SearchCriterai(Parcel in)");
         in.readIntArray(data);
-        //Bundle b = in.readBundle();
-        //b.getParcelable("SearchCriteria")
         this.sex = data[0];
         this.species = data[1];
         this.ageMax = data[2];
@@ -207,7 +219,6 @@ public class SearchCriteria implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        Log.d("SC","writeToParcel(Parcel dest, int flags)");
         dest.writeInt(sex);
         dest.writeInt(species);
         dest.writeInt(ageMax);

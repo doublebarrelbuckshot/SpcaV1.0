@@ -341,6 +341,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public static Cursor getSearchCriteria(SQLiteDatabase db) {
+        return db.rawQuery("SELECT * FROM " + TABLE_ADOPTABLE_SEARCH + ";", null);
+    }
+
     public void deleteAnimalList(SQLiteDatabase db, String where) {
         try {
             db.delete(TABLE_ANIMAL, where, null);

@@ -91,7 +91,7 @@ public class BrowsePageFragment extends Fragment {
         Bundle data = intent.getExtras();
         SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
 
-        String sql = sc.getSelectCommand();
+        final String sql = new String(sc.getSelectCommand());
         c = dbh.getCursorForSelect(db, sql);
         ListView list=(ListView)rootView.findViewById(R.id.browseView);
 
@@ -107,7 +107,7 @@ public class BrowsePageFragment extends Fragment {
                 Log.d("SHARE", "88888888888 SHARE");
                 Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
 
-                ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(position);
+                ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(sql, position);
 
 
 
@@ -138,7 +138,7 @@ public class BrowsePageFragment extends Fragment {
     }
 
     public interface OnDetailsListener {
-        public void doDetails(int pos);
+        public void doDetails(String sql, int pos);
     }
 
     /**

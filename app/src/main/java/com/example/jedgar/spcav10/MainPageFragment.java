@@ -30,10 +30,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     TextView progressText;
     DBHelper dbh;
     SQLiteDatabase db;
-    SPCAWebAPI web;
-    ImageView img;
-    static private boolean toggle = false;
-    int action = 0;
     static SearchCriteria sc;
 
     ImageButton catButton;
@@ -45,8 +41,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     CheckBox femaleCheckBox;
     CheckBox maleCheckBox;
     RangeSeekBar<Integer> seekBar;
-
     FragmentManager fragmentManager;
+    boolean loaded = false;
 
     public interface OnSearchListener {
         public void doSearch(SearchCriteria sc);
@@ -63,20 +59,29 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     public static MainPageFragment newInstance(){
 
         MainPageFragment fragment = new MainPageFragment();
-        sc = new SearchCriteria();
         return fragment;
     }
 
-    public MainPageFragment(){}
+    public MainPageFragment(){
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        if (!loaded) {
+            dbh = new DBHelper(getActivity());
+            db = dbh.getWritableDatabase();
+            sc = new SearchCriteria(db);
+            loaded = true;
+        }
 
         View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
 
         ageText = (TextView) rootView.findViewById(R.id.ageTV);
 
         catButton = (ImageButton)rootView.findViewById(R.id.cat_button);
+        if ((sc.species & SearchCriteria.SPECIES_CAT) == SearchCriteria.SPECIES_CAT)
+            catButton.setSelected(true);
         catButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +97,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         });
 
         dogButton = (ImageButton)rootView.findViewById(R.id.dog_button);
+        if ((sc.species & SearchCriteria.SPECIES_DOG) == SearchCriteria.SPECIES_DOG)
+            dogButton.setSelected(true);
         dogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +115,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         });
 
         rabbitButton = (ImageButton)rootView.findViewById(R.id.rabbit_button);
+        if ((sc.species & SearchCriteria.SPECIES_RABBIT) == SearchCriteria.SPECIES_RABBIT)
+            rabbitButton.setSelected(true);
         rabbitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +131,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         });
 
         otherButton = (ImageButton)rootView.findViewById(R.id.other_button);
+        if ((sc.species & SearchCriteria.SPECIES_SMALLFURRY) == SearchCriteria.SPECIES_SMALLFURRY)
+            otherButton.setSelected(true);
         otherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,18 +150,32 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         searchButton.setOnClickListener(this);
 
         // create RangeSeekBar as Integer range between 20 and 75
-        seekBar = new RangeSeekBar<Integer>(0, 20, MainPageFragment.this.getActivity());
+        int max = 24;
+        seekBar = new RangeSeekBar<Integer>(0, max, MainPageFragment.this.getActivity());
+        if (sc.ageMax == 0)
+            seekBar.setSelectedMaxValue(max);
+        else
+            seekBar.setSelectedMaxValue(sc.ageMax);
+        seekBar.setSelectedMinValue(sc.ageMin);
         seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
                 // handle changed range values
-                Log.i("rangeSeek", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
-                ageText.setText(getResources().getString(R.string.age_text_view) +
-                        getResources().getString(R.string.rsbAgeFrom) + minValue +
-                                getResources().getString(R.string.rsbAgeTo)+ maxValue +
-                                        getResources().getString(R.string.rsbAgeYears));
+                //Log.i("rangeSeek", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
                 sc.setAgeMin(minValue);
-                sc.setAgeMax(maxValue);
+                if (maxValue == seekBar.getAbsoluteMaxValue()) {
+                    ageText.setText(getResources().getString(R.string.age_text_view) +
+                            getResources().getString(R.string.rsbAgeFrom) + minValue +
+                            getResources().getString(R.string.rsbIllimited));
+                    sc.setAgeMax(0);
+                }
+                else {
+                    ageText.setText(getResources().getString(R.string.age_text_view) +
+                            getResources().getString(R.string.rsbAgeFrom) + minValue +
+                            getResources().getString(R.string.rsbAgeTo) + maxValue +
+                            getResources().getString(R.string.rsbAgeYears));
+                    sc.setAgeMax(maxValue);
+                }
             }
         });
 //https://github.com/yahoo/android-range-seek-bar
@@ -158,6 +183,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         layout.addView(seekBar);
 
         maleCheckBox = (CheckBox)rootView.findViewById(R.id.male_checkBox);
+        if ((sc.sex & SearchCriteria.SEX_MALE) == SearchCriteria.SEX_MALE)
+            maleCheckBox.setSelected(true);
         maleCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +199,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         });
 
         femaleCheckBox = (CheckBox)rootView.findViewById(R.id.female_checkBox);
+        if ((sc.sex & SearchCriteria.SEX_FEMALE) == SearchCriteria.SEX_FEMALE)
+            femaleCheckBox.setSelected(true);
         femaleCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,8 +225,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         progressText = (TextView)rootView.findViewById(R.id.progressText);
         progressText.setVisibility(View.GONE);
 
-        dbh = new DBHelper(getActivity());
-        db = dbh.getWritableDatabase();
         Cursor c = dbh.getAnimalList(db);
 
         getData();
@@ -244,119 +271,4 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
         ((MainActivity)activity).onSectionAttached(1);
     }
-
-    /*
-    public class DownloadWebTask extends AsyncTask<Void, Void, Void> {
-
-        public DownloadWebTask(){
-
-        }
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    searchButton.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressText.setVisibility(View.VISIBLE);
-                    progressBar.incrementProgressBy(1);
-                }
-            });
-
-            web = new SPCAWebAPI();
-
-            try {
-                web.callAdoptableSearch();
-            } catch (Exception e) {
-                Log.d("doInBackground:", "call AdoptableSearch.");
-                Log.d("Reason        :", e.getMessage());
-                return null;
-            }
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.incrementProgressBy(5);
-                    progressBar.setMax(web.animals.size() + 6);
-                }
-            });
-
-
-            ThreadPoolExecutor executor =
-                    new ThreadPoolExecutor(4,
-                            4,
-                            90,
-                            TimeUnit.SECONDS,
-                            new LinkedBlockingQueue<Runnable>()
-                    );
-
-            Log.d("DownloadWebTask:", "Processing list of " + web.animals.size() + " elements.");
-            String localStoragePath = getActivity().getFilesDir().getAbsolutePath();
-            int size = web.animals.size();
-            long threadCount = 0;
-            for(int i = 0; i < size; i+=downloadRangeSizePerThread) {
-                executor.execute(new DownloadWebAdoptableDetailsTask(
-                        web,
-                        localStoragePath,
-                        dbh,
-                        dbh.getWritableDatabase(),
-                        i,
-                        Math.min(i + downloadRangeSizePerThread, size)));
-                threadCount++;
-            }
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.incrementProgressBy(1);
-                }
-            });
-
-            long completed = 0;
-            for(;completed < threadCount;) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Log.e("Thread", e.getMessage());
-                }
-                completed = executor.getCompletedTaskCount();
-                final long finalCompleted = completed;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setProgress(3 + (int) finalCompleted);
-                    }
-                });
-                Log.d("DownloadWebTask:", executor.getCompletedTaskCount() + " completed out of " + threadCount + " scheduled...");
-            }
-
-            executor.shutdown();
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setVisibility(View.GONE);
-                    progressText.setVisibility(View.GONE);
-                    searchButton.setVisibility(View.VISIBLE);
-                }
-            });
-
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // btn.setEnabled(false);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            // btn.setEnabled(true);
-            Cursor c = dbh.getAnimalList(db);
-
-            //  currentAct.loadMainActivity();
-        }
-    }*/
 }
