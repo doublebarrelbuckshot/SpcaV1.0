@@ -82,28 +82,34 @@ public class MainActivity extends ActionBarActivity
         if (position == 0) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MainPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         } else if (position == 1) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, InfoPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         } else if (position == 2) {
             getIntent().putExtra("sender", "Favorites");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         } else if (position == 3) {
             getIntent().putExtra("sender", "new");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         } else if (position == 4) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NotificationPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         } else if (position == 5) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, DetailsPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         } /*else if (position == 6) {
             getIntent().putExtra("sender", "Browse");
