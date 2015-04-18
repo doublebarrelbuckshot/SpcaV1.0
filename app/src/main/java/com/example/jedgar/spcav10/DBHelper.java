@@ -59,8 +59,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int C_ANIMAL_INTAKE_DATE = 9;
     public static final int C_ANIMAL_PRIMARY_COLOR = 10;
     public static final int C_ANIMAL_SECONDARY_COLOR = 11;
-    public static final int C_ANIMAL_DECLAWED = 12;
-    public static final int C_ANIMAL_DESCRIPTION = 13;
+    public static final int C_ANIMAL_DECLAWED = 13;
+    public static final int C_ANIMAL_DESCRIPTION = 12;
     public static final int C_ANIMAL_PHOTO1 = 14;
     public static final int C_ANIMAL_PHOTO2 = 15;
     public static final int C_ANIMAL_PHOTO3 = 16;

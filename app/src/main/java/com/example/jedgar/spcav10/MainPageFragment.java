@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainPageFragment extends Fragment implements View.OnClickListener {
+public class MainPageFragment extends Fragment implements View.OnClickListener, GetActionBarTitle {
 
     ProgressBar progressBar;
     TextView progressText;
@@ -44,6 +44,11 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     FragmentManager fragmentManager;
     boolean loaded = false;
     private boolean firstTime = true;
+
+    @Override
+    public int getActionBarTitleId() {
+        return R.string.mainPageTitle;
+    }
 
     public interface OnSearchListener {
         public void doSearch(SearchCriteria sc);

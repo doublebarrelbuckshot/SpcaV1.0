@@ -72,40 +72,77 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Log.d("BACKSTACK", "BACKSTACK ACTIVATED");
+                int backCount = getSupportFragmentManager().getBackStackEntryCount();
+                if (backCount == 0)
+                {
+                    finish();
+                }
+                else
+                {
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+                    mTitle = getString(((GetActionBarTitle) fragment).getActionBarTitleId());
+                    restoreActionBar();
+                }
+            }
+        });
     }
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-
+        Fragment fragment = null;
         fragmentManager = getSupportFragmentManager();
         if (position == 0) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MainPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
+            mTitle = getString(R.string.mainPageTitle);
+
         } else if (position == 1) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, InfoPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
+            mTitle = getString(R.string.infoTitle);
+
         } else if (position == 2) {
             getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
+            mTitle = getString(R.string.favoritesTitle);
+
+
         } else if (position == 3) {
             getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
+            mTitle = getString(R.string.newTitle);
+
         } else if (position == 4) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NotificationPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
+            mTitle = getString(R.string.notificationsTitle);
+
         } else if (position == 5) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, DetailsPageFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
-        } /*else if (position == 6) {
+        }
+       // restoreActionBar();
+         /*else if (position == 6) {
             getIntent().putExtra("sender", "Browse");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
@@ -113,30 +150,32 @@ public class MainActivity extends ActionBarActivity
         }*/
     }
 
+
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle =  getString(R.string.mainPageTitle);// getString(R.string.title_section1); //mainpage
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.infoTitle);//getString(R.string.title_section2); //info
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.favoritesTitle);//getString(R.string.title_section3); //favorites
                 break;
             case 4:
-                mTitle = getString(R.string.title_section4);
+                mTitle = getString(R.string.searchResultsTitle);//getString(R.string.title_section4); //search
                 break;
             case 5:
-                mTitle = getString(R.string.title_section5);
+                mTitle = getString(R.string.notificationsTitle);//getString(R.string.title_section5); //notificationPage
                 break;
             case 6:
-                mTitle = getString(R.string.title_section6);
+                mTitle = getString(R.string.newTitle);//getString(R.string.title_section6); //searchPage
                 break;
             case 7:
-                mTitle = getString(R.string.title_section7);
+                mTitle = getString(R.string.detailsTitle);//getString(R.string.title_section7);
                 break;
         }
+        Log.d("SECTION ATTACHED", "" + number);
     }
 
 
@@ -181,6 +220,8 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container, frag)
                 .addToBackStack(null)
                 .commit();
+        mTitle = getString(R.string.detailsTitle);//getString(R.string.title_section5); //notificationPage
+        restoreActionBar();
     }
 
     @Override
@@ -193,6 +234,9 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container, frag)
                 .addToBackStack(null)
                 .commit();
+        mTitle = getString(R.string.searchResultsTitle);//getString(R.string.title_section5); //notificationPage
+        restoreActionBar();
+
     }
 
 
@@ -249,5 +293,6 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
 }
 

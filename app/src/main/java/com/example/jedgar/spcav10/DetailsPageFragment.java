@@ -50,7 +50,7 @@ import java.util.Date;
 /**
  * Created by a on 3/31/2015.
  */
-public class DetailsPageFragment extends Fragment{//} implements View.OnClickListener {
+public class DetailsPageFragment extends Fragment implements GetActionBarTitle{//} implements View.OnClickListener {
     DBHelper dbh;
     SQLiteDatabase db;
 
@@ -127,7 +127,12 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        ((MainActivity) activity).onSectionAttached(6);
+        ((MainActivity) activity).onSectionAttached(7);
+    }
+
+    @Override
+    public int getActionBarTitleId() {
+        return R.string.detailsTitle;
     }
 
     private class DetailsPagerAdapter extends android.support.v4.view.PagerAdapter {
@@ -359,7 +364,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             ImageButton btnShare = (ImageButton)detail.findViewById(R.id.btnShare);
             btnShare.setTag(R.id.animalIDTag, animalID);
-            btnShare.setTag(R.id.animalNameTag, animalID);
+            btnShare.setTag(R.id.animalNameTag, animalName);
             btnShare.setTag(R.id.animalAgeTag, animalAge);
             btnShare.setTag(R.id.animalSexTag, animalSex);
 

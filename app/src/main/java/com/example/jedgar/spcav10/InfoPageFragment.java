@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class InfoPageFragment extends Fragment implements View.OnClickListener {
+public class InfoPageFragment extends Fragment implements View.OnClickListener, GetActionBarTitle {
 
     ImageButton buttonSend;
     TextView ident;
@@ -85,6 +85,11 @@ public class InfoPageFragment extends Fragment implements View.OnClickListener {
             startActivity(callIntent);
         }
 
+    }
+
+    @Override
+    public int getActionBarTitleId() {
+        return R.string.infoTitle;
     }
 }
 

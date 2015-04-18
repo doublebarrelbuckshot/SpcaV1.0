@@ -34,13 +34,14 @@ import com.squareup.picasso.Picasso;
 
 
 
-public class BrowsePageFragment extends Fragment {
+public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-
+    private String cameFrom;
+    private int titleID;
     private LayoutInflater inflater;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,6 +75,14 @@ public class BrowsePageFragment extends Fragment {
         // Required empty public constructor
     }
 
+//    public BrowsePageFragment(String title){
+//        super();
+//        if(title.equals("Favorites"))
+//            titleID = R.string.favoritesTitle;
+//        else titleID = R.string.searchResults;
+//    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,15 +102,14 @@ public class BrowsePageFragment extends Fragment {
         String sender = data.getString("sender");
         if (sender.equals(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)) {
             Log.d("Browse","Favorites");
-            //sql = dbh.getFavoriteListSQL();
             dbh.setCursorForFavoriteList(db);
             c = dbh.getCursorForFavoriteList();
+            cameFrom = "Favorites";
         } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
-            //sql = dbh.getNewAnimalsListSQL();
-            //c = dbh.getNewAnimalsList(db);
             dbh.setCursorForNewAnimalsList(db);
             c = dbh.getCursorForNewAnimalsList();
+            cameFrom = "New";
         } else {
             Log.d("Browse","else");
             // do default search
@@ -109,6 +117,7 @@ public class BrowsePageFragment extends Fragment {
             String sql = new String(sc.getSelectCommand());
             dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
             c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
+            cameFrom = "Search";
         }
 
         // Getting adapter by passing xml data ArrayList
@@ -165,7 +174,16 @@ public class BrowsePageFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        ((MainActivity)activity).onSectionAttached(6);
+//        if(cameFrom.equals("Favorites")){
+//            ((MainActivity)activity).onSectionAttached(3);
+//
+//        }
+//        else if(cameFrom.equals("New")){
+//            ((MainActivity)activity).onSectionAttached(6);
+//
+//        }
+//        else //cameFrom equals search
+//        ((MainActivity)activity).onSectionAttached(4);
     }
 
     @Override
@@ -173,6 +191,26 @@ public class BrowsePageFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public int getActionBarTitleId() {
+        if(cameFrom.equals("Favorites")){
+            return R.string.favoritesTitle;
+
+        }
+        else if(cameFrom.equals("New")){
+                   return R.string.newTitle;
+
+        }
+        else //cameFrom equals search
+                   return R.string.searchResultsTitle;
+    }
+//
+//    @Override
+//    public int getActionBarTitleId() {
+//        return titleID;
+//    }
+
 
     public interface OnDetailsListener {
         public void doDetails(String cursorName, int pos);
