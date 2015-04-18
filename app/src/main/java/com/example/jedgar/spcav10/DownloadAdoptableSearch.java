@@ -98,6 +98,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             String updateWhere = "";
             Log.d("DownloadAdoptableSearch", "animalList item count is " + animalList.getCount());
             animalList.moveToFirst();
+            Log.d("ALIST", animalList.getString(0));
             int animals = animalList.getCount();
             int i = 0;
             int aidx = 0;
@@ -106,24 +107,30 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                 Animal animal = web.animals.get(i);
                 if (aID.equals(animal.id)) {
                     animalList.moveToNext();
+                    if (!animalList.isAfterLast())
+                        Log.d("ALIST", animalList.getString(0));
                     i++;
                 } else {
                     int db_id =  Integer.parseInt(aID);
                     int web_id = Integer.parseInt(animal.id);
                     if (db_id < web_id) {
                         if (dbh.isFavorite(db, aID)) {
+                            Log.d("ALIST", animalList.getString(0) + " favorite no longer available.");
                             if (updateWhere.equals(""))
-                                updateWhere += " a.id = '" + db_id + "'";
+                                updateWhere += " " + DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID + " = '" + db_id + "'";
                             else
-                                updateWhere += " OR a.id = '" + db_id + "'";
+                                updateWhere += " OR " + DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID + " = '" + db_id + "'";
 
                         } else {
+                            Log.d("ALIST", animalList.getString(0) + " no longer available.");
                             if (where.equals(""))
-                                where += " a.id = '" + db_id + "'";
+                                where += " " + DBHelper.T_ANIMAL_ID + " = '" + db_id + "'";
                             else
-                                where += " OR a.id = '" + db_id + "'";
+                                where += " OR " + DBHelper.T_ANIMAL_ID + " = '" + db_id + "'";
                         }
                         animalList.moveToNext();
+                        if (!animalList.isAfterLast())
+                            Log.d("ALIST", animalList.getString(0));
                     } else {
                         executor.execute(new DownloadWebAdoptableDetailsTask(
                                 web,
@@ -140,12 +147,14 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                 String aID = animalList.getString(DBHelper.C_ANIMAL_ID);
                 if (dbh.isFavorite(db, aID)) {
                     if (updateWhere.equals(""))
-                        updateWhere += " a.id = '" + aID + "'";
+                        updateWhere += " " + DBHelper.T_ANIMAL_ID + " = '" + aID + "'";
                     else
-                        updateWhere += " OR a.id = '" + aID + "'";
+                        updateWhere += " OR " + DBHelper.T_ANIMAL_ID + " = '" + aID + "'";
                 }
 
                 animalList.moveToNext();
+                if (!animalList.isAfterLast())
+                    Log.d("ALIST", animalList.getString(0));
             }
             while(i < size) {
                 executor.execute(new DownloadWebAdoptableDetailsTask(

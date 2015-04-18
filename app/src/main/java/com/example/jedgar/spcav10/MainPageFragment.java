@@ -43,6 +43,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     RangeSeekBar<Integer> seekBar;
     FragmentManager fragmentManager;
     boolean loaded = false;
+    private boolean firstTime = true;
 
     public interface OnSearchListener {
         public void doSearch(SearchCriteria sc);
@@ -226,10 +227,9 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     }
 
     public void getData(){//View v) {
-        Log.d("D", "in getData()");
         if (dbh.appFirstTime(db)) {
         //{
-            Toast.makeText(getActivity(), "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.InitialDownloadMsg), Toast.LENGTH_SHORT).show();
             try {
                 new DownloadAdoptableSearch(progressBar, progressText, searchButton, getActivity()).execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
             } catch (Exception e) {
@@ -239,21 +239,16 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             dbh.appFirstTimeFalse(db);
         }
         else {
-            //Toast.makeText(getActivity(), "Chargement des favoris", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.SynchMsg), Toast.LENGTH_SHORT).show();
             Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
             Log.d("DownloadAdoptableSearch", "animalList size = " + animalList.getCount());
             try {
                 Log.d("DownloadAdoptableSearch", "About to call trigger AdopdatableSearch in update mode.");
-                new DownloadAdoptableSearch(progressBar, progressText, searchButton, getActivity(), animalList).execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
+                new DownloadAdoptableSearch(progressBar, progressText, searchButton, getActivity(), animalList).execute();
             } catch (Exception e) {
                 Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
                 return;
             }
-
-            animalList = dbh.getAnimalList(db);
-            //adapter.changeCursor(animalList);
-            //btn.setEnabled(true);
-
         }
     }
 

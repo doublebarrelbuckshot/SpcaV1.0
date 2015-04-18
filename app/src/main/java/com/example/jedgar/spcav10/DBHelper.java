@@ -14,7 +14,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "SPCA.DB";
-    static final int DB_VERSION = 29;
+    static final int DB_VERSION = 30;
 
     // table AdoptableSearch Results
     static final String TABLE_ANIMAL_MATCHED = "animalMatched";
@@ -213,7 +213,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("DB", TABLE_FAVORITE_ANIMALS + " table created");
 
         sql = "CREATE TABLE " + TABLE_NEW_ANIMALS + "(" +
-                T_NEW_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ")" +
+                T_NEW_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ") ON DELETE CASCADE " +
                 ");";
         db.execSQL(sql);
         Log.d("DB", TABLE_NEW_ANIMALS + " table created");

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">SpcaV1.0</string>
 
+    <!-- MainPageFragment -->
+    <string name="InitialDownloadMsg">Downloading animal information</string>
+    <string name="SynchMsg">Checking for new adoptable animals</string>
+
+
     <!-- Here are the Strings for the drawer -->
     <string name="title_section1">Main Page</string>
     <string name="title_section2">Info</string>
