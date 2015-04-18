@@ -154,7 +154,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         int position, long id) {
                     //Log.d("SHARE", "88888888888 SHARE");
                     //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
-                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails("Browse", position);
+                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_SEARCH_ANIMALS, position);
                 }
             });
         }

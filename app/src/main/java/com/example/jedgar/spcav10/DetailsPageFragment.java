@@ -91,7 +91,9 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
         */
         Bundle b = this.getArguments();
         String cursorName = b.getString("cursorName");
+        Log.d("Details", "cursorName is " + cursorName);
         c = dbh.getCursorByName(cursorName);
+        if (c == null) Log.d("Details", cursorName + " is null");
 /*
         c = dbh.getAnimalList(db);
         c.moveToPosition(1);

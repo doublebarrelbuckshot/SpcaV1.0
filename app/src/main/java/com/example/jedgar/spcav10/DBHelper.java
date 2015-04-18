@@ -127,6 +127,8 @@ public class DBHelper extends SQLiteOpenHelper {
     static HashMap<String, Cursor> cursors;
 
     private static DBHelper instance;
+    private static Context appcontext;
+
     public static synchronized DBHelper getInstance(Context context) {
 
         // Use the application context, which will ensure that you
@@ -135,6 +137,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (instance == null) {
             instance = new DBHelper(context);
             cursors = new HashMap<String, Cursor>();
+            appcontext = context;
         }
         return instance;
     }
@@ -146,7 +149,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) throws SQLException {
         Log.d("DB", "In onCreate");
-        String sql = "CREATE TABLE " + TABLE_ANIMAL + "(" +
+        try {
+            String sql = "CREATE TABLE " + TABLE_ANIMAL + "(" +
                     T_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL," +
                     T_ANIMAL_SPECIES + " TEXT    NOT NULL," +
                     T_ANIMAL_NAME + " TEXT    NOT NULL," +
@@ -173,16 +177,16 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(sql);
             Log.d("DB", "Index " + TABLE_ANIMAL_SPECIES_IDX + " created");
 
-        /* Cette table qu'on crée pour les photos dans une db qui aspire à être digne de ce nom.
-        sql = "CREATE TABLE " + TABLE_ANIMAL_PHOTOS + "(" +
-                T_ANIMAL_PHOTOS_ANIMAL_ID + " INT  NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ")," +
-                T_ANIMAL_PHOTOS_PHOTO_ID  + " INT  NOT NULL," +
-                T_ANIMAL_PHOTOS_PATH      + " TEXT         NOT NULL, " +
-                "PRIMARY KEY ('" + T_ANIMAL_PHOTOS_ANIMAL_ID + "', '" + T_ANIMAL_PHOTOS_PHOTO_ID + "')" +
-              ");";
-        db.execSQL(sql);
-        Log.d("DB", TABLE_ANIMAL_PHOTOS + " table created");
-        */
+            /* Cette table qu'on crée pour les photos dans une db qui aspire à être digne de ce nom.
+            sql = "CREATE TABLE " + TABLE_ANIMAL_PHOTOS + "(" +
+                    T_ANIMAL_PHOTOS_ANIMAL_ID + " INT  NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ")," +
+                    T_ANIMAL_PHOTOS_PHOTO_ID  + " INT  NOT NULL," +
+                    T_ANIMAL_PHOTOS_PATH      + " TEXT         NOT NULL, " +
+                    "PRIMARY KEY ('" + T_ANIMAL_PHOTOS_ANIMAL_ID + "', '" + T_ANIMAL_PHOTOS_PHOTO_ID + "')" +
+                  ");";
+            db.execSQL(sql);
+            Log.d("DB", TABLE_ANIMAL_PHOTOS + " table created");
+            */
 
             sql = "CREATE TABLE " + TABLE_ADOPTABLE_SEARCH + "(" +
                     T_ADOPTABLE_SEARCH_SPECIES + " INT    NOT NULL," +
@@ -222,6 +226,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     ");";
             db.execSQL(sql);
             Log.d("DB", TABLE_NEW_ANIMALS + " table created");
+        } catch (SQLException e) {
+            /*
+            AlertDialog.Builder messageBox = new AlertDialog.Builder(appcontext);
+            messageBox.setTitle(method);
+            messageBox.setMessage(message);
+            messageBox.setCancelable(false);
+            messageBox.setNeutralButton("OK", null);
+            messageBox.show();*/
+        }
     }
 
     @Override
