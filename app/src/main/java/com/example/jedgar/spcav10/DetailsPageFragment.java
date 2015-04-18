@@ -57,8 +57,10 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     private int goToPosition;
 
     LayoutInflater inflater;
+    //int positionx;
 
     Cursor c;
+    //boolean parSections;
 
     private ViewPager detailsPager;
     private DetailsPagerAdapter detailsAdapter;
@@ -144,7 +146,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
                 dbh.removeFromNewList(db, aID);
                 //c.moveToPosition(bookmark);
             }
-            
+
             c.moveToPosition(position);
             String animalID = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
             String animalName = c.getString(DBHelper.C_ANIMAL_NAME);

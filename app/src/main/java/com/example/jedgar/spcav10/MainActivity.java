@@ -105,11 +105,12 @@ public class MainActivity extends ActionBarActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, DetailsPageFragment.newInstance())
                     .commit();
-        } else if (position == 6) {
+        } /*else if (position == 6) {
+            getIntent().putExtra("sender", "Browse");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
                     .commit();
-        }
+        }*/
     }
 
     public void onSectionAttached(int number) {
@@ -130,9 +131,11 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section5);
                 break;
             case 6:
-                mTitle = "Details";
+                mTitle = getString(R.string.title_section6);
+                break;
             case 7:
-                mTitle = "Browse";
+                mTitle = getString(R.string.title_section7);
+                break;
         }
     }
 

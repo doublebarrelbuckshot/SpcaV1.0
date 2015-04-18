@@ -7,6 +7,8 @@
     <string name="title_section3">Favorites</string>
     <string name="title_section4">New</string>
     <string name="title_section5">Notifications</string>
+    <string name="title_section6">Details</string>
+    <string name="title_section7">Browse</string>
 
     <!-- Here are the Strings for the main_page_fragment -->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
