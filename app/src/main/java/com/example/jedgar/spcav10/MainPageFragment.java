@@ -218,7 +218,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         progressText = (TextView)rootView.findViewById(R.id.progressText);
         progressText.setVisibility(View.GONE);
 
-        Cursor c = dbh.getAnimalList(db);
+        //Cursor c = dbh.getAnimalList(db);
 
         getData();
 
@@ -238,7 +238,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             }
             dbh.appFirstTimeFalse(db);
         }
-        /*else {
+        else {
             //Toast.makeText(getActivity(), "Chargement des favoris", Toast.LENGTH_SHORT).show();
             Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
             Log.d("DownloadAdoptableSearch", "animalList size = " + animalList.getCount());
@@ -254,7 +254,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             //adapter.changeCursor(animalList);
             //btn.setEnabled(true);
 
-        }*/
+        }
     }
 
 

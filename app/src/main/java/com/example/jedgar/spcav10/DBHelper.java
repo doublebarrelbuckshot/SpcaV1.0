@@ -14,7 +14,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "SPCA.DB";
-    static final int DB_VERSION = 23;
+    static final int DB_VERSION = 29;
 
     // table AdoptableSearch Results
     static final String TABLE_ANIMAL_MATCHED = "animalMatched";
@@ -107,8 +107,13 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String T_PREFERENCES_DOWNLOAD_IMAGE = "download_image";
 
     //table favorites
-    static final String TABLE_FAVORITE_ANIMALS = "favorites";
+    static final String TABLE_FAVORITE_ANIMALS = "favorite_animals";
     static final String T_FAVORITE_ANIMALS_ANIMAL_ID = "_id";
+    static final String T_FAVORITE_ANIMALS_AVAILABLE = "available";
+
+    //table favorites
+    static final String TABLE_NEW_ANIMALS = "new_animals";
+    static final String T_NEW_ANIMALS_ANIMAL_ID = "_id";
 
     public static final int C_PREFERENCES_APP_STATE = 0;
 
@@ -139,7 +144,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_AGE             + " INT     NOT NULL," +
                 T_ANIMAL_PRIMARY_BREED   + " TEXT," +
                 T_ANIMAL_SECONDARY_BREED + " TEXT," +
-                T_ANIMAL_SEX             + " char    CHECK( " + T_ANIMAL_SEX + " IN ('Male','Female'))," +
+                T_ANIMAL_SEX             + " char    CHECK( " + T_ANIMAL_SEX + " IN ('Male','Female', 'Unknown'))," +
                 T_ANIMAL_SIZE            + " char," +
                 T_ANIMAL_STERILE         + " char CHECK( " + T_ANIMAL_STERILE + " IN ('Y','N', 'U'))," +
                 T_ANIMAL_INTAKE_DATE     + " date," +
@@ -201,11 +206,17 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         sql = "CREATE TABLE " + TABLE_FAVORITE_ANIMALS + "(" +
-                T_FAVORITE_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ")" +
-                ");";
+                T_FAVORITE_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + "), " +
+                T_FAVORITE_ANIMALS_AVAILABLE + " char CHECK(" + T_FAVORITE_ANIMALS_AVAILABLE + " IN('Y','N'))" +
+                ")";
         db.execSQL(sql);
         Log.d("DB", TABLE_FAVORITE_ANIMALS + " table created");
 
+        sql = "CREATE TABLE " + TABLE_NEW_ANIMALS + "(" +
+                T_NEW_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ")" +
+                ");";
+        db.execSQL(sql);
+        Log.d("DB", TABLE_NEW_ANIMALS + " table created");
     }
 
     @Override
@@ -217,6 +228,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_ADOPTABLE_SEARCH + ";");
         db.execSQL("drop table if exists " + TABLE_PREFERENCES + ";");
         db.execSQL("drop table if exists " + TABLE_FAVORITE_ANIMALS + ";");
+        db.execSQL("drop table if exists " + TABLE_NEW_ANIMALS + ";");
         onCreate(db);
     }
 
@@ -234,6 +246,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getAnimalListOrdered(SQLiteDatabase db, String orderClause){
         String sql = "select * from " + TABLE_ANIMAL +
                 " order by " + orderClause + ";";
+        Log.d("SQL", sql);
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
@@ -261,6 +274,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             db.insertOrThrow(DBHelper.TABLE_ANIMAL, null, cv);
+            cv.clear();
+            cv.put(DBHelper.T_NEW_ANIMALS_ANIMAL_ID, animal.id);
+            db.insertOrThrow(DBHelper.TABLE_NEW_ANIMALS, null, cv);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             animal.dump();
@@ -297,9 +313,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 null);
     }
 
-    public Cursor getFavoriteList(SQLiteDatabase db){
-        // pas testée
-        String sql = "SELECT a." +
+    public String getFavoriteListSQL() {
+        return "SELECT a." +
                 T_ANIMAL_ID + ", " +
                 T_ANIMAL_SPECIES + ", " +
                 T_ANIMAL_NAME + ", " +
@@ -312,11 +327,50 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_INTAKE_DATE + ", " +
                 T_ANIMAL_PRIMARY_COLOR + ", " +
                 T_ANIMAL_SECONDARY_COLOR + ", " +
+                T_ANIMAL_DESCRIPTION + ", " +
                 T_ANIMAL_DECLAWED + ", " +
-                T_ANIMAL_DESCRIPTION + " " +
+                T_ANIMAL_PHOTO1 + ", " +
+                T_ANIMAL_PHOTO2 + ", " +
+                T_ANIMAL_PHOTO3 + " " +
                 " FROM " + TABLE_ANIMAL + " as a, " +
                 TABLE_FAVORITE_ANIMALS + " as f " +
-                " WHERE a." + T_ANIMAL_ID + " = f." + T_FAVORITE_ANIMALS_ANIMAL_ID + ";";
+                " WHERE f." + T_FAVORITE_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
+
+    }
+    public Cursor getFavoriteList(SQLiteDatabase db){
+        // pas testée
+        String sql = getFavoriteListSQL();
+        Log.d("DB", sql);
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public String getNewAnimalsListSQL() {
+        return "SELECT a." +
+                T_ANIMAL_ID + ", " +
+                T_ANIMAL_SPECIES + ", " +
+                T_ANIMAL_NAME + ", " +
+                T_ANIMAL_AGE + ", " +
+                T_ANIMAL_PRIMARY_BREED + ", " +
+                T_ANIMAL_SECONDARY_BREED + ", " +
+                T_ANIMAL_SEX + ", " +
+                T_ANIMAL_SIZE + ", " +
+                T_ANIMAL_STERILE + ", " +
+                T_ANIMAL_INTAKE_DATE + ", " +
+                T_ANIMAL_PRIMARY_COLOR + ", " +
+                T_ANIMAL_SECONDARY_COLOR + ", " +
+                T_ANIMAL_DESCRIPTION + ", " +
+                T_ANIMAL_DECLAWED + ", " +
+                T_ANIMAL_PHOTO1 + ", " +
+                T_ANIMAL_PHOTO2 + ", " +
+                T_ANIMAL_PHOTO3 + " " +
+                " FROM " + TABLE_ANIMAL + " as a, " +
+                TABLE_NEW_ANIMALS + " as n " +
+                " WHERE n." + T_NEW_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
+    }
+    public Cursor getNewAnimalsList(SQLiteDatabase db){
+        // pas testée
+        String sql = getNewAnimalsListSQL();
         Log.d("DB", sql);
         Cursor c = db.rawQuery(sql, null);
         return c;

@@ -134,7 +134,7 @@ public class SPCAWebAPI {
                 //Log.d("WEB: ", "temp name:" + temp.getNodeName());
                 if (temp.getNodeName().compareTo(ID_ID) == 0) {
                     animal.id = temp.getTextContent();
-                    Log.d("WEB: ", "ID:" + animal.id);
+                    //Log.d("WEB: ", "ID:" + animal.id);
                 }
                 else if (temp.getNodeName().compareTo(ID_NAME) == 0) {
                     animal.name = temp.getTextContent();

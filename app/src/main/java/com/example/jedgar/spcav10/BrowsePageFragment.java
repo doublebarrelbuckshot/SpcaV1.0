@@ -90,11 +90,22 @@ public class BrowsePageFragment extends Fragment {
 
         Intent intent = ((MainActivity)BrowsePageFragment.this.getActivity()).getIntent();
         Bundle data = intent.getExtras();
-        SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
+        String sender = data.getString("sender");
+        final String sql;
+        if (sender.equals("Favorites")) {
+            sql = dbh.getFavoriteListSQL();
+            c = dbh.getFavoriteList(db);
+        } else if (sender.equals("new")) {
+            sql = dbh.getNewAnimalsListSQL();
+            c = dbh.getNewAnimalsList(db);
+        } else {
+            // do default search
+            SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
+            sql = new String(sc.getSelectCommand());
+            c = dbh.getCursorForSelect(db, sql);
+        }
 
-        final String sql = new String(sc.getSelectCommand());
-        c = dbh.getCursorForSelect(db, sql);
-        ListView list=(ListView)rootView.findViewById(R.id.browseView);
+            ListView list=(ListView)rootView.findViewById(R.id.browseView);
 
         // Getting adapter by passing xml data ArrayList
         BaseAdapter adapter=new LazyAdapter();
@@ -186,7 +197,7 @@ public class BrowsePageFragment extends Fragment {
             String d = c.getString(DBHelper.C_ANIMAL_NAME);
             String p1 = c.getString(DBHelper.C_ANIMAL_PHOTO1);
             String a = c.getString(DBHelper.C_ANIMAL_AGE);
-            if(!p1.equals("")) {
+            if(p1 != null && !p1.equals("")) {
                 ImageView animalImage = (ImageView) vi.findViewById(R.id.animalImage);
                 Picasso.with(getActivity().getApplicationContext()).load(p1).into(animalImage);
             }

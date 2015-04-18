@@ -88,12 +88,14 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, InfoPageFragment.newInstance())
                     .commit();
         } else if (position == 2) {
+            getIntent().putExtra("sender", "Favorites");
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, FavoritesPageFragment.newInstance())
+                    .replace(R.id.container, BrowsePageFragment.newInstance())
                     .commit();
         } else if (position == 3) {
+            getIntent().putExtra("sender", "new");
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, SearchPageFragment.newInstance())
+                    .replace(R.id.container, BrowsePageFragment.newInstance())
                     .commit();
         } else if (position == 4) {
             fragmentManager.beginTransaction()
@@ -181,6 +183,7 @@ public class MainActivity extends ActionBarActivity
         Log.d("main", "je cherche");
         Fragment frag = BrowsePageFragment.newInstance();
         getIntent().putExtra("SearchCriteria", sc);
+        getIntent().putExtra("sender", "Search");
         /*
         Bundle args = new Bundle();
         args.putParcelable("SearchCriteria", sc);

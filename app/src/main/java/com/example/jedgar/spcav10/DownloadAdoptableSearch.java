@@ -1,7 +1,9 @@
 package com.example.jedgar.spcav10;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
     ProgressBar progressBar;
     TextView progressText;
     DBHelper dbh;
+    SQLiteDatabase db;
     Button searchButton;
     boolean refresh;
     Cursor animalList = null;
@@ -45,6 +48,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                                    Context activity,
                                    Cursor panimalList){
         dbh = DBHelper.getInstance(activity);
+        db = dbh.getWritableDatabase();
         progressBar = pProgressBar;
         progressText = pProgressText;
         searchButton = psearchButton;
@@ -80,7 +84,6 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
         int size = web.animals.size();
         long threadCount = 0;
         if (refresh == false) {
-
             for (int i = 0; i < size; i += downloadRangeSizePerThread) {
                 executor.execute(new DownloadWebAdoptableDetailsTask(
                         web,
@@ -92,6 +95,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             }
         } else {
             String where = "";
+            String updateWhere = "";
             Log.d("DownloadAdoptableSearch", "animalList item count is " + animalList.getCount());
             animalList.moveToFirst();
             int animals = animalList.getCount();
@@ -107,7 +111,18 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                     int db_id =  Integer.parseInt(aID);
                     int web_id = Integer.parseInt(animal.id);
                     if (db_id < web_id) {
-                        where += " a.id = '" + db_id + "'";
+                        if (dbh.isFavorite(db, aID)) {
+                            if (updateWhere.equals(""))
+                                updateWhere += " a.id = '" + db_id + "'";
+                            else
+                                updateWhere += " OR a.id = '" + db_id + "'";
+
+                        } else {
+                            if (where.equals(""))
+                                where += " a.id = '" + db_id + "'";
+                            else
+                                where += " OR a.id = '" + db_id + "'";
+                        }
                         animalList.moveToNext();
                     } else {
                         executor.execute(new DownloadWebAdoptableDetailsTask(
@@ -123,7 +138,13 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             }
             while(animalList.isAfterLast() == false) {
                 String aID = animalList.getString(DBHelper.C_ANIMAL_ID);
-                where += " a.id = '" + aID + "'";
+                if (dbh.isFavorite(db, aID)) {
+                    if (updateWhere.equals(""))
+                        updateWhere += " a.id = '" + aID + "'";
+                    else
+                        updateWhere += " OR a.id = '" + aID + "'";
+                }
+
                 animalList.moveToNext();
             }
             while(i < size) {
@@ -137,7 +158,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                 i++;
             }
 
-            executor.execute(new Job(where));
+            executor.execute(new Job(where, updateWhere));
             threadCount++;
         }
 
@@ -197,13 +218,30 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
 
     public class Job implements Runnable {
 
-        String whereClause;
-        Job(String where) {
-            whereClause = where;
+        String deleteWhereClause;
+        String updateWhereClause;
+        Job(String deleteWhere, String updateWhere) {
+            deleteWhereClause = deleteWhere;
+            updateWhereClause = updateWhere;
         }
         @Override
         public void run() {
-            dbh.deleteAnimalList(dbh.getWritableDatabase(), whereClause);
+            if (deleteWhereClause == null || deleteWhereClause.equals("")) {
+                Log.d("SQL", "No DELETE ");
+            } else {
+                db.delete(DBHelper.TABLE_ANIMAL, deleteWhereClause, null);
+                Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_ANIMAL + " WHERE " + deleteWhereClause + ";");
+                db.delete(DBHelper.TABLE_NEW_ANIMALS, deleteWhereClause, null);
+                Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_NEW_ANIMALS + " WHERE " + deleteWhereClause + ";");
+            }
+            if (updateWhereClause == null || updateWhereClause.equals("")) {
+                Log.d("SQL", "No UPDATE ");
+            } else {
+                ContentValues args = new ContentValues();
+                args.put(DBHelper.T_FAVORITE_ANIMALS_AVAILABLE, "N");
+                Log.d("SQL", "UPDATE " + DBHelper.TABLE_FAVORITE_ANIMALS + " SET " + DBHelper.T_FAVORITE_ANIMALS_AVAILABLE + "'N' WHERE " + updateWhereClause + ";");
+                db.update(DBHelper.TABLE_FAVORITE_ANIMALS, args, updateWhereClause, null);
+            }
         }
     }
 }
