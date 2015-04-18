@@ -84,10 +84,14 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
         String sql = sc.getSelectCommand();
         */
+        /*
         Bundle b = this.getArguments();
         String sql = b.getString("sql");
         c = dbh.getCursorForSelect(db, sql);
-
+        */
+        Bundle b = this.getArguments();
+        String cursorName = b.getString("cursorName");
+        c = dbh.getCursorByName(cursorName);
 /*
         c = dbh.getAnimalList(db);
         c.moveToPosition(1);

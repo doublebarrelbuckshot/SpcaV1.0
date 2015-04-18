@@ -115,7 +115,9 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                     int web_id = Integer.parseInt(animal.id);
                     if (db_id < web_id) {
                         if (dbh.isFavorite(db, aID)) {
-                            Log.d("ALIST", animalList.getString(0) + " favorite no longer available.");
+                            Cursor fav = dbh.getFavoriteAnimal(db, aID);
+                            fav.moveToFirst();
+                            Log.d("ALIST", animalList.getString(0) + " favorite no longer available.  Your flag:" + fav.getString(DBHelper.C_FAVORITE_ANIMAL_AVAILABLE));
                             if (updateWhere.equals(""))
                                 updateWhere += " " + DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID + " = '" + db_id + "'";
                             else
@@ -129,9 +131,8 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                                 where += " OR " + DBHelper.T_ANIMAL_ID + " = '" + db_id + "'";
                         }
                         animalList.moveToNext();
-                        if (!animalList.isAfterLast())
-                            Log.d("ALIST", animalList.getString(0));
                     } else {
+                        Log.d("ALIST", web.animals.get(i).id + " NEW!.");
                         executor.execute(new DownloadWebAdoptableDetailsTask(
                                 web,
                                 dbh,
@@ -248,7 +249,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             } else {
                 ContentValues args = new ContentValues();
                 args.put(DBHelper.T_FAVORITE_ANIMALS_AVAILABLE, "N");
-                Log.d("SQL", "UPDATE " + DBHelper.TABLE_FAVORITE_ANIMALS + " SET " + DBHelper.T_FAVORITE_ANIMALS_AVAILABLE + "'N' WHERE " + updateWhereClause + ";");
+                Log.d("SQL", "UPDATE " + DBHelper.TABLE_FAVORITE_ANIMALS + " SET " + DBHelper.T_FAVORITE_ANIMALS_AVAILABLE + "='N' WHERE " + updateWhereClause + ";");
                 db.update(DBHelper.TABLE_FAVORITE_ANIMALS, args, updateWhereClause, null);
             }
         }

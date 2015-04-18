@@ -88,12 +88,12 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, InfoPageFragment.newInstance())
                     .commit();
         } else if (position == 2) {
-            getIntent().putExtra("sender", "Favorites");
+            getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
                     .commit();
         } else if (position == 3) {
-            getIntent().putExtra("sender", "new");
+            getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
                     .commit();
@@ -169,12 +169,14 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void doDetails(String sql, int pos) {
+    public void doDetails(String cursorName, int pos) {
         Log.d("main", "SHOWING DETAILS FRAGMENT");
         Fragment frag = DetailsPageFragment.newInstance(pos);
+
         Bundle args = new Bundle();
-        args.putString("sql", sql);
+        args.putString("cursorName", cursorName);
         frag.setArguments(args);
+
         fragmentManager.beginTransaction()
                 .replace(R.id.container, frag)
                 .addToBackStack(null)
@@ -186,12 +188,7 @@ public class MainActivity extends ActionBarActivity
         Log.d("main", "je cherche");
         Fragment frag = BrowsePageFragment.newInstance();
         getIntent().putExtra("SearchCriteria", sc);
-        getIntent().putExtra("sender", "Search");
-        /*
-        Bundle args = new Bundle();
-        args.putParcelable("SearchCriteria", sc);
-        frag.setArguments(args);
-        */
+        getIntent().putExtra("sender", DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, frag)
                 .addToBackStack(null)

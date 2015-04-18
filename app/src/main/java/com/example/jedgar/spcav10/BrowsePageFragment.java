@@ -91,44 +91,66 @@ public class BrowsePageFragment extends Fragment {
         Intent intent = ((MainActivity)BrowsePageFragment.this.getActivity()).getIntent();
         Bundle data = intent.getExtras();
         String sender = data.getString("sender");
-        final String sql;
-        if (sender.equals("Favorites")) {
+        if (sender.equals(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)) {
             Log.d("Browse","Favorites");
-            sql = dbh.getFavoriteListSQL();
-            c = dbh.getFavoriteList(db);
-        } else if (sender.equals("new")) {
+            //sql = dbh.getFavoriteListSQL();
+            dbh.setCursorForFavoriteList(db);
+            c = dbh.getCursorForFavoriteList();
+        } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
-            sql = dbh.getNewAnimalsListSQL();
-            c = dbh.getNewAnimalsList(db);
+            //sql = dbh.getNewAnimalsListSQL();
+            //c = dbh.getNewAnimalsList(db);
+            dbh.setCursorForNewAnimalsList(db);
+            c = dbh.getCursorForNewAnimalsList();
         } else {
             Log.d("Browse","else");
             // do default search
             SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
-            sql = new String(sc.getSelectCommand());
-            c = dbh.getCursorForSelect(db, sql);
+            String sql = new String(sc.getSelectCommand());
+            dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
+            c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
         }
 
-            ListView list=(ListView)rootView.findViewById(R.id.browseView);
-
         // Getting adapter by passing xml data ArrayList
-        BaseAdapter adapter=new LazyAdapter();
+        ListView list = (ListView)rootView.findViewById(R.id.browseView);
+        BaseAdapter adapter = new LazyAdapter();
         list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView parent, View view,
-                                    int position, long id) {
+        // now that we have a valid cursor...
+        if (sender.equals(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)) {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view,
+                                        int position, long id) {
+                    //Log.d("SHARE", "88888888888 SHARE");
+                    //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
+                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS, position);
+                }
+            });
 
-                Log.d("SHARE", "88888888888 SHARE");
-                Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
+        } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view,
+                                        int position, long id) {
+                    //Log.d("SHARE", "88888888888 SHARE");
+                    //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
+                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NEW_ANIMALS, position);
+                }
+            });
+        } else {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view,
+                                        int position, long id) {
+                    //Log.d("SHARE", "88888888888 SHARE");
+                    //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
+                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails("Browse", position);
+                }
+            });
+        }
 
-                ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(sql, position);
 
-
-
-
-            }
-        });
         return rootView;
     }
 
@@ -153,7 +175,7 @@ public class BrowsePageFragment extends Fragment {
     }
 
     public interface OnDetailsListener {
-        public void doDetails(String sql, int pos);
+        public void doDetails(String cursorName, int pos);
     }
 
     /**

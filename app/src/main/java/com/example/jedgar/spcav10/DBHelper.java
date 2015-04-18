@@ -1,5 +1,6 @@
 package com.example.jedgar.spcav10;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +8,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by rania on 26/02/15.
@@ -60,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int C_ANIMAL_PHOTO1 = 14;
     public static final int C_ANIMAL_PHOTO2 = 15;
     public static final int C_ANIMAL_PHOTO3 = 16;
-
+    public static final int C_FAVORITE_ANIMAL_AVAILABLE = 17;
 
     // table photos
     static final String TABLE_ANIMAL_PHOTOS = "animalPhotos";
@@ -117,6 +121,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final int C_PREFERENCES_APP_STATE = 0;
 
+    static final String CURSOR_NAME_NEW_ANIMALS = "New";
+    static final String CURSOR_NAME_FAVORITE_ANIMALS = "Favorites";
+    static final String CURSOR_NAME_SEARCH_ANIMALS = "Search";
+    static HashMap<String, Cursor> cursors;
 
     private static DBHelper instance;
     public static synchronized DBHelper getInstance(Context context) {
@@ -126,6 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // See this article for more information: http://bit.ly/6LRzfx
         if (instance == null) {
             instance = new DBHelper(context);
+            cursors = new HashMap<String, Cursor>();
         }
         return instance;
     }
@@ -135,34 +144,34 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) throws SQLException {
         Log.d("DB", "In onCreate");
         String sql = "CREATE TABLE " + TABLE_ANIMAL + "(" +
-                T_ANIMAL_ID              + " INT PRIMARY KEY     NOT NULL," +
-                T_ANIMAL_SPECIES         + " TEXT    NOT NULL," +
-                T_ANIMAL_NAME            + " TEXT    NOT NULL," +
-                T_ANIMAL_AGE             + " INT     NOT NULL," +
-                T_ANIMAL_PRIMARY_BREED   + " TEXT," +
-                T_ANIMAL_SECONDARY_BREED + " TEXT," +
-                T_ANIMAL_SEX             + " char    CHECK( " + T_ANIMAL_SEX + " IN ('Male','Female', 'Unknown'))," +
-                T_ANIMAL_SIZE            + " char," +
-                T_ANIMAL_STERILE         + " char CHECK( " + T_ANIMAL_STERILE + " IN ('Y','N', 'U'))," +
-                T_ANIMAL_INTAKE_DATE     + " date," +
-                T_ANIMAL_PRIMARY_COLOR   + " TEXT," +
-                T_ANIMAL_SECONDARY_COLOR + " TEXT," +
-                T_ANIMAL_DESCRIPTION     + " TEXT," +
-                T_ANIMAL_DECLAWED        + " char CHECK( " + T_ANIMAL_DECLAWED + " IN ('Yes','No','Both','Front'))," +
-                // pour une db digne de ce nom, on crée une autre table pour les champs qui suivent.
-                T_ANIMAL_PHOTO1          + " TEXT," +
-                T_ANIMAL_PHOTO2          + " TEXT," +
-                T_ANIMAL_PHOTO3          + " TEXT" +
-                ");";
-        db.execSQL(sql);
-        Log.d("DB", TABLE_ANIMAL + " table created");
+                    T_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL," +
+                    T_ANIMAL_SPECIES + " TEXT    NOT NULL," +
+                    T_ANIMAL_NAME + " TEXT    NOT NULL," +
+                    T_ANIMAL_AGE + " INT     NOT NULL," +
+                    T_ANIMAL_PRIMARY_BREED + " TEXT," +
+                    T_ANIMAL_SECONDARY_BREED + " TEXT," +
+                    T_ANIMAL_SEX + " char    CHECK( " + T_ANIMAL_SEX + " IN ('Male','Female', 'Unknown'))," +
+                    T_ANIMAL_SIZE + " char," +
+                    T_ANIMAL_STERILE + " char CHECK( " + T_ANIMAL_STERILE + " IN ('Y','N', 'U'))," +
+                    T_ANIMAL_INTAKE_DATE + " date," +
+                    T_ANIMAL_PRIMARY_COLOR + " TEXT," +
+                    T_ANIMAL_SECONDARY_COLOR + " TEXT," +
+                    T_ANIMAL_DESCRIPTION + " TEXT," +
+                    T_ANIMAL_DECLAWED + " char CHECK( " + T_ANIMAL_DECLAWED + " IN ('Yes','No','Both','Front'))," +
+                    // pour une db digne de ce nom, on crée une autre table pour les champs qui suivent.
+                    T_ANIMAL_PHOTO1 + " TEXT," +
+                    T_ANIMAL_PHOTO2 + " TEXT," +
+                    T_ANIMAL_PHOTO3 + " TEXT" +
+                    ");";
+            db.execSQL(sql);
+            Log.d("DB", TABLE_ANIMAL + " table created");
 
-        sql = "CREATE INDEX " + TABLE_ANIMAL_SPECIES_IDX + " ON " + TABLE_ANIMAL + "('" + T_ANIMAL_SPECIES + "')";
-        db.execSQL(sql);
-        Log.d("DB", "Index " + TABLE_ANIMAL_SPECIES_IDX + " created");
+            sql = "CREATE INDEX " + TABLE_ANIMAL_SPECIES_IDX + " ON " + TABLE_ANIMAL + "('" + T_ANIMAL_SPECIES + "')";
+            db.execSQL(sql);
+            Log.d("DB", "Index " + TABLE_ANIMAL_SPECIES_IDX + " created");
 
         /* Cette table qu'on crée pour les photos dans une db qui aspire à être digne de ce nom.
         sql = "CREATE TABLE " + TABLE_ANIMAL_PHOTOS + "(" +
@@ -175,52 +184,49 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("DB", TABLE_ANIMAL_PHOTOS + " table created");
         */
 
-        sql = "CREATE TABLE " + TABLE_ADOPTABLE_SEARCH + "(" +
-                T_ADOPTABLE_SEARCH_SPECIES     + " INT    NOT NULL," +
-                //T_ADOPTABLE_SEARCH_AGE         + " INT    NOT NULL," +
-                T_ADOPTABLE_SEARCH_AGE_MIN     + " INT    NOT NULL," +
-                T_ADOPTABLE_SEARCH_AGE_MAX     + " INT    NOT NULL," +
-                T_ADOPTABLE_SEARCH_SEX         + " INT    NOT NULL" +
-                //T_ADOPTABLE_SEARCH_STERILE     + " INT    NOT NULL," +
-                //T_ADOPTABLE_SEARCH_DECLAWED    + " INT    NOT NULL" +
-                ");";
-        db.execSQL(sql);
-        Log.d("DB", TABLE_ADOPTABLE_SEARCH + " table created");
+            sql = "CREATE TABLE " + TABLE_ADOPTABLE_SEARCH + "(" +
+                    T_ADOPTABLE_SEARCH_SPECIES + " INT    NOT NULL," +
+                    //T_ADOPTABLE_SEARCH_AGE         + " INT    NOT NULL," +
+                    T_ADOPTABLE_SEARCH_AGE_MIN + " INT    NOT NULL," +
+                    T_ADOPTABLE_SEARCH_AGE_MAX + " INT    NOT NULL," +
+                    T_ADOPTABLE_SEARCH_SEX + " INT    NOT NULL" +
+                    //T_ADOPTABLE_SEARCH_STERILE     + " INT    NOT NULL," +
+                    //T_ADOPTABLE_SEARCH_DECLAWED    + " INT    NOT NULL" +
+                    ");";
+            db.execSQL(sql);
+            Log.d("DB", TABLE_ADOPTABLE_SEARCH + " table created");
 
-        sql = "CREATE TABLE " + TABLE_PREFERENCES + "(" +
-                T_PREFERENCES_APP_STATE        + " int  CHECK(" + T_PREFERENCES_APP_STATE + " IN ('New','InitialLoadDone'))," +
-                T_PREFERENCES_NOTICE_ENABLED   + " char CHECK(" + T_PREFERENCES_NOTICE_ENABLED + " IN('Y','N'))," +
-                T_PREFERENCES_NOTICE_FREQUENCY + " int  CHECK(" + T_PREFERENCES_NOTICE_FREQUENCY + " IN (1,60,1440,10080))" +
-                ");";
-        db.execSQL(sql);
-        Log.d("DB", TABLE_PREFERENCES + " table created");
-        ContentValues cv = new ContentValues();
-        cv.clear();
-        cv.put(DBHelper.T_PREFERENCES_APP_STATE, "New");
-        cv.put(DBHelper.T_PREFERENCES_NOTICE_ENABLED, "Y");
-        cv.put(DBHelper.T_PREFERENCES_NOTICE_FREQUENCY, 1440);
-        try {
+            sql = "CREATE TABLE " + TABLE_PREFERENCES + "(" +
+                    T_PREFERENCES_APP_STATE + " int  CHECK(" + T_PREFERENCES_APP_STATE + " IN ('New','InitialLoadDone'))," +
+                    T_PREFERENCES_NOTICE_ENABLED + " char CHECK(" + T_PREFERENCES_NOTICE_ENABLED + " IN('Y','N'))," +
+                    T_PREFERENCES_NOTICE_FREQUENCY + " int  CHECK(" + T_PREFERENCES_NOTICE_FREQUENCY + " IN (1,60,1440,10080))" +
+                    ");";
+            db.execSQL(sql);
+            Log.d("DB", TABLE_PREFERENCES + " table created");
+            ContentValues cv = new ContentValues();
+            cv.clear();
+            cv.put(DBHelper.T_PREFERENCES_APP_STATE, "New");
+            cv.put(DBHelper.T_PREFERENCES_NOTICE_ENABLED, "Y");
+            cv.put(DBHelper.T_PREFERENCES_NOTICE_FREQUENCY, 1440);
             db.insertOrThrow(DBHelper.TABLE_PREFERENCES, null, cv);
-        } catch (SQLException e) {
-            Log.d("DB","Default prefs init failed.  Reason:" + e.getMessage());
-        }
 
-        sql = "CREATE TABLE " + TABLE_FAVORITE_ANIMALS + "(" +
-                T_FAVORITE_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + "), " +
-                T_FAVORITE_ANIMALS_AVAILABLE + " char CHECK(" + T_FAVORITE_ANIMALS_AVAILABLE + " IN('Y','N'))" +
-                ")";
-        db.execSQL(sql);
-        Log.d("DB", TABLE_FAVORITE_ANIMALS + " table created");
+            sql = "CREATE TABLE " + TABLE_FAVORITE_ANIMALS + "(" +
+                    T_FAVORITE_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + "), " +
+                    T_FAVORITE_ANIMALS_AVAILABLE + " char CHECK(" + T_FAVORITE_ANIMALS_AVAILABLE + " IN('Y','N'))" +
+                    ")";
+            db.execSQL(sql);
+            Log.d("DB", TABLE_FAVORITE_ANIMALS + " table created");
 
-        sql = "CREATE TABLE " + TABLE_NEW_ANIMALS + "(" +
-                T_NEW_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ") ON DELETE CASCADE " +
-                ");";
-        db.execSQL(sql);
-        Log.d("DB", TABLE_NEW_ANIMALS + " table created");
+            sql = "CREATE TABLE " + TABLE_NEW_ANIMALS + "(" +
+                    T_NEW_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + ") ON DELETE CASCADE " +
+                    ");";
+            db.execSQL(sql);
+            Log.d("DB", TABLE_NEW_ANIMALS + " table created");
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+                throws SQLException {
         Log.d("DB", "In onUpgrade");
         db.execSQL("drop index if exists " + TABLE_ANIMAL_SPECIES_IDX + ";");
         db.execSQL("drop table if exists " + TABLE_ANIMAL + ";");
@@ -239,6 +245,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return c;
     }
 
+    public Cursor getCursorByName(String cursorName) {
+        return cursors.get(cursorName);
+    }
+
+    public void setCursorForSelect(SQLiteDatabase db, String sql, String cursorName) {
+        Cursor c = db.rawQuery(sql, null);
+        cursors.put(cursorName, c);
+    }
+
+    public Cursor getCursorForSelect(String cursorName) {
+        return cursors.get(cursorName);
+    }
+
     public Cursor getCursorForSelect(SQLiteDatabase db, String sql) {
         return db.rawQuery(sql, null);
     }
@@ -251,7 +270,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public void addAnimal(SQLiteDatabase db, Animal animal) {
+    public void addAnimal(SQLiteDatabase db, Animal animal) throws SQLException {
         ContentValues cv = new ContentValues();
         cv.clear();
         cv.put(DBHelper.T_ANIMAL_ID, animal.id);
@@ -281,21 +300,24 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (SQLException e) {
             animal.dump();
             Log.d("DownloadWebAnimalTask","Transaction aborted." + e.getMessage());
+            throw e;
         } finally {
             Log.d("DownloadWebAnimalTask","Transaction finished.");
             db.endTransaction();
         }
     }
 
-    public void addToFavoriteList(SQLiteDatabase db, String animalID) {
+    public void addToFavoriteList(SQLiteDatabase db, String animalID) throws SQLException {
         Log.d("DB", "FAV:Adding " + animalID);
         ContentValues cv = new ContentValues();
         cv.clear();
         cv.put(DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID, animalID);
+        cv.put(DBHelper.T_FAVORITE_ANIMALS_AVAILABLE, "Y");
         try {
             db.insertOrThrow(DBHelper.TABLE_FAVORITE_ANIMALS, null, cv);
-        } catch (SQLException sq) {
-            Log.d("DB","favorite already added");
+        } catch (SQLException e) {
+            Log.d("DB","favorite already added" + e.getMessage());
+            throw e;
         }
     }
 
@@ -332,25 +354,35 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_PHOTO1 + ", " +
                 T_ANIMAL_PHOTO2 + ", " +
                 T_ANIMAL_PHOTO3 + " " +
+                T_FAVORITE_ANIMALS_AVAILABLE + " " +
                 " FROM " + TABLE_ANIMAL + " as a, " +
                 TABLE_FAVORITE_ANIMALS + " as f " +
                 " WHERE f." + T_FAVORITE_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
 
     }
+
+    public void setCursorForFavoriteList(SQLiteDatabase db){
+        Cursor c = getFavoriteList(db);
+        cursors.put("Favorites", c);
+    }
+
+    public Cursor getCursorForFavoriteList() {
+        return cursors.get("Favorites");
+    }
+
     public Cursor getFavoriteList(SQLiteDatabase db){
         // pas testée
         String sql = getFavoriteListSQL();
-        Log.d("DB", sql);
+        //Log.d("DB", sql);
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
 
     public boolean isFavorite(SQLiteDatabase db, String animalID){
         // pas testée
-        String sql = "SELECT " + T_FAVORITE_ANIMALS_ANIMAL_ID + " FROM " + TABLE_FAVORITE_ANIMALS + " WHERE " + T_FAVORITE_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
-        Log.d("DB", sql);
-        Cursor c = db.rawQuery(sql, null);
-
+        //String sql = "SELECT " + T_FAVORITE_ANIMALS_ANIMAL_ID + " FROM " + TABLE_FAVORITE_ANIMALS + " WHERE " + T_FAVORITE_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
+        //Log.d("DB", sql);
+        Cursor c = getFavoriteAnimal(db, animalID);
         if (!(c.moveToFirst()) || c.getCount() ==0){
             return false;
         }
@@ -380,10 +412,82 @@ public class DBHelper extends SQLiteOpenHelper {
                 TABLE_NEW_ANIMALS + " as n " +
                 " WHERE n." + T_NEW_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
     }
+
     public Cursor getNewAnimalsList(SQLiteDatabase db){
         // pas testée
         String sql = getNewAnimalsListSQL();
-        Log.d("DB", sql);
+        //Log.d("DB", sql);
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public void setCursorForNewAnimalsList(SQLiteDatabase db){
+        Cursor c = getNewAnimalsList(db);
+        cursors.put(CURSOR_NAME_NEW_ANIMALS, c);
+    }
+
+    public Cursor getCursorForNewAnimalsList() {
+        return cursors.get(CURSOR_NAME_NEW_ANIMALS);
+    }
+
+    public String getAnimalSQL(String id, String[] extraFields) {
+        return  "SELECT " +
+                T_ANIMAL_ID + ", " +
+                T_ANIMAL_SPECIES + ", " +
+                T_ANIMAL_NAME + ", " +
+                T_ANIMAL_AGE + ", " +
+                T_ANIMAL_PRIMARY_BREED + ", " +
+                T_ANIMAL_SECONDARY_BREED + ", " +
+                T_ANIMAL_SEX + ", " +
+                T_ANIMAL_SIZE + ", " +
+                T_ANIMAL_STERILE + ", " +
+                T_ANIMAL_INTAKE_DATE + ", " +
+                T_ANIMAL_PRIMARY_COLOR + ", " +
+                T_ANIMAL_SECONDARY_COLOR + ", " +
+                T_ANIMAL_DESCRIPTION + ", " +
+                T_ANIMAL_DECLAWED + ", " +
+                T_ANIMAL_PHOTO1 + ", " +
+                T_ANIMAL_PHOTO2 + ", " +
+                T_ANIMAL_PHOTO3 + " " +
+            " FROM " + TABLE_ANIMAL +
+            " WHERE " + T_ANIMAL_ID + "='" + id + "';";
+    }
+
+    public Cursor getAnimal(SQLiteDatabase db, String animalID) {
+        String sql = getAnimalSQL(animalID, null);
+        //Log.d("DB", sql);
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public String getFavoriteAnimalSQL(String favID) {
+        return "SELECT a." +
+                T_ANIMAL_ID + ", " +
+                T_ANIMAL_SPECIES + ", " +
+                T_ANIMAL_NAME + ", " +
+                T_ANIMAL_AGE + ", " +
+                T_ANIMAL_PRIMARY_BREED + ", " +
+                T_ANIMAL_SECONDARY_BREED + ", " +
+                T_ANIMAL_SEX + ", " +
+                T_ANIMAL_SIZE + ", " +
+                T_ANIMAL_STERILE + ", " +
+                T_ANIMAL_INTAKE_DATE + ", " +
+                T_ANIMAL_PRIMARY_COLOR + ", " +
+                T_ANIMAL_SECONDARY_COLOR + ", " +
+                T_ANIMAL_DESCRIPTION + ", " +
+                T_ANIMAL_DECLAWED + ", " +
+                T_ANIMAL_PHOTO1 + ", " +
+                T_ANIMAL_PHOTO2 + ", " +
+                T_ANIMAL_PHOTO3 + ", " +
+                "f." + T_FAVORITE_ANIMALS_AVAILABLE + " " +
+                " FROM " + TABLE_ANIMAL + " as a, " +
+                           TABLE_FAVORITE_ANIMALS + " as f " +
+                " WHERE f." + T_FAVORITE_ANIMALS_ANIMAL_ID + "='" + favID + "' " +
+                  " AND f." + T_FAVORITE_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
+    }
+
+    public Cursor getFavoriteAnimal(SQLiteDatabase db, String favID) {
+        String sql = getFavoriteAnimalSQL(favID);
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
@@ -391,15 +495,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean isNew(SQLiteDatabase db, String animalID){
         // pas testée
         String sql = "SELECT " + T_NEW_ANIMALS_ANIMAL_ID + " FROM " + TABLE_NEW_ANIMALS + " WHERE " + T_NEW_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
-        Log.d("DB", sql);
+        //Log.d("DB", sql);
         Cursor c = db.rawQuery(sql, null);
-
         if (!(c.moveToFirst()) || c.getCount() ==0){
             return false;
         }
         return true;
     }
-    public void addToNewList(SQLiteDatabase db, String animalID){
+    public void addToNewList(SQLiteDatabase db, String animalID) throws SQLException {
         // pas testée
         Log.d("DB", "NEW:Adding " + animalID);
         ContentValues cv = new ContentValues();
@@ -409,6 +512,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.insertOrThrow(DBHelper.TABLE_NEW_ANIMALS, null, cv);
         } catch (SQLException e) {
             Log.d("DB", e.getMessage());
+            throw e;
         }
     }
 
@@ -430,38 +534,39 @@ public class DBHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public void appFirstTimeFalse(SQLiteDatabase db) {
-        String sql = "UPDATE "  + TABLE_PREFERENCES +  " SET " + T_PREFERENCES_APP_STATE + "=" + "'InitialLoadDone';";
-        try {
-            db.execSQL(sql);
-        } catch (SQLException e) {
-            Log.d("DB","UPDATE appFirstTimeFalse failed.  Reason:" + e.getMessage());
-        }
+    public void appFirstTimeFalse(SQLiteDatabase db)  throws SQLException {
+        ContentValues cv = new ContentValues();
+        cv.clear();
+        cv.put(DBHelper.T_PREFERENCES_APP_STATE, "InitialLoadDone");
+        db.update(DBHelper.TABLE_PREFERENCES, cv, null, null);
     }
 
     public static Cursor getSearchCriteria(SQLiteDatabase db) {
         return db.rawQuery("SELECT * FROM " + TABLE_ADOPTABLE_SEARCH + ";", null);
     }
 
-    public void deleteAnimalList(SQLiteDatabase db, String where) {
+    public void deleteAnimalList(SQLiteDatabase db, String where) throws SQLException {
         try {
             db.delete(TABLE_ANIMAL, where, null);
         } catch (SQLException e) {
             Log.d("DB","deleteAnimalList failed.  Reason:" + e.getMessage());
+            throw e;
         }
     }
-
+/*
     public void deleteAll(SQLiteDatabase db) {
         String sql = "DELETE FROM " + TABLE_ANIMAL + ";";
         Log.d("DB", sql);
-        db.execSQL(sql);
+        db.delete(DBHelper.TABLE_ANIMAL, null, null);
+        //db.execSQL(sql);
         sql = "DELETE FROM " + TABLE_FAVORITE_ANIMALS + ";";
         Log.d("DB", sql);
-        db.execSQL(sql);
+        db.delete(DBHelper.TABLE_FAVORITE_ANIMALS, null, null);
+        //db.execSQL(sql);
         //db.rawQuery(sql, null);
         //sql = "DELETE FROM " + TABLE_ANIMAL_PHOTOS + ";";
         //Log.d("DB", sql);
         //db.execSQL(sql);
         //db.rawQuery(sql, null);
-    }
+    }*/
 }
