@@ -68,6 +68,14 @@
     <string name="spcaPhone">(514)735-2711</string>
     <string name="spcaEmail">telephoniste@spcamontreal.com</string>
 
+    <string name="favoritesTitle">Favorites</string>
+    <string name="newTitle">New</string>
+    <string name="notificationsTitle">Notifications</string>
+    <string name="infoTitle">Info</string>
+    <string name="mainPageTitle">Main Page</string>
+
+    <string name="searchResultsTitle">Search Results</string>
+    <string name="detailsTitle">Details</string>
     <string name="helpMeFindAHome">Help me find a home!</string>
 
 

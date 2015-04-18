@@ -26,7 +26,7 @@ import java.util.Calendar;
 
 
 
-public class NotificationPageFragment extends Fragment implements OnTimeSetListener, View.OnClickListener {
+public class NotificationPageFragment extends Fragment implements OnTimeSetListener, View.OnClickListener, GetActionBarTitle {
     static final int ALARM_ID = 1234567;
     static com.example.jedgar.spcav10.Alarm alarm;
     static  View rootView;
@@ -189,6 +189,11 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
                 }
             //}
         }
+    }
+
+    @Override
+    public int getActionBarTitleId() {
+        return R.string.notificationsTitle;
     }
 }
 
