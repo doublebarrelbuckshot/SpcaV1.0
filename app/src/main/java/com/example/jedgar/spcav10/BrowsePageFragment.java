@@ -93,12 +93,15 @@ public class BrowsePageFragment extends Fragment {
         String sender = data.getString("sender");
         final String sql;
         if (sender.equals("Favorites")) {
+            Log.d("Browse","Favorites");
             sql = dbh.getFavoriteListSQL();
             c = dbh.getFavoriteList(db);
         } else if (sender.equals("new")) {
+            Log.d("Browse","New");
             sql = dbh.getNewAnimalsListSQL();
             c = dbh.getNewAnimalsList(db);
         } else {
+            Log.d("Browse","else");
             // do default search
             SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
             sql = new String(sc.getSelectCommand());

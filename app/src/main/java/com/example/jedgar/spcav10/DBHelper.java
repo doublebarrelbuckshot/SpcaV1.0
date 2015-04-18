@@ -345,6 +345,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return c;
     }
 
+    public boolean isFavorite(SQLiteDatabase db, String animalID){
+        // pas testée
+        String sql = "SELECT " + T_FAVORITE_ANIMALS_ANIMAL_ID + " FROM " + TABLE_FAVORITE_ANIMALS + " WHERE " + T_FAVORITE_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
+        Log.d("DB", sql);
+        Cursor c = db.rawQuery(sql, null);
+
+        if (!(c.moveToFirst()) || c.getCount() ==0){
+            return false;
+        }
+        return true;
+    }
+
     public String getNewAnimalsListSQL() {
         return "SELECT a." +
                 T_ANIMAL_ID + ", " +
@@ -376,9 +388,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean isFavorite(SQLiteDatabase db, String animalID){
+    public boolean isNew(SQLiteDatabase db, String animalID){
         // pas testée
-        String sql = "SELECT " + T_FAVORITE_ANIMALS_ANIMAL_ID + " FROM " + TABLE_FAVORITE_ANIMALS + " WHERE " + T_FAVORITE_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
+        String sql = "SELECT " + T_NEW_ANIMALS_ANIMAL_ID + " FROM " + TABLE_NEW_ANIMALS + " WHERE " + T_NEW_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
         Log.d("DB", sql);
         Cursor c = db.rawQuery(sql, null);
 
@@ -387,6 +399,26 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return true;
     }
+    public void addToNewList(SQLiteDatabase db, String animalID){
+        // pas testée
+        Log.d("DB", "NEW:Adding " + animalID);
+        ContentValues cv = new ContentValues();
+        cv.clear();
+        cv.put(DBHelper.T_NEW_ANIMALS_ANIMAL_ID, animalID);
+        try {
+            db.insertOrThrow(DBHelper.TABLE_NEW_ANIMALS, null, cv);
+        } catch (SQLException e) {
+            Log.d("DB", e.getMessage());
+        }
+    }
+
+    public void removeFromNewList(SQLiteDatabase db, String animalID){
+        Log.d("DB", "NEW:Removing " + animalID);
+        db.delete(DBHelper.TABLE_NEW_ANIMALS,
+                DBHelper.T_NEW_ANIMALS_ANIMAL_ID + "=" + animalID,
+                null);
+    }
+
 
     public boolean appFirstTime(SQLiteDatabase db) {
         String sql = "SELECT " + T_PREFERENCES_APP_STATE + " FROM " + TABLE_PREFERENCES + ";";
