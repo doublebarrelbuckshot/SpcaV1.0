@@ -1,7 +1,9 @@
 package com.example.jedgar.spcav10;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainPageFragment extends Fragment implements View.OnClickListener, GetActionBarTitle {
+public class MainPageFragment extends Fragment implements View.OnClickListener, GetActionBarTitle, DownloadAdoptableSearch.AsyncTaskDelegate {
 
     ProgressBar progressBar;
     TextView progressText;
@@ -224,8 +226,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         progressText = (TextView)rootView.findViewById(R.id.progressText);
         progressText.setVisibility(View.GONE);
 
-        //Cursor c = dbh.getAnimalList(db);
-
         getData();
 
         return rootView;
@@ -236,7 +236,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         //{
             Toast.makeText(getActivity(), getResources().getString(R.string.InitialDownloadMsg), Toast.LENGTH_SHORT).show();
             try {
-                new DownloadAdoptableSearch(progressBar, progressText, searchButton, getActivity()).execute();// REMOVE COMMENT FOR PROPER FUNCTIONING
+                new DownloadAdoptableSearch(getActivity(), this).execute();
             } catch (Exception e) {
                 Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
                 return;
@@ -244,17 +244,106 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             dbh.appFirstTimeFalse(db);
         }
         else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.SynchMsg), Toast.LENGTH_SHORT).show();
-            Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
-            Log.d("DownloadAdoptableSearch", "animalList size = " + animalList.getCount());
-            try {
-                Log.d("DownloadAdoptableSearch", "About to call trigger AdopdatableSearch in update mode.");
-                new DownloadAdoptableSearch(progressBar, progressText, searchButton, getActivity(), animalList).execute();
-            } catch (Exception e) {
-                Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
-                return;
+            Cursor prefs = dbh.getPreferences(db);
+            prefs.moveToFirst();
+            if (prefs.getString(DBHelper.C_PREFERENCES_SESSION_MODE).equals(DBHelper.T_PREFERENCES_SESSION_MODE_ONLINE)) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.SynchMsg), Toast.LENGTH_SHORT).show();
+                Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
+                try {
+                    Log.d("DownloadAdoptableSearch", "About to call trigger AdopdatableSearch in update mode.");
+                    new DownloadAdoptableSearch(getActivity(), animalList, this).execute();
+                } catch (Exception e) {
+                    Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
+                    return;
+                }
             }
         }
+    }
+
+    public void asyncTaskProgressUpdate(Integer... values) {
+        Integer progress = values[0];
+        switch (progress) {
+            case 0:
+                searchButton.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                progressText.setVisibility(View.VISIBLE);
+                progressBar.incrementProgressBy(1);
+                break;
+            case 1:
+                progressBar.incrementProgressBy(5);
+                progressBar.setMax(values[1] + 6);
+                break;
+            case 2:
+                progressBar.incrementProgressBy(1);
+                break;
+            default:
+                progressBar.setProgress(6 + progress);
+                break;
+        }
+    }
+
+    public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
+
+        progressBar.setVisibility(View.GONE);
+        progressText.setVisibility(View.GONE);
+        searchButton.setVisibility(View.VISIBLE);
+
+        Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
+        if (response.adoptableSearchErrorCode != 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.adoptableSearchError)
+                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            getData();
+                        }
+                    })
+                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dbh.setSessionModeOffLine(db);
+                        }
+                    });
+            builder.create();
+            builder.show();
+            return;
+        }
+
+        if (response.adoptableDetailsErrors > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.adoptableDetailsErrors)
+                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        getData();
+                    }
+                })
+                .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dbh.setSessionModeOffLine(db);
+                    }
+                });
+            builder.create();
+            builder.show();
+            return;
+        }
+
+        if (response.postJobError) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.adoptableSearchPostJobError)
+                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            getData();
+                        }
+                    })
+                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dbh.setSessionModeOffLine(db);
+                        }
+                    });
+            builder.create();
+            builder.show();
+            return;
+        }
+
+        dbh.setSessionModeOffLine(db);
     }
 
 

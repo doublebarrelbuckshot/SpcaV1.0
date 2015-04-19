@@ -59,12 +59,11 @@ public class SPCAWebAPI {
 
     public SPCAWebAPI()
     {
-        Log.d("SPCAWebAPI: ", "In SPCAWebAPI constructor.");
+        //Log.d("SPCAWebAPI: ", "In SPCAWebAPI constructor.");
         animals = new ArrayList<Animal>();
     }
 
-    public void callAdoptableSearch() throws Exception
-    {
+    public void callAdoptableSearch() throws IOException, SAXException, ParserConfigurationException {
         Log.d("SPCAWebAPI: ", "In callAdoptableSearch()");
 
         String url = "http://www.petango.com/webservices/wsadoption.asmx";
@@ -102,7 +101,7 @@ public class SPCAWebAPI {
         HttpResponse resp = client.execute(req);
         StatusLine status = resp.getStatusLine();
         if (status.getStatusCode() != 200) {
-            throw new Exception("PETANGO:HTTP error, invalid server status code: " + resp.getStatusLine());
+            throw new IOException("PETANGO:HTTP error, invalid server status code: " + resp.getStatusLine());
         }
 
         HttpEntity ent = resp.getEntity();
@@ -177,7 +176,7 @@ public class SPCAWebAPI {
     }
 
     public Animal callAdoptableDetails(int idx)
-            throws Exception
+            throws Exception, IOException, SAXException
     {
         Log.d("SPCAWebAPI: ", "In callAdoptableDetails()");
 
@@ -209,7 +208,7 @@ public class SPCAWebAPI {
         HttpResponse resp = client.execute(req);
         StatusLine status = resp.getStatusLine();
         if (status.getStatusCode() != 200) {
-            throw new Exception("PETANGO:HTTP error, invalid server status code: " + resp.getStatusLine());
+            throw new IOException("PETANGO:HTTP error, invalid server status code: " + resp.getStatusLine());
         }
 
         HttpEntity ent = resp.getEntity();

@@ -39,6 +39,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static android.app.PendingIntent.getActivity;
+
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainPageFragment.OnSearchListener, BrowsePageFragment.OnDetailsListener {
@@ -60,6 +62,9 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DBHelper dbh = DBHelper.getInstance(getApplicationContext());
+        dbh.setSessionModeOnLine(dbh.getWritableDatabase());
 
         fragmentManager = getSupportFragmentManager();
 

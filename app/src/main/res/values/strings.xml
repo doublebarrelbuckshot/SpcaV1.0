@@ -103,4 +103,14 @@
 
     <string name="share_with">Share Animal Details</string>
 
+
+    <!-- ERROR DIALOG Strings -->
+    <string name="adoptableSearchError">There was a communication error while downloading list of adoptable animals</string>
+    <string name="adoptableDetailsErrors">There was a problem getting information about some animals.  You may not have up-to date information.</string>
+    <string name="adoptableSearchPostJobError">There was a problem updating animal information.  Your animal lists may not be up-to date.</string>
+    <string name="ok">Ok</string>
+    <string name="retry">Retry</string>
+    <string name="offline">Off-line mode</string>
+
+
 </resources>
