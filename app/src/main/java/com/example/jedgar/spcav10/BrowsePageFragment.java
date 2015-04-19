@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -84,8 +87,36 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if(menu.findItem(R.id.removeAllMI) != null) {
+            if (cameFrom.equals("Favorites") || cameFrom.equals("New")) {
+                menu.findItem(R.id.removeAllMI).setVisible(true);
+                menu.findItem(R.id.removeAllMI).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (cameFrom.equals("Favorites")) {
+                            dbh.removeAllFromFavoriteList(db);
+                            Toast.makeText(getActivity(), "All Favorites Cleared", Toast.LENGTH_SHORT).show();
+
+                            return false;
+                        } else if (cameFrom.equals("New")) {
+                            dbh.removeAllFromNewList(db);
+                            Toast.makeText(getActivity(), "All New Cleared", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        return false;
+                    }
+                });
+            }
+        }
+        return;
+    }
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //dbh = new DBHelper(getActivity());
         dbh = DBHelper.getInstance(getActivity());
         db = dbh.getWritableDatabase();
@@ -101,15 +132,18 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         Bundle data = intent.getExtras();
         String sender = data.getString("sender");
         if (sender.equals(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)) {
-            Log.d("Browse","Favorites");
+            Log.d("Browse", "Favorites");
             dbh.setCursorForFavoriteList(db);
             c = dbh.getCursorForFavoriteList();
             cameFrom = "Favorites";
+            setHasOptionsMenu(true);
+
         } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
             dbh.setCursorForNewAnimalsList(db);
             c = dbh.getCursorForNewAnimalsList();
             cameFrom = "New";
+            setHasOptionsMenu(true);
         } else {
             Log.d("Browse","else");
             // do default search
@@ -173,18 +207,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-//        if(cameFrom.equals("Favorites")){
-//            ((MainActivity)activity).onSectionAttached(3);
-//
-//        }
-//        else if(cameFrom.equals("New")){
-//            ((MainActivity)activity).onSectionAttached(6);
-//
-//        }
-//        else //cameFrom equals search
-//        ((MainActivity)activity).onSectionAttached(4);
     }
+
 
     @Override
     public void onDetach() {
@@ -215,6 +239,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     public interface OnDetailsListener {
         public void doDetails(String cursorName, int pos);
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

@@ -200,8 +200,18 @@
                         android:id="@+id/animalSterilizedTV"
                         android:layout_below="@+id/animalPrimaryBreedTV"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true" />
+                        android:layout_alignParentStart="true"
+                        />
 
+                    <Button
+                        android:id="@+id/adoptBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/detailsText"
+                        android:text="@string/adopt"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
 
                 </RelativeLayout>
             </ScrollView>

@@ -22,9 +22,17 @@ public class InfoPageFragment extends Fragment implements View.OnClickListener, 
     TextView send;
     TextView fone;
 
+    String animalID = "";
     public static InfoPageFragment newInstance(){
 
         InfoPageFragment fragment = new InfoPageFragment();
+        return fragment;
+    }
+
+    public static InfoPageFragment newInstance(String animalIDT){
+
+        InfoPageFragment fragment = new InfoPageFragment();
+        fragment.animalID = animalIDT;
         return fragment;
     }
 
@@ -47,6 +55,13 @@ public class InfoPageFragment extends Fragment implements View.OnClickListener, 
         buttonSend.setOnClickListener(InfoPageFragment.this);
 
 
+
+        if(animalID.equals("")){
+            ident.setVisibility(View.GONE);
+        }
+        else{
+            ident.setText("ID: " + animalID);
+        }
 
 
         return rootView;

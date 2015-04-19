@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +44,12 @@ import static android.app.PendingIntent.getActivity;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainPageFragment.OnSearchListener, BrowsePageFragment.OnDetailsListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainPageFragment.OnSearchListener,
+        BrowsePageFragment.OnDetailsListener, DetailsPageFragment.OnAdoptListener{
 
     FragmentManager fragmentManager;
+    MenuItem mRemoveAllMI;
+
     public static boolean firstRun = true;
 
     /**
@@ -199,6 +203,10 @@ public class MainActivity extends ActionBarActivity
 //
 //    }
 
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -206,6 +214,10 @@ public class MainActivity extends ActionBarActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
+
+            mRemoveAllMI = menu.findItem(R.id.removeAllMI);
+            mRemoveAllMI.setVisible(false);
+
             restoreActionBar();
             return true;
         }
@@ -229,6 +241,8 @@ public class MainActivity extends ActionBarActivity
         restoreActionBar();
     }
 
+
+
     @Override
     public void doSearch(SearchCriteria sc) {
         Log.d("main", "je cherche");
@@ -242,6 +256,17 @@ public class MainActivity extends ActionBarActivity
         mTitle = getString(R.string.searchResultsTitle);//getString(R.string.title_section5); //notificationPage
         restoreActionBar();
 
+    }
+
+    @Override
+    public void doAdopt(String animalID) {
+        Fragment frag = InfoPageFragment.newInstance(animalID);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, frag)
+                .addToBackStack(null)
+                .commit();
+        mTitle = getString(R.string.infoTitle);//getString(R.string.title_section5); //notificationPage
+        restoreActionBar();
     }
 
 

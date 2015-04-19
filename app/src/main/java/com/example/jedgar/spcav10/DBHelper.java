@@ -431,6 +431,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return c;
     }
 
+    public void removeAllFromNewList(SQLiteDatabase db){
+        Log.d("DB", "NEW:Clear new list.");
+        db.delete(DBHelper.TABLE_NEW_ANIMALS,
+                null,
+                null);
+    }
+
     public void setCursorForNewAnimalsList(SQLiteDatabase db){
         Cursor c = getNewAnimalsList(db);
         cursors.put(CURSOR_NAME_NEW_ANIMALS, c);

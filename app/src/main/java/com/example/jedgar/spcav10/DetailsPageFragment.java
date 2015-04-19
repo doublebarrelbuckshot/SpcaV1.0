@@ -105,10 +105,6 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
         detailsPager = (ViewPager) rootView.findViewById(R.id.detailsPager);
         detailsPager.setAdapter(detailsAdapter);
         detailsPager.setCurrentItem(goToPosition);
-
-
-
-
         return rootView;
     }
 
@@ -327,6 +323,17 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                 imagesUrl.add(p3);
             }
 
+            Button adoptButton = (Button)detail.findViewById(R.id.adoptBtn);
+            adoptButton.setTag(animalID);
+            adoptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String animalIDT = (String) v.getTag();
+                    ((MainActivity)DetailsPageFragment.this.getActivity()).doAdopt(animalIDT);
+
+
+                }
+            });
 
 
             //Log.d("IMAGE PAGER", "" + imageCounterImages.size());
@@ -336,7 +343,6 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
             ViewPager imageViewPager = (ViewPager) detail.findViewById(R.id.imageViewPager);
             imageViewPager.setAdapter(imageAdapter);
             imageViewPager.setCurrentItem(0);
-
 
             /*
             Make text/description bigger if clicked
@@ -362,7 +368,6 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                     }
                 }
             });
-
 
             ImageButton btnShare = (ImageButton)detail.findViewById(R.id.btnShare);
             btnShare.setTag(R.id.animalIDTag, animalID);
@@ -423,9 +428,6 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                                         html+="<br>";
                                        html += "<p>" + getResources().getText(R.string.spcaPhone) + "</p>" +
                                         "<p>" +getResources().getText(R.string.spcaEmail) + "</p>";
-
-
-                                     //   "<a>http://www.w3schools.com</a>" +
 
                                html += "</body></html>";
 
@@ -585,6 +587,10 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
             Log.d("detail", "remove view @ " + position);
             ((ViewPager) collection).removeView((LinearLayout) view);
         }
+    }
+
+    public interface OnAdoptListener {
+        public void doAdopt(String animalID);
     }
 }
 
