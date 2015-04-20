@@ -173,7 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_PHOTO1 + " TEXT," +
                 T_ANIMAL_PHOTO2 + " TEXT," +
                 T_ANIMAL_PHOTO3 + " TEXT" +
-                ");";
+            ");";
         db.execSQL(sql);
         Log.d("DB", TABLE_ANIMAL + " table created");
 
