@@ -297,12 +297,12 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
             if(typeOfView.equals("Favorites")) {
 
-//                String isFavAvailable = c.getString(DBHelper.C_FAVORITE_ANIMAL_AVAILABLE);
-//                if(isFavAvailable.equals("Y")){
-//                    TextView adoptedOverlayTV = (TextView)vi.findViewById(R.id.adoptedOverlayTV);
-//                    adoptedOverlayTV.setVisibility(View.VISIBLE);
-//
-//                }
+                String isFavAvailable = c.getString(DBHelper.C_FAVORITE_ANIMAL_AVAILABLE);
+                if(isFavAvailable.equals("N")){
+                    TextView adoptedOverlayTV = (TextView)vi.findViewById(R.id.adoptedOverlayTV);
+                    adoptedOverlayTV.setVisibility(View.VISIBLE);
+
+                }
             }
 
             TextView animalID = (TextView) vi.findViewById(R.id.animalID);
