@@ -7,8 +7,4 @@
         app:showAsAction="ifRoom|withText"
         android:title="@string/removeAll"
         android:visible="false"/>
-
-
-
-
-    </menu>
+</menu>

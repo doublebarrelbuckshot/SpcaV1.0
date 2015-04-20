@@ -98,7 +98,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                         if (cameFrom.equals("Favorites")) {
                             dbh.removeAllFromFavoriteList(db);
                             Toast.makeText(getActivity(), "All Favorites Cleared", Toast.LENGTH_SHORT).show();
-
                             return false;
                         } else if (cameFrom.equals("New")) {
                             dbh.removeAllFromNewList(db);
@@ -132,19 +131,21 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         Intent intent = ((MainActivity)BrowsePageFragment.this.getActivity()).getIntent();
         Bundle data = intent.getExtras();
         String sender = data.getString("sender");
+        String emptyListMsg;
         if (sender.equals(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)) {
             Log.d("Browse", "Favorites");
             dbh.setCursorForFavoriteList(db);
             c = dbh.getCursorForFavoriteList();
             cameFrom = "Favorites";
             setHasOptionsMenu(true);
-
+            emptyListMsg = getString(R.string.emptyListFavoritesMSG);
         } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
             dbh.setCursorForNewAnimalsList(db);
             c = dbh.getCursorForNewAnimalsList();
             cameFrom = "New";
             setHasOptionsMenu(true);
+            emptyListMsg = getString(R.string.emptyListNewMSG);
         } else {
             Log.d("Browse","else");
             // do default search
@@ -153,10 +154,14 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
             c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
             cameFrom = "Search";
+            emptyListMsg = getString(R.string.emptyListMSG);
         }
 
         // Getting adapter by passing xml data ArrayList
-        ListView list = (ListView)rootView.findViewById(R.id.browseView);
+        ListView list = (ListView) rootView.findViewById(R.id.browseView);
+        TextView tv = (TextView)rootView.findViewById(R.id.emptyList);
+        tv.setText(emptyListMsg);
+        list.setEmptyView(tv);
         BaseAdapter adapter = new LazyAdapter(cameFrom);
         list.setAdapter(adapter);
 
@@ -168,7 +173,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         int position, long id) {
                     //Log.d("SHARE", "88888888888 SHARE");
                     //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
-                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS, position);
+                    ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS, position);
                 }
             });
 
@@ -179,7 +184,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         int position, long id) {
                     //Log.d("SHARE", "88888888888 SHARE");
                     //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
-                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NEW_ANIMALS, position);
+                    ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NEW_ANIMALS, position);
                 }
             });
         } else {
@@ -189,11 +194,10 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         int position, long id) {
                     //Log.d("SHARE", "88888888888 SHARE");
                     //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
-                    ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_SEARCH_ANIMALS, position);
+                    ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_SEARCH_ANIMALS, position);
                 }
             });
         }
-
 
         return rootView;
     }

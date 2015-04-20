@@ -170,6 +170,10 @@ Birds\n
 
     <string name="share_with">Share Animal Details</string>
 
+    <!-- Empty list Strings (Favorites, new and general browse) -->
+    <string name="emptyListFavoritesMSG">There is no animal in favorite list.</string>
+    <string name="emptyListNewMSG">No new animal.\nTry again later.</string>
+    <string name="emptyListMSG">No animal matched selection criteria.</string>
 
     <!-- ERROR DIALOG Strings -->
     <string name="adoptableSearchError">There was a communication error while downloading list of adoptable animals</string>
