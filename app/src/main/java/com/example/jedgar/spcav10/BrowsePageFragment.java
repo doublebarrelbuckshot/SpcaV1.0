@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -156,7 +157,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
         // Getting adapter by passing xml data ArrayList
         ListView list = (ListView)rootView.findViewById(R.id.browseView);
-        BaseAdapter adapter = new LazyAdapter();
+        BaseAdapter adapter = new LazyAdapter(cameFrom);
         list.setAdapter(adapter);
 
         // now that we have a valid cursor...
@@ -263,7 +264,9 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
     private class LazyAdapter extends BaseAdapter {
 
-        public LazyAdapter() {
+        String typeOfView = "";
+        public LazyAdapter(String cameFrom) {
+            this.typeOfView = cameFrom;
         }
 
         public int getCount() {
@@ -282,7 +285,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
             LinearLayout vi = (LinearLayout) inflater.inflate(R.layout.browse_row, null);
             c.moveToPosition(position);
-            String t = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
+            String animalIDStr = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
             String d = c.getString(DBHelper.C_ANIMAL_NAME);
             String p1 = c.getString(DBHelper.C_ANIMAL_PHOTO1);
             String a = c.getString(DBHelper.C_ANIMAL_AGE);
@@ -292,14 +295,63 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             }
 
 
+            if(typeOfView.equals("Favorites")) {
+
+//                String isFavAvailable = c.getString(DBHelper.C_FAVORITE_ANIMAL_AVAILABLE);
+//                if(isFavAvailable.equals("Y")){
+//                    TextView adoptedOverlayTV = (TextView)vi.findViewById(R.id.adoptedOverlayTV);
+//                    adoptedOverlayTV.setVisibility(View.VISIBLE);
+//
+//                }
+            }
+
             TextView animalID = (TextView) vi.findViewById(R.id.animalID);
             TextView animalName = (TextView) vi.findViewById(R.id.animalName);
             TextView animalAge = (TextView) vi.findViewById(R.id.animalAge);
 
-            animalID.setText("ID: "+t);
+            animalID.setText("ID: "+animalIDStr);
             animalName.setText("Name: "+d);
             animalAge.setText("Age: :"+a);
+
+
+            ImageButton btnFav = (ImageButton)vi.findViewById(R.id.btnFav);
+            boolean isFav;
+            if(dbh.isFavorite(db,animalIDStr )){
+                isFav = true;
+                btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
+            }
+            else{
+                btnFav.setImageResource(R.drawable.ic_favorite_outline_black_36dp);
+                isFav = false;
+            }
+            btnFav.setTag(R.id.favTag, Boolean.valueOf(isFav));
+            btnFav.setTag(R.id.anIDTag, animalIDStr);
+            btnFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageButton btnFav=(ImageButton)v;
+                    boolean isFav=((Boolean)btnFav.getTag(R.id.favTag)).booleanValue();
+                    String anID = (String)btnFav.getTag(R.id.anIDTag);
+
+                    if(!isFav) {
+                        btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
+                        dbh.addToFavoriteList(db, anID);
+                        // Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
+                        Log.d("ISFAV", ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID);
+                        isFav = true;
+                    }
+                    else{
+                        btnFav.setImageResource(R.drawable.ic_favorite_outline_black_36dp);
+                        isFav = false;
+                        dbh.removeFromFavoriteList(db, anID);
+                        //Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
+                        Log.d("ISFAV", ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID);
+                    }
+                    btnFav.setTag(R.id.favTag, Boolean.valueOf(isFav));
+                }
+            });
             return vi;
         }
     }
+
 }
