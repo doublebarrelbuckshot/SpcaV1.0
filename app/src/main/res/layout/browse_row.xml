@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:descendantFocusability="blocksDescendants"
-        android:background="#84b70006"
+        android:background="#850100"
         android:padding="3sp">
 
         <TextView
@@ -42,13 +42,14 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/animalImage"
             android:layout_toEndOf="@+id/animalImage"
-            android:textColor="#ff000000" />
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
+            android:textColor="#FFFFFF"
             android:id="@+id/animalAge"
             android:layout_alignBottom="@+id/animalImage"
             android:layout_toRightOf="@+id/animalImage"
@@ -59,10 +60,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
+        android:textColor="#FFFFFF"
         android:id="@+id/animalID"
-            android:layout_alignTop="@+id/animalAge"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/animalAge"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
         <ImageButton
             android:layout_width="wrap_content"

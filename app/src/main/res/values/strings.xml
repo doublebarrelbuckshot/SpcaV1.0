@@ -12,8 +12,7 @@
     <string name="title_section3">Favorites</string>
     <string name="title_section4">New</string>
     <string name="title_section5">Notifications</string>
-    <string name="title_section6">Details</string>
-    <string name="title_section7">Browse</string>
+    <string name="title_section6">Contact</string>
 
     <!-- Here are the Strings for the main_page_fragment -->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
@@ -23,20 +22,87 @@
     <string name="checkbox_female">Female</string>
     <string name="search_button">Search</string>
     <string name="more_details">Details</string>
+    <string name="loading_data">Loading Data</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="animalDescriptionTemp">Gandalf \t\t\t\t Animal ID: 25057430\n MontrealSPCA\nOnHold:No\nDateOfSurrender:20150227\nLivedWithChildren: No\n LivedWithAnimals: No\n BodyWeight: 1KG\nStage:Adoptable\n\n\n\nMontrealSPCA\nOnHold:No\nDateOfSurrender:20150227\n</string>
+
+
+    <!-- Here are the Strings for the contact_page_fragment -->
+    <string name="spcaMontreal">SPCA Montreal</string>
+    <string name="spcaAddress">5215 Jean-Talon West \nMontreal, Quebec\nH4P WX4</string>
+    <string name="spcaPhone">(514)735-2711</string>
+    <string name="spcaEmail">telephoniste@spcamontreal.com</string>
+
+
+
+
+
+    <!-- Here are the Strings for the info_page_fragment -->
+
+
+    <string name="before_adoption">BEFORE adopting, it is important to:\n
+Assess the costs of having a pet: food, visits to the veterinarian, litter, care products, and so on.\n
+Know your animal’s life expectancy and whether you have the time and energy to take care of a pet day after day.\n
+Anticipate that your new pet will need time to adapt to his or her new surroundings and understand that he could cause damages during this period.</string>
+
+    <string name="opening_hours">OPENING HOURS\n
+- Monday to Friday: 12:00 pm to 8:00 pm\n
+- Saturday and Sunday: 11:00 am to 5:00 pm</string>
+
+    <string name="adoption_fees_dogs">- Puppies – less than 8 months: $295 (if you adopt a second puppy at the same time, the adoption fees of second one are $200)\n
+- Dogs – 8 months and older: $255 (if you adopt a second dog at the same time, the adoption fees of second one are $125)\n
+- Compassionate adoption: $75 (depends on the animal’s health or age – the evaluation is made case by case)</string>
+
+    <string name="adoption_fees_cats">- Kitten – up to 5 months: $175\n
+- Cat – 5 months and more: $125\n
+- Compassionate adoption: $75 (depends on the animal’s health or age – the evaluation is made case by case)</string>
+
+    <string name="adoption_fees_exotic_animal">Rabbit\n
+- Sterilized male $60\n
+- Sterilized female $80\n
+- Non sterilized female $20\n
+Ferret $100\n
+Chinchilla $50 \n
+Guinea-Pig $15 \n
+Rat $10 \n
+Hamster $5 \n
+Hedgehog $50\n
+Mouse $5\n
+Gerbil $5\n
+Degu $5\n
+Birds\n
+- Lovebird $50\n
+- Canary $40\n
+- Cockatiel $35\n
+- Finch $15\n
+- Budgie $10\n
+- Dove $8\n
+- Turtle-dove $8</string>
+    <string name="mandatory">*These fees include sterilization (spaying or neutering), which is mandatory for all adopted dogs,\n
+        the first set of vaccines, deworming treatment, a microchip and a 15-day health guarantee (an additional fee of $20 applies to open a file).\n
+        **A $100 deposit is required for those animals who cannot be sterilized at the time of their adoption.\n
+        The deposit will be reimbursed after the animal has been sterilized.</string>
+
+
+<!--
+    <string name="animalDescriptionTemp">Gandalf \t\t\t\t Animal ID: 25057430\n
+    MontrealSPCA\nOnHold:No\nDateOfSurrender:20150227\nLivedWithChildren: No\n
+    LivedWithAnimals: No\n BodyWeight: 1KG\nStage:Adoptable\n\n\n\nMontrealSPCA\nOnHold:No\n
+    DateOfSurrender:20150227\n</string>
+    -->
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_test">testActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_browsing">Browsing</string>
-    <string name="title_activity_main_activity2">MainActivity2</string>
-    <string name="title_activity_splash_page">SplashPage</string>
+
+       <string name="hello_blank_fragment">Hello blank fragment</string>
+       <string name="title_activity_test">testActivity</string>
+
+       <string name="hello_world">Hello world!</string>
+       <string name="action_settings">Settings</string>
+       <string name="title_activity_browsing">Browsing</string>
+       <string name="title_activity_main_activity2">MainActivity2</string>
+       <string name="title_activity_splash_page">SplashPage</string>
 
     <string name="rsbAgeFrom">" between "</string>
     <string name="rsbAgeTo">" to "</string>
@@ -69,15 +135,13 @@
     <string name="description">Description</string>
     <string name="images">Images</string>
     <string name="lookAtWhatIFound">Look at what I found!</string>
-    <string name="spcaMontreal">SPCA Montreal</string>
-    <string name="spcaAddress">5215 Jean-Talon West \nMontreal, Quebec\nH4P WX4</string>
-    <string name="spcaPhone">(514)735-2711</string>
-    <string name="spcaEmail">telephoniste@spcamontreal.com</string>
+
 
     <string name="favoritesTitle">Favorites</string>
     <string name="newTitle">New</string>
     <string name="notificationsTitle">Notifications</string>
     <string name="infoTitle">Info</string>
+    <string name="contactTitle">Contact</string>
     <string name="mainPageTitle">Main Page</string>
 
     <string name="searchResultsTitle">Search Results</string>

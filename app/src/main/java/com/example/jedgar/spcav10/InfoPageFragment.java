@@ -14,14 +14,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class InfoPageFragment extends Fragment implements View.OnClickListener, GetActionBarTitle {
-
+public class InfoPageFragment extends Fragment implements /*View.OnClickListener*/ GetActionBarTitle {
+/*
     ImageButton buttonSend;
     TextView ident;
     ImageButton appel_b;
     TextView send;
     TextView fone;
-
+*/
     String animalID = "";
     public static InfoPageFragment newInstance(){
 
@@ -44,26 +44,6 @@ public class InfoPageFragment extends Fragment implements View.OnClickListener, 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.info_page_fragment, container, false);
-        // View rootView = inflater.inflate(R.layout.search_page_fragment, container, false);
-        send =(TextView)rootView.findViewById(R.id.send);
-        fone =(TextView)rootView.findViewById(R.id.fone);
-        ident =(TextView)rootView.findViewById(R.id.ident);
-        appel_b = (ImageButton)rootView.findViewById(R.id.appel_b);
-        buttonSend = (ImageButton)rootView.findViewById(R.id.buttonSend);
-
-        appel_b.setOnClickListener(InfoPageFragment.this);
-        buttonSend.setOnClickListener(InfoPageFragment.this);
-
-
-
-        if(animalID.equals("")){
-            ident.setVisibility(View.GONE);
-        }
-        else{
-            ident.setText("ID: " + animalID);
-        }
-
-
         return rootView;
     }
 
@@ -75,6 +55,8 @@ public class InfoPageFragment extends Fragment implements View.OnClickListener, 
 
         ((MainActivity)activity).onSectionAttached(2);
     }
+
+ /*
 
     @Override
     public void onClick(View v) {
@@ -101,7 +83,7 @@ public class InfoPageFragment extends Fragment implements View.OnClickListener, 
         }
 
     }
-
+*/
     @Override
     public int getActionBarTitleId() {
         return R.string.infoTitle;

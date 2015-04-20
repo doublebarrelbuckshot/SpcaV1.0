@@ -146,7 +146,7 @@ public class MainActivity extends ActionBarActivity
 
         } else if (position == 5) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, DetailsPageFragment.newInstance())
+                    .replace(R.id.container, ContactPageFragment.newInstance())
                     .addToBackStack(null)
                     .commit();
         }
@@ -260,12 +260,12 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void doAdopt(String animalID) {
-        Fragment frag = InfoPageFragment.newInstance(animalID);
+        Fragment frag = ContactPageFragment.newInstance(animalID);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, frag)
                 .addToBackStack(null)
                 .commit();
-        mTitle = getString(R.string.infoTitle);//getString(R.string.title_section5); //notificationPage
+        mTitle = getString(R.string.contactTitle);//getString(R.string.title_section5); //notificationPage
         restoreActionBar();
     }
 
