@@ -363,7 +363,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_DECLAWED + ", " +
                 T_ANIMAL_PHOTO1 + ", " +
                 T_ANIMAL_PHOTO2 + ", " +
-                T_ANIMAL_PHOTO3 + " " +
+                T_ANIMAL_PHOTO3 + ", " +
                 T_FAVORITE_ANIMALS_AVAILABLE + " " +
                 " FROM " + TABLE_ANIMAL + " as a, " +
                 TABLE_FAVORITE_ANIMALS + " as f " +
