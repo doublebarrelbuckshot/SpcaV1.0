@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:descendantFocusability="blocksDescendants"
-        android:background="#84b70006">
+        android:background="#84b70006"
+        android:padding="3sp">
 
         <TextView
             android:layout_width="wrap_content"

@@ -107,4 +107,3 @@ public class InfoPageFragment extends Fragment implements View.OnClickListener, 
         return R.string.infoTitle;
     }
 }
-
