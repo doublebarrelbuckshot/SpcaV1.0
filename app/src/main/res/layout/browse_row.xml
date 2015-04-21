@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:descendantFocusability="blocksDescendants"
-        android:background="#850100"
+        android:background="#FE1B14"
         android:padding="3sp">
 
         <TextView
@@ -42,14 +42,14 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/animalImage"
             android:layout_toEndOf="@+id/animalImage"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:id="@+id/animalAge"
             android:layout_alignBottom="@+id/animalImage"
             android:layout_toRightOf="@+id/animalImage"
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:id="@+id/animalID"
         android:layout_alignTop="@+id/animalAge"
         android:layout_alignParentRight="true"
