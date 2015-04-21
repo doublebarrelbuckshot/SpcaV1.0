@@ -28,27 +28,45 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
-    <!-- Here are the Strings for the contact_page_fragment -->
-    <string name="spcaMontreal">SPCA Montreal</string>
-    <string name="spcaAddress">5215 Jean-Talon West \nMontreal, Quebec\nH4P WX4</string>
-    <string name="spcaPhone">(514)735-2711</string>
-    <string name="spcaEmail">telephoniste@spcamontreal.com</string>
+
+
+
+    <!-- Here are the Strings for the all tabs on the info_page_fragment -->
+    <string name="general_tab">General</string>
+        <string name="b4_adoption_title">Before Adopting</string>
+        <string name="before_adoption">
+            it is important to:\n
+            - Assess the costs of having a pet: food, visits to the veterinarian, litter, care products, and so on.\n
+            - Know your animal’s life expectancy and whether you have the time and energy to take care of a pet day after day.\n
+            - Anticipate that your new pet will need time to adapt to his or her new surroundings and understand that he could cause damages during this period.
+        </string>
+
+        <string name="open_hours">Opening Hours</string>
+        <string name="opening_hours">
+            - Monday to Friday: 12:00 pm to 8:00 pm\n
+            - Saturday and Sunday: 11:00 am to 5:00 pm
+        </string>
+
+
+        <string name="fees">Fees</string>
+        <string name="mandatory">
+            The fees include sterilization (spaying or neutering), which is mandatory for all adopted dogs,\n
+            the first set of vaccines, deworming treatment, a microchip and a 15-day health guarantee (an additional fee of $20 applies to open a file).\n
+            **A $100 deposit is required for those animals who cannot be sterilized at the time of their adoption.\n
+            The deposit will be reimbursed after the animal has been sterilized.
+        </string>
+
+
+
+    <string name="dog_tab">Dogs</string>
+    <string name="cat_tab">Cats</string>
+    <string name="others_tab">Others</string>
 
 
 
 
 
-    <!-- Here are the Strings for the info_page_fragment -->
 
-
-    <string name="before_adoption">BEFORE adopting, it is important to:\n
-Assess the costs of having a pet: food, visits to the veterinarian, litter, care products, and so on.\n
-Know your animal’s life expectancy and whether you have the time and energy to take care of a pet day after day.\n
-Anticipate that your new pet will need time to adapt to his or her new surroundings and understand that he could cause damages during this period.</string>
-
-    <string name="opening_hours">OPENING HOURS\n
-- Monday to Friday: 12:00 pm to 8:00 pm\n
-- Saturday and Sunday: 11:00 am to 5:00 pm</string>
 
     <string name="adoption_fees_dogs">- Puppies – less than 8 months: $295 (if you adopt a second puppy at the same time, the adoption fees of second one are $200)\n
 - Dogs – 8 months and older: $255 (if you adopt a second dog at the same time, the adoption fees of second one are $125)\n
@@ -79,18 +97,21 @@ Birds\n
 - Budgie $10\n
 - Dove $8\n
 - Turtle-dove $8</string>
-    <string name="mandatory">*These fees include sterilization (spaying or neutering), which is mandatory for all adopted dogs,\n
-        the first set of vaccines, deworming treatment, a microchip and a 15-day health guarantee (an additional fee of $20 applies to open a file).\n
-        **A $100 deposit is required for those animals who cannot be sterilized at the time of their adoption.\n
-        The deposit will be reimbursed after the animal has been sterilized.</string>
 
 
-<!--
-    <string name="animalDescriptionTemp">Gandalf \t\t\t\t Animal ID: 25057430\n
-    MontrealSPCA\nOnHold:No\nDateOfSurrender:20150227\nLivedWithChildren: No\n
-    LivedWithAnimals: No\n BodyWeight: 1KG\nStage:Adoptable\n\n\n\nMontrealSPCA\nOnHold:No\n
-    DateOfSurrender:20150227\n</string>
-    -->
+
+
+
+
+
+
+    <!-- Here are the Strings for the contact_page_fragment -->
+    <string name="spcaMontreal">SPCA Montreal</string>
+    <string name="spcaAddress">5215 Jean-Talon West \nMontreal, Quebec\nH4P WX4</string>
+    <string name="spcaPhone">(514)735-2711</string>
+    <string name="spcaEmail">telephoniste@spcamontreal.com</string>
+
+
 
 <!-- TODO: Remove or change this placeholder text -->
 

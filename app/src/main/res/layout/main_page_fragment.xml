@@ -2,15 +2,13 @@
 <ScrollView
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
-    android:background="#850100"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/home_page"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:padding="5dp"
-        android:background="#850100">
+        android:padding="5dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -78,7 +76,6 @@
             android:layout_height="wrap_content"
             android:text="@string/age_text_view"
             android:textSize="25sp"
-            android:textColor="#FFFFFF"
             android:id = "@+id/ageTV" />
 
         <LinearLayout android:id="@+id/seekbar_placeholder"
@@ -100,14 +97,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gender_text_view"
-            android:textColor="#FFFFFF"
             android:textSize="25sp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/checkbox_female"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
             android:textAlignment="center"
             android:id="@+id/female_checkBox"
             android:layout_gravity="left|center_horizontal|right" />
@@ -116,7 +111,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/checkbox_male"
-            android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:id="@+id/male_checkBox"
             android:layout_gravity="left|center_horizontal" />
