@@ -34,7 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
                 //Le PendingIntent c'est ce qui va nous permettre d'atteindre notre deuxième Activity
                 //ActivityNotification sera donc le nom de notre seconde Activity
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, com.example.jedgar.spcav10.ActivityNotification.class), 0);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, ActivityNotification.class), 0);
                 //On définit le titre de la notification
                 String titreNotification = "SPCA  : Message important !";
                 //On définit le texte qui caractérise la notification
