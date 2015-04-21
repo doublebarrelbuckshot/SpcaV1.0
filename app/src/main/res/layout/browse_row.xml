@@ -24,7 +24,7 @@
             android:layout_alignRight="@+id/animalID"
             android:layout_alignEnd="@+id/animalID"
             android:layout_alignBottom="@+id/animalAge"
-            android:background="#46000000"
+            android:background="#FFFFFFFF"
             android:gravity="center"
             android:visibility="invisible"/>
 

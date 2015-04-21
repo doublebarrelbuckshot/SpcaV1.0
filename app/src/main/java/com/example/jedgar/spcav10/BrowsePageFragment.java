@@ -194,8 +194,14 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             emptyListMsg = getString(R.string.emptyListFavoritesMSG);
         } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
+            SearchCriteria sc = new SearchCriteria(db);
+            String sql = new String(sc.getCommandForNotifs());
+            dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
+            c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
+            /*
             dbh.setCursorForNewAnimalsList(db);
             c = dbh.getCursorForNewAnimalsList();
+            */
             cameFrom = "New";
             emptyListMsg = getString(R.string.emptyListNewMSG);
         } else {

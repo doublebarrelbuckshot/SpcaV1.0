@@ -144,9 +144,7 @@ public class SearchCriteria implements Parcelable {
         }
     }
 
-    String getSelectCommand() {
-
-        dump();
+    private String getWhereFromPrefs() {
         int reqAgeMax;
 
         if (ageMax == 0 || ageMax == 24)
@@ -155,7 +153,7 @@ public class SearchCriteria implements Parcelable {
             reqAgeMax = ageMax;
 
         String where = " WHERE " + DBHelper.T_ANIMAL_AGE + ">=" + ageMin +
-                         " AND " + DBHelper.T_ANIMAL_AGE + "<=" + reqAgeMax;
+                " AND " + DBHelper.T_ANIMAL_AGE + "<=" + reqAgeMax;
 
         boolean and_or = false;
 
@@ -196,11 +194,24 @@ public class SearchCriteria implements Parcelable {
                 where += " " + DBHelper.T_ADOPTABLE_SEARCH_SEX + "='Male'";
         }
 
+        return where;
+    }
+
+    public String getSelectCommand() {
+
+        //dump();
+        String where = getWhereFromPrefs();
 
         Log.d("SC", "SELECT * FROM " + DBHelper.TABLE_ANIMAL + where + ";");
         return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + where + ";";
     }
 
+    public String getCommandForNotifs() {
+        String where = getWhereFromPrefs();
+        where += " AND n." + DBHelper.T_NEW_ANIMALS_ANIMAL_ID + " = a." + DBHelper.T_ANIMAL_ID + ";";
+        return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + " as a, " +
+                                  DBHelper.TABLE_NEW_ANIMALS + " as n " + where;
+    }
 
     public SearchCriteria (Parcel in){
         int[] data = new int[4];

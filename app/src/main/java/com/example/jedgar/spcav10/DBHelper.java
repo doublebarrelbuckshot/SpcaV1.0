@@ -18,7 +18,7 @@ import java.util.HashSet;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "SPCA.DB";
-    static final int DB_VERSION = 35;
+    static final int DB_VERSION = 36;
 
     // table AdoptableSearch Results
     static final String TABLE_ANIMAL_MATCHED = "animalMatched";
@@ -424,6 +424,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " WHERE n." + T_NEW_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
     }
 
+
     public Cursor getNewAnimalsList(SQLiteDatabase db){
         // pas testée
         String sql = getNewAnimalsListSQL();
@@ -571,6 +572,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(DBHelper.T_PREFERENCES_SESSION_MODE, T_PREFERENCES_SESSION_MODE_ONLINE);
         db.update(DBHelper.TABLE_PREFERENCES, cv, null, null);
     }
+
     public Cursor getPreferences(SQLiteDatabase db) {
         return db.rawQuery("SELECT * FROM " + TABLE_PREFERENCES + ";", null);
     }
