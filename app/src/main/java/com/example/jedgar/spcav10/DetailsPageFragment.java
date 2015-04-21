@@ -50,18 +50,17 @@ import java.util.Date;
 /**
  * Created by a on 3/31/2015.
  */
-public class DetailsPageFragment extends Fragment{//} implements View.OnClickListener {
+public class DetailsPageFragment extends Fragment implements GetActionBarTitle{//} implements View.OnClickListener {
     DBHelper dbh;
     SQLiteDatabase db;
 
     private int goToPosition;
 
     LayoutInflater inflater;
-    int positionx;
-
+    //int positionx;
 
     Cursor c;
-    boolean parSections;
+    //boolean parSections;
 
     private ViewPager detailsPager;
     private DetailsPagerAdapter detailsAdapter;
@@ -76,7 +75,7 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         // View rootView = inflater.inflate(R.layout.details_page_fragment, container, false);
         View rootView = inflater.inflate(R.layout.details, container, false);
 
-        dbh = new DBHelper(getActivity());
+        dbh = DBHelper.getInstance(getActivity());
         db = dbh.getWritableDatabase();
 
         /*
@@ -85,10 +84,16 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
         String sql = sc.getSelectCommand();
         */
+        /*
         Bundle b = this.getArguments();
         String sql = b.getString("sql");
         c = dbh.getCursorForSelect(db, sql);
-
+        */
+        Bundle b = this.getArguments();
+        String cursorName = b.getString("cursorName");
+        Log.d("Details", "cursorName is " + cursorName);
+        c = dbh.getCursorByName(cursorName);
+        if (c == null) Log.d("Details", cursorName + " is null");
 /*
         c = dbh.getAnimalList(db);
         c.moveToPosition(1);
@@ -100,10 +105,6 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         detailsPager = (ViewPager) rootView.findViewById(R.id.detailsPager);
         detailsPager.setAdapter(detailsAdapter);
         detailsPager.setCurrentItem(goToPosition);
-
-
-
-
         return rootView;
     }
 
@@ -124,7 +125,12 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        ((MainActivity) activity).onSectionAttached(6);
+        ((MainActivity) activity).onSectionAttached(7);
+    }
+
+    @Override
+    public int getActionBarTitleId() {
+        return R.string.detailsTitle;
     }
 
     private class DetailsPagerAdapter extends android.support.v4.view.PagerAdapter {
@@ -140,6 +146,13 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             LinearLayout detailImages = (LinearLayout) detail.findViewById(R.id.detailsImageLayout);
 
             //c = dbh.getAnimalList(db);
+            if (position == goToPosition) {
+                int bookmark = c.getPosition();
+                c.moveToPosition(position);
+                String aID = c.getString(DBHelper.C_ANIMAL_ID);
+                dbh.removeFromNewList(db, aID);
+                //c.moveToPosition(bookmark);
+            }
 
             c.moveToPosition(position);
             String animalID = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
@@ -310,6 +323,17 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
                 imagesUrl.add(p3);
             }
 
+            Button adoptButton = (Button)detail.findViewById(R.id.adoptBtn);
+            adoptButton.setTag(animalID);
+            adoptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String animalIDT = (String) v.getTag();
+                    ((MainActivity)DetailsPageFragment.this.getActivity()).doAdopt(animalIDT);
+
+
+                }
+            });
 
 
             //Log.d("IMAGE PAGER", "" + imageCounterImages.size());
@@ -319,7 +343,6 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             ViewPager imageViewPager = (ViewPager) detail.findViewById(R.id.imageViewPager);
             imageViewPager.setAdapter(imageAdapter);
             imageViewPager.setCurrentItem(0);
-
 
             /*
             Make text/description bigger if clicked
@@ -346,10 +369,9 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
                 }
             });
 
-
             ImageButton btnShare = (ImageButton)detail.findViewById(R.id.btnShare);
             btnShare.setTag(R.id.animalIDTag, animalID);
-            btnShare.setTag(R.id.animalNameTag, animalID);
+            btnShare.setTag(R.id.animalNameTag, animalName);
             btnShare.setTag(R.id.animalAgeTag, animalAge);
             btnShare.setTag(R.id.animalSexTag, animalSex);
 
@@ -406,9 +428,6 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
                                         html+="<br>";
                                        html += "<p>" + getResources().getText(R.string.spcaPhone) + "</p>" +
                                         "<p>" +getResources().getText(R.string.spcaEmail) + "</p>";
-
-
-                                     //   "<a>http://www.w3schools.com</a>" +
 
                                html += "</body></html>";
 
@@ -568,6 +587,10 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
             Log.d("detail", "remove view @ " + position);
             ((ViewPager) collection).removeView((LinearLayout) view);
         }
+    }
+
+    public interface OnAdoptListener {
+        public void doAdopt(String animalID);
     }
 }
 

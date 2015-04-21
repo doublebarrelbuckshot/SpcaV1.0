@@ -33,7 +33,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/imageViewPager"
-                    android:background="#ffb70006"
+                    android:background="#FE1B14"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -108,6 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/detailRelative"
+                    android:background="#FFFFFF"
                     android:clickable="true">
 
 
@@ -155,12 +156,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Medium Text"
+                        android:text="@string/more_details"
                         android:id="@+id/detailsText"
                         android:layout_gravity="center_horizontal"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_below="@+id/animalDeclawedTV" />
+                        android:layout_below="@+id/animalDeclawedTV"/>
+
+                    <Button
+                        android:id="@+id/adoptBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/detailsText"
+                        android:text="@string/adopt"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -200,8 +212,8 @@
                         android:id="@+id/animalSterilizedTV"
                         android:layout_below="@+id/animalPrimaryBreedTV"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true" />
-
+                        android:layout_alignParentStart="true"
+                        />
 
                 </RelativeLayout>
             </ScrollView>
