@@ -53,25 +53,6 @@ import java.util.Date;
 public class DetailsPageFragment extends Fragment{//} implements View.OnClickListener {
     DBHelper dbh;
     SQLiteDatabase db;
-    public static final int C_ANIMAL_ID = 0;
-    public static final int C_ANIMAL_SPECIES = 1;
-    public static final int C_ANIMAL_NAME = 2;
-    public static final int C_ANIMAL_AGE = 3;
-    public static final int C_ANIMAL_PRIMARY_BREED = 4;
-    public static final int C_ANIMAL_SECONDARY_BREED = 5;
-    public static final int C_ANIMAL_SEX = 6;
-    public static final int C_ANIMAL_SIZE = 7;
-    public static final int C_ANIMAL_STERILE = 8;
-    public static final int C_ANIMAL_INTAKE_DATE = 9;
-    public static final int C_ANIMAL_PRIMARY_COLOR = 10;
-    public static final int C_ANIMAL_SECONDARY_COLOR = 11;
-    public static final int C_ANIMAL_DESCRIPTION = 12;
-    public static final int C_ANIMAL_DECLAWED = 13;
-    public static final int C_ANIMAL_PHOTO1 = 14;
-    public static final int C_ANIMAL_PHOTO2 = 15;
-    public static final int C_ANIMAL_PHOTO3 = 16;
-
-
 
     private int goToPosition;
 
@@ -98,9 +79,20 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
 
+        /*
+        Intent intent = ((MainActivity)DetailsPageFragment.this.getActivity()).getIntent();
+        Bundle data = intent.getExtras();
+        SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
+        String sql = sc.getSelectCommand();
+        */
+        Bundle b = this.getArguments();
+        String sql = b.getString("sql");
+        c = dbh.getCursorForSelect(db, sql);
+
+/*
         c = dbh.getAnimalList(db);
         c.moveToPosition(1);
-
+*/
 
         this.inflater = inflater;// =(LayoutInflater) getActivity().getSystemService(getActivity().getBaseContext().LAYOUT_INFLATER_SERVICE);//.getLayoutInflater();
 
@@ -147,21 +139,19 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             LinearLayout detailImages = (LinearLayout) detail.findViewById(R.id.detailsImageLayout);
 
-
-
-            c = dbh.getAnimalList(db);
+            //c = dbh.getAnimalList(db);
 
             c.moveToPosition(position);
-            String animalID = Integer.toString(c.getInt(C_ANIMAL_ID));
-            String animalName = c.getString(C_ANIMAL_NAME);
-            String animalSpecies = c.getString(C_ANIMAL_SPECIES);
-            String animalAge = c.getString(C_ANIMAL_AGE);
-            String animalSex = c.getString(C_ANIMAL_SEX);
-            String animalPrimaryBreed = c.getString(C_ANIMAL_PRIMARY_BREED);
-            String animalIntake = c.getString(C_ANIMAL_INTAKE_DATE);
-            String animalSterilized = c.getString(C_ANIMAL_STERILE);
-            String animalDeclawed = c.getString(C_ANIMAL_DECLAWED);
-            String animalDescription = c.getString(C_ANIMAL_DESCRIPTION);
+            String animalID = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
+            String animalName = c.getString(DBHelper.C_ANIMAL_NAME);
+            String animalSpecies = c.getString(DBHelper.C_ANIMAL_SPECIES);
+            String animalAge = c.getString(DBHelper.C_ANIMAL_AGE);
+            String animalSex = c.getString(DBHelper.C_ANIMAL_SEX);
+            String animalPrimaryBreed = c.getString(DBHelper.C_ANIMAL_PRIMARY_BREED);
+            String animalIntake = c.getString(DBHelper.C_ANIMAL_INTAKE_DATE);
+            String animalSterilized = c.getString(DBHelper.C_ANIMAL_STERILE);
+            String animalDeclawed = c.getString(DBHelper.C_ANIMAL_DECLAWED);
+            String animalDescription = c.getString(DBHelper.C_ANIMAL_DESCRIPTION);
 
             for(int i = 0; i<17; i++){
                 Log.d(i + "  !!!!:", c.getString(i));
@@ -305,9 +295,9 @@ public class DetailsPageFragment extends Fragment{//} implements View.OnClickLis
 
             // TextView animalBlankTV = (TextView)detail.findViewById(R.id.animalBlankTV);
             // animalBlankTV.setText(animalIntake + "blank");
-            String p1 = c.getString(C_ANIMAL_PHOTO1);
-            String p2 = c.getString(C_ANIMAL_PHOTO2);
-            String p3 = c.getString(C_ANIMAL_PHOTO3);
+            String p1 = c.getString(DBHelper.C_ANIMAL_PHOTO1);
+            String p2 = c.getString(DBHelper.C_ANIMAL_PHOTO2);
+            String p3 = c.getString(DBHelper.C_ANIMAL_PHOTO3);
 
             ArrayList<String> imagesUrl = new ArrayList<String>();
             if(!p1.equals("")) {

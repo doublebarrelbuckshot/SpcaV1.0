@@ -1,6 +1,7 @@
 package com.example.jedgar.spcav10;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -44,16 +45,11 @@ public class BrowsePageFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static SearchCriteria sc;
 
     private OnFragmentInteractionListener mListener;
     DBHelper dbh;
     SQLiteDatabase db;
-    public static final int C_ANIMAL_ID = 0;
-    public static final int C_ANIMAL_NAME = 2;
-    public static final int C_ANIMAL_PHOTO1 = 14;
-    public static final int C_ANIMAL_PHOTO2 = 15;
-    public static final int C_ANIMAL_PHOTO3 = 16;
-    public static final int C_ANIMAL_AGE = 3;
 
     private Cursor c;
     /**
@@ -67,10 +63,6 @@ public class BrowsePageFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static BrowsePageFragment newInstance() {
         BrowsePageFragment fragment = new BrowsePageFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -94,7 +86,13 @@ public class BrowsePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_browse_page, container, false);
         this.inflater = inflater;
-        c = dbh.getAnimalList(db);
+
+        Intent intent = ((MainActivity)BrowsePageFragment.this.getActivity()).getIntent();
+        Bundle data = intent.getExtras();
+        SearchCriteria sc = (SearchCriteria) data.getParcelable("SearchCriteria");
+
+        final String sql = new String(sc.getSelectCommand());
+        c = dbh.getCursorForSelect(db, sql);
         ListView list=(ListView)rootView.findViewById(R.id.browseView);
 
         // Getting adapter by passing xml data ArrayList
@@ -109,7 +107,7 @@ public class BrowsePageFragment extends Fragment {
                 Log.d("SHARE", "88888888888 SHARE");
                 Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
 
-                ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(position);
+                ((MainActivity)BrowsePageFragment.this.getActivity()).doDetails(sql, position);
 
 
 
@@ -140,7 +138,7 @@ public class BrowsePageFragment extends Fragment {
     }
 
     public interface OnDetailsListener {
-        public void doDetails(int pos);
+        public void doDetails(String sql, int pos);
     }
 
     /**
@@ -183,12 +181,10 @@ public class BrowsePageFragment extends Fragment {
 
             LinearLayout vi = (LinearLayout) inflater.inflate(R.layout.browse_row, null);
             c.moveToPosition(position);
-            String t = Integer.toString(c.getInt(C_ANIMAL_ID));
-            String d = c.getString(C_ANIMAL_NAME);
-            String p1 = c.getString(C_ANIMAL_PHOTO1);
-            String a = c.getString(C_ANIMAL_AGE);
-
-
+            String t = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
+            String d = c.getString(DBHelper.C_ANIMAL_NAME);
+            String p1 = c.getString(DBHelper.C_ANIMAL_PHOTO1);
+            String a = c.getString(DBHelper.C_ANIMAL_AGE);
             if(!p1.equals("")) {
                 ImageView animalImage = (ImageView) vi.findViewById(R.id.animalImage);
                 Picasso.with(getActivity().getApplicationContext()).load(p1).into(animalImage);
