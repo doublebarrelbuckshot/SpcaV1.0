@@ -211,4 +211,13 @@ Birds\n
     <string name="clearNew">Clear new animals list?</string>
 
 
+    <!-- Here are the Strings for notificaton -->
+    <string name="radio_heure">Chaque Heure</string>
+    <string name="radio_sixheures">Chaque 6 heures</string>
+    <string name="radio_douzeheures">Chaque 12 heures</string>
+    <string name="radio_jours">Chaque Jour</string>
+    <string name="radio_semaines">Chaque Semaine</string>
+    <string name="check_activer">Activer les notifications</string>
+    <string name="text_titre">Gestion des notification</string>
+
 </resources>
