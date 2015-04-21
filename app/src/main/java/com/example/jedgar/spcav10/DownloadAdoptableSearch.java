@@ -71,11 +71,6 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
 
     }
 
-    public DownloadAdoptableSearch(Context activity, AsyncTaskDelegate caller){
-        initCommons();
-        dbh = DBHelper.getInstance(activity);
-        delegate = caller;
-    }
 
     private void initCommons() {
         animalList = null;
@@ -98,30 +93,40 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
         animalList = panimalList;
     }
 
+    public DownloadAdoptableSearch(Context activity, AsyncTaskDelegate caller, boolean refreshReq){
+        Log.d("callAdoptableSearch", "Constructor");
+        initCommons();
+        dbh = DBHelper.getInstance(activity);
+        db = dbh.getWritableDatabase();
+        delegate = caller;
+        refresh = refreshReq;
+        animalList = null;
+    }
+
 
     @Override
     protected Void doInBackground(Void... params) {
 
         publishProgress(0);
-
+        Log.d("DownloadWebTask", "In doInBackground");
         web = new SPCAWebAPI();
         try {
             web.callAdoptableSearch();
         } catch (IOException e) {
             errorCode = 1;
-            Log.e("callAdoptableSearch", e.getMessage());
+            Log.e("DownloadWebTask", e.getMessage());
             return null;
         } catch (SAXException e) {
             errorCode = 1;
-            Log.e("callAdoptableSearch", e.getMessage());
+            Log.e("DownloadWebTask", e.getMessage());
             return null;
         } catch (ParserConfigurationException e) {
             errorCode = 1;
-            Log.e("callAdoptableSearch", e.getMessage());
+            Log.e("DownloadWebTask", e.getMessage());
             return null;
         } catch (Exception e) {
             errorCode = 1;
-            Log.e("callAdoptableSearch", e.getMessage());
+            Log.e("DownloadWebTask", e.getMessage());
             return null;
         }
 
@@ -157,7 +162,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
         } else {
             String where = "";
             String updateWhere = "";
-            Log.d("DownloadAdoptableSearch", "animalList item count is " + animalList.getCount());
+            Log.d("DownloadWebTask", "animalList item count is " + animalList.getCount());
             animalList.moveToFirst();
             if (!animalList.isAfterLast()) {
                 Log.d("ALIST", animalList.getString(0));
@@ -165,6 +170,8 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             int i = 0;
             int aidx = 0;
             while (i < size && !animalList.isAfterLast()) {
+                if ((i & 1) == 1)
+                    publishProgress(5 + (i >> 1));
                 String aID = animalList.getString(DBHelper.C_ANIMAL_ID);
                 Animal animal = web.animals.get(i);
                 if (aID.equals(animal.id)) {
@@ -240,9 +247,14 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             jobList.add(job);
             executor.execute(job);
             threadCount++;
+
+            publishProgress(new Integer[]{1, (int)(web.animals.size() + 5 + threadCount)});
         }
 
         long completed = 0;
+        int base = 0;
+        if (refresh)
+            base = web.animals.size();
         for(;completed < threadCount;) {
             try {
                 Thread.sleep(1000);
@@ -251,7 +263,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
             }
             completed = executor.getCompletedTaskCount();
             final int finalCompleted = (int)completed;
-            publishProgress(finalCompleted + 5);
+            publishProgress(base + finalCompleted + 5);
             Log.d("DownloadWebTask:", executor.getCompletedTaskCount() + " completed out of " + threadCount + " scheduled...");
         }
 

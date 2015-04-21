@@ -150,6 +150,8 @@ Birds\n
     <string name="adopt">Adopt!</string>
     <string name="removeAll">Remove All</string>
     <string name="adoptedCAPS">ADOPTED</string>
+    <string name="systemStateOutOfSync">System may be out of sync</string>
+    <string name="refresh">Refresh</string>
 
 
 
@@ -182,6 +184,10 @@ Birds\n
     <string name="ok">Ok</string>
     <string name="retry">Retry</string>
     <string name="offline">Off-line mode</string>
+
+    <!-- confirm dialog for clear all favorites and clear all new. -->
+    <string name="clearFavs">Clear favorite animals list?</string>
+    <string name="clearNew">Clear new animals list?</string>
 
 
 </resources>

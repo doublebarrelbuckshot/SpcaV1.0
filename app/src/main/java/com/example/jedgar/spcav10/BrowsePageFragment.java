@@ -1,6 +1,8 @@
 package com.example.jedgar.spcav10;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -57,6 +59,14 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     SQLiteDatabase db;
 
     private Cursor c;
+
+    BaseAdapter adapter = null;
+
+
+    public interface OnDetailsListener {
+        public void doDetails(String cursorName, int pos);
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -87,28 +97,71 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 //    }
 
 
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }*/
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if(menu.findItem(R.id.removeAllMI) != null) {
+
+        MenuItem refreshMI = menu.findItem(R.id.refresh);
+        if (refreshMI != null) {
+            refreshMI.setVisible(false);
+        }
+
+        if (menu.findItem(R.id.removeAllMI) != null) {
             if (cameFrom.equals("Favorites") || cameFrom.equals("New")) {
-                menu.findItem(R.id.removeAllMI).setVisible(true);
-                menu.findItem(R.id.removeAllMI).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (cameFrom.equals("Favorites")) {
-                            dbh.removeAllFromFavoriteList(db);
-                            Toast.makeText(getActivity(), "All Favorites Cleared", Toast.LENGTH_SHORT).show();
-                            return false;
-                        } else if (cameFrom.equals("New")) {
-                            dbh.removeAllFromNewList(db);
-                            Toast.makeText(getActivity(), "All New Cleared", Toast.LENGTH_SHORT).show();
+                if (c.getCount() > 0) {  // show bin only if there is something to clear
+                    menu.findItem(R.id.removeAllMI).setVisible(true);
+                    menu.findItem(R.id.removeAllMI).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (cameFrom.equals("Favorites")) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setMessage(R.string.clearFavs)
+                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dbh.removeAllFromFavoriteList(db);
+                                                Toast.makeText(getActivity(), "All Favorites Cleared", Toast.LENGTH_SHORT).show();
+                                                c = dbh.getFavoriteList(db);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                            }
+                                        });
+                                builder.create();
+                                builder.show();
+                            } else if (cameFrom.equals("New")) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setMessage(R.string.clearNew)
+                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dbh.removeAllFromNewList(db);
+                                                Toast.makeText(getActivity(), "All New Cleared", Toast.LENGTH_SHORT).show();
+                                                c = dbh.getNewAnimalsList(db);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                            }
+                                        });
+                                builder.create();
+                                builder.show();
+                            }
                             return false;
                         }
-                        return false;
-                    }
-                });
+                    });
+                }
             }
         }
+
+        //((MainActivity)getActivity()).displaySystemStatus(this, menu);
+
         return;
     }
 
@@ -117,7 +170,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //dbh = new DBHelper(getActivity());
         dbh = DBHelper.getInstance(getActivity());
         db = dbh.getWritableDatabase();
     }
@@ -128,6 +180,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         View rootView = inflater.inflate(R.layout.fragment_browse_page, container, false);
         this.inflater = inflater;
 
+        setHasOptionsMenu(true);
+
         Intent intent = ((MainActivity)BrowsePageFragment.this.getActivity()).getIntent();
         Bundle data = intent.getExtras();
         String sender = data.getString("sender");
@@ -137,14 +191,12 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             dbh.setCursorForFavoriteList(db);
             c = dbh.getCursorForFavoriteList();
             cameFrom = "Favorites";
-            setHasOptionsMenu(true);
             emptyListMsg = getString(R.string.emptyListFavoritesMSG);
         } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
             dbh.setCursorForNewAnimalsList(db);
             c = dbh.getCursorForNewAnimalsList();
             cameFrom = "New";
-            setHasOptionsMenu(true);
             emptyListMsg = getString(R.string.emptyListNewMSG);
         } else {
             Log.d("Browse","else");
@@ -162,7 +214,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         TextView tv = (TextView)rootView.findViewById(R.id.emptyList);
         tv.setText(emptyListMsg);
         list.setEmptyView(tv);
-        BaseAdapter adapter = new LazyAdapter(cameFrom);
+        if (adapter == null)
+            adapter = new LazyAdapter(cameFrom);
         list.setAdapter(adapter);
 
         // now that we have a valid cursor...
@@ -171,8 +224,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
-                    //Log.d("SHARE", "88888888888 SHARE");
-                    //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS, position);
                 }
             });
@@ -182,8 +233,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
-                    //Log.d("SHARE", "88888888888 SHARE");
-                    //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NEW_ANIMALS, position);
                 }
             });
@@ -192,8 +241,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
-                    //Log.d("SHARE", "88888888888 SHARE");
-                    //Toast.makeText(getActivity(), "CLICKED ITEM at position  " + position, Toast.LENGTH_SHORT).show();
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_SEARCH_ANIMALS, position);
                 }
             });
@@ -201,6 +248,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
         return rootView;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -239,11 +287,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 //    public int getActionBarTitleId() {
 //        return titleID;
 //    }
-
-
-    public interface OnDetailsListener {
-        public void doDetails(String cursorName, int pos);
-    }
 
 
 

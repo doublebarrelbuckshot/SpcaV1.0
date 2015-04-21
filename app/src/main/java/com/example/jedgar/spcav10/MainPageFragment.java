@@ -14,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,7 +32,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
     ProgressBar progressBar;
     TextView progressText;
-    DBHelper dbh;
+    DBHelper dbh = null;
     SQLiteDatabase db;
     static SearchCriteria sc;
 
@@ -46,6 +48,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     FragmentManager fragmentManager;
     boolean loaded = false;
     private boolean firstTime = true;
+    MenuItem refreshMI = null;
+    ProgressBar refreshProgressBar;
+
+    int downloadMode;
+    static final int MODE_DEFAULT = 0;
+    static final int MODE_ACTION_BAR = 1;
 
     @Override
     public int getActionBarTitleId() {
@@ -62,21 +70,24 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         sc.saveSearchCriteria(db);
-        ((MainActivity)MainPageFragment.this.getActivity()).doSearch(sc);
+        ((MainActivity) MainPageFragment.this.getActivity()).doSearch(sc);
     }
 
-    public static MainPageFragment newInstance(){
+    public static MainPageFragment newInstance() {
 
         MainPageFragment fragment = new MainPageFragment();
         return fragment;
     }
 
-    public MainPageFragment(){
+
+    public MainPageFragment() {
+        downloadMode = MODE_DEFAULT;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        Log.d("MainPageFrag", "In onCreateView");
         if (!loaded) {
             dbh = DBHelper.getInstance(getActivity());
             db = dbh.getWritableDatabase();
@@ -84,78 +95,78 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             loaded = true;
         }
 
+        setHasOptionsMenu(true);
+
         View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
 
         ageText = (TextView) rootView.findViewById(R.id.ageTV);
 
-        catButton = (ImageButton)rootView.findViewById(R.id.cat_button);
+        catButton = (ImageButton) rootView.findViewById(R.id.cat_button);
         if ((sc.species & SearchCriteria.SPECIES_CAT) == SearchCriteria.SPECIES_CAT)
             catButton.setSelected(true);
         catButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sc.searchCats();
-                if(!v.findViewById(R.id.cat_button).isSelected()){
+                if (!v.findViewById(R.id.cat_button).isSelected()) {
                     v.findViewById(R.id.cat_button).setSelected(true);
                     Toast.makeText(MainPageFragment.this.getActivity(), "cat selected!", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     v.findViewById(R.id.cat_button).setSelected(false);
                 }
             }
         });
 
-        dogButton = (ImageButton)rootView.findViewById(R.id.dog_button);
+        dogButton = (ImageButton) rootView.findViewById(R.id.dog_button);
         if ((sc.species & SearchCriteria.SPECIES_DOG) == SearchCriteria.SPECIES_DOG)
             dogButton.setSelected(true);
         dogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sc.searchDogs();
-                if(!v.findViewById(R.id.dog_button).isSelected()){
+                if (!v.findViewById(R.id.dog_button).isSelected()) {
                     v.findViewById(R.id.dog_button).setSelected(true);
                     Toast.makeText(MainPageFragment.this.getActivity(), "dog selected!", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     v.findViewById(R.id.dog_button).setSelected(false);
                 }
 
             }
         });
 
-        rabbitButton = (ImageButton)rootView.findViewById(R.id.rabbit_button);
+        rabbitButton = (ImageButton) rootView.findViewById(R.id.rabbit_button);
         if ((sc.species & SearchCriteria.SPECIES_RABBIT) == SearchCriteria.SPECIES_RABBIT)
             rabbitButton.setSelected(true);
         rabbitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sc.searchRabbits();
-                if(!v.findViewById(R.id.rabbit_button).isSelected()){
+                if (!v.findViewById(R.id.rabbit_button).isSelected()) {
                     v.findViewById(R.id.rabbit_button).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();}
-                else{
+                    Toast.makeText(MainPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();
+                } else {
                     v.findViewById(R.id.rabbit_button).setSelected(false);
                 }
             }
         });
 
-        otherButton = (ImageButton)rootView.findViewById(R.id.other_button);
+        otherButton = (ImageButton) rootView.findViewById(R.id.other_button);
         if ((sc.species & SearchCriteria.SPECIES_SMALLFURRY) == SearchCriteria.SPECIES_SMALLFURRY)
             otherButton.setSelected(true);
         otherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sc.searchSmallFurry();
-                if(!v.findViewById(R.id.other_button).isSelected()){
+                if (!v.findViewById(R.id.other_button).isSelected()) {
                     v.findViewById(R.id.other_button).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "others selected!", Toast.LENGTH_SHORT).show();}
-                else{
+                    Toast.makeText(MainPageFragment.this.getActivity(), "others selected!", Toast.LENGTH_SHORT).show();
+                } else {
                     v.findViewById(R.id.other_button).setSelected(false);
                 }
             }
         });
 
-        searchButton = (Button)rootView.findViewById(R.id.search_button);
+        searchButton = (Button) rootView.findViewById(R.id.search_button);
         searchButton.setOnClickListener(this);
 
         // create RangeSeekBar as Integer range between 20 and 75
@@ -177,8 +188,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                             getResources().getString(R.string.rsbAgeFrom) + minValue +
                             getResources().getString(R.string.rsbIllimited));
                     sc.setAgeMax(0);
-                }
-                else {
+                } else {
                     ageText.setText(getResources().getString(R.string.age_text_view) +
                             getResources().getString(R.string.rsbAgeFrom) + minValue +
                             getResources().getString(R.string.rsbAgeTo) + maxValue +
@@ -191,7 +201,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.seekbar_placeholder);
         layout.addView(seekBar);
 
-        maleCheckBox = (CheckBox)rootView.findViewById(R.id.male_checkBox);
+        maleCheckBox = (CheckBox) rootView.findViewById(R.id.male_checkBox);
         if ((sc.sex & SearchCriteria.SEX_MALE) == SearchCriteria.SEX_MALE)
             maleCheckBox.setChecked(true);
         else
@@ -203,10 +213,10 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             }
         });
 
-        femaleCheckBox = (CheckBox)rootView.findViewById(R.id.female_checkBox);
+        femaleCheckBox = (CheckBox) rootView.findViewById(R.id.female_checkBox);
         if ((sc.sex & SearchCriteria.SEX_FEMALE) == SearchCriteria.SEX_FEMALE) {
             femaleCheckBox.setChecked(true);
-        }else {
+        } else {
             femaleCheckBox.setChecked(false);
         }
         femaleCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -218,35 +228,165 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         ageText.setText(getResources().getString(R.string.age_text_view) +
                 getResources().getString(R.string.rsbAgeFrom) + seekBar.getSelectedMinValue() +
-                getResources().getString(R.string.rsbAgeTo)+ seekBar.getSelectedMaxValue() +
+                getResources().getString(R.string.rsbAgeTo) + seekBar.getSelectedMaxValue() +
                 getResources().getString(R.string.rsbAgeYears));
 
-        progressBar = (ProgressBar)rootView.findViewById(R.id.webProgressBar);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.webProgressBar);
         progressBar.setVisibility(View.GONE);
-        progressText = (TextView)rootView.findViewById(R.id.progressText);
+        progressText = (TextView) rootView.findViewById(R.id.progressText);
         progressText.setVisibility(View.GONE);
 
-        getData();
+        getData(false);
 
         return rootView;
     }
 
-    public void getData(){//View v) {
+    public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
+
+        Log.d("MAIN", "In asyncTaskFinished");
+
+        /*
+        if (downloadMode == MODE_ACTION_BAR) {
+            refreshProgressBar.setVisibility(View.INVISIBLE);
+            refreshMI.setVisible(true);
+        }
+        else {*/
+            progressBar.setVisibility(View.GONE);
+            progressText.setVisibility(View.GONE);
+            searchButton.setVisibility(View.VISIBLE);
+        //}
+
+        Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
+        if (response.adoptableSearchErrorCode != 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.adoptableSearchError)
+                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            getData(true);
+                        }
+                    })
+                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dbh.setSessionModeOffLine(db);
+                        }
+                    });
+            builder.create();
+            builder.show();
+            ((MainActivity) getActivity()).setSystemStatus(1);
+            return;
+        }
+
+        if (response.adoptableDetailsErrors > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.adoptableDetailsErrors)
+                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            getData(true);
+                        }
+                    })
+                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dbh.setSessionModeOffLine(db);
+                        }
+                    });
+            builder.create();
+            builder.show();
+            ((MainActivity) getActivity()).setSystemStatus(1);
+            return;
+        }
+
+        if (response.postJobError) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.adoptableSearchPostJobError)
+                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            getData(true);
+                        }
+                    })
+                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dbh.setSessionModeOffLine(db);
+                        }
+                    });
+            builder.create();
+            builder.show();
+            ((MainActivity) getActivity()).setSystemStatus(1);
+            return;
+        }
+
+        downloadMode = MODE_DEFAULT;
+        // unset out of sync state.
+        ((MainActivity) getActivity()).setSystemStatus(0);
+
+        dbh.setSessionModeOffLine(db);
+    }
+
+    public void asyncTaskProgressUpdate(Integer... values) {
+        Log.d("MAIN", "In asyncTaskProgressUpdate");
+        Integer progress = values[0];
+        /*
+        if (downloadMode == MODE_ACTION_BAR) {
+            switch (progress) {
+                case 0:
+                    refreshMI.setVisible(false);
+                    refreshProgressBar.setVisibility(View.VISIBLE);
+                    //invalidateOptionsMenu();
+                    //refreshProgressBar.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+        }
+        else {*/
+            switch (progress) {
+                case 0:
+                    searchButton.setVisibility(View.GONE);
+                    progressBar.setProgress(0);
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressBar.incrementProgressBy(1);
+                    progressText.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    progressBar.incrementProgressBy(5);
+                    progressBar.setMax(values[1] + 6);
+                    break;
+                case 2:
+                    progressBar.incrementProgressBy(1);
+                    break;
+                default:
+                    progressBar.setProgress(6 + progress);
+                    break;
+            }
+        //}
+    }
+
+    public void getData(boolean refresh) {
+
+        /*
+        if (dbh == null) {
+            dbh = DBHelper.getInstance(getActivity());
+            db = dbh.getWritableDatabase();
+        }
+        */
+
         if (dbh.appFirstTime(db)) {
-        //{
             Toast.makeText(getActivity(), getResources().getString(R.string.InitialDownloadMsg), Toast.LENGTH_SHORT).show();
             try {
-                new DownloadAdoptableSearch(getActivity(), this).execute();
+                new DownloadAdoptableSearch(getActivity(), this, false).execute();
             } catch (Exception e) {
                 Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
                 return;
             }
             dbh.appFirstTimeFalse(db);
-        }
-        else {
+        } else {
+            dbh.setSessionModeOnLineIfStart(db);
             Cursor prefs = dbh.getPreferences(db);
             prefs.moveToFirst();
-            if (prefs.getString(DBHelper.C_PREFERENCES_SESSION_MODE).equals(DBHelper.T_PREFERENCES_SESSION_MODE_ONLINE)) {
+            if (refresh || prefs.getString(DBHelper.C_PREFERENCES_SESSION_MODE).equals(DBHelper.T_PREFERENCES_SESSION_MODE_ONLINE)) {
                 Toast.makeText(getActivity(), getResources().getString(R.string.SynchMsg), Toast.LENGTH_SHORT).show();
                 Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
                 try {
@@ -260,97 +400,78 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public void asyncTaskProgressUpdate(Integer... values) {
-        Integer progress = values[0];
-        switch (progress) {
-            case 0:
-                searchButton.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                progressText.setVisibility(View.VISIBLE);
-                progressBar.incrementProgressBy(1);
-                break;
-            case 1:
-                progressBar.incrementProgressBy(5);
-                progressBar.setMax(values[1] + 6);
-                break;
-            case 2:
-                progressBar.incrementProgressBy(1);
-                break;
-            default:
-                progressBar.setProgress(6 + progress);
-                break;
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+
+        Log.d("MainPageFrag", "In onPrepareOptionsMenu");
+
+        refreshMI = menu.findItem(R.id.refresh);
+        if (refreshMI != null) {
+            refreshMI.setVisible(true);
+            refreshMI.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    refreshMI.setVisible(false);
+                    downloadMode = MODE_ACTION_BAR;
+                    getData(true);
+                    return false;
+                }
+            });
+
+            //refreshProgressBar = (ProgressBar)menu.findItem(R.id.menuProgressBar);
         }
+
+
+        //menu.findItem(R.id.refresh).setVisible(false);
+
+        //((MainActivity)getActivity()).displaySystemStatus(this, menu);
+
+        return;
     }
-
-    public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
-
-        progressBar.setVisibility(View.GONE);
-        progressText.setVisibility(View.GONE);
-        searchButton.setVisibility(View.VISIBLE);
-
-        Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
-        if (response.adoptableSearchErrorCode != 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.adoptableSearchError)
-                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            getData();
-                        }
-                    })
-                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dbh.setSessionModeOffLine(db);
-                        }
-                    });
-            builder.create();
-            builder.show();
-            return;
-        }
-
-        if (response.adoptableDetailsErrors > 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.adoptableDetailsErrors)
-                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        getData();
-                    }
-                })
-                .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dbh.setSessionModeOffLine(db);
-                    }
-                });
-            builder.create();
-            builder.show();
-            return;
-        }
-
-        if (response.postJobError) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.adoptableSearchPostJobError)
-                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            getData();
-                        }
-                    })
-                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dbh.setSessionModeOffLine(db);
-                        }
-                    });
-            builder.create();
-            builder.show();
-            return;
-        }
-
-        dbh.setSessionModeOffLine(db);
-    }
-
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        ((MainActivity)activity).onSectionAttached(1);
+        Log.d("MainPageFrag", "In onAttach()");
+
+        ((MainActivity) activity).onSectionAttached(1);
     }
+
+/*
+    public class ActionDownloadDelegate implements DownloadAdoptableSearch.AsyncTaskDelegate {
+
+        public ActionDownloadDelegate() {
+
+        }
+        @Override
+        public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
+            //mProgressBar.setVisibility(View.INVISIBLE);
+            Log.d("MAIN", "In asyncTaskFinished");
+            refreshMI.setVisible(true);
+            refreshProgressBar.setVisibility(View.GONE);
+            //invalidateOptionsMenu();
+        }
+
+        @Override
+        public void asyncTaskProgressUpdate(Integer... values) {
+            Log.d("MAIN", "In asyncTaskProgressUpdate");
+            Integer progress = values[0];
+            switch (progress) {
+                case 0:
+                    refreshMI.setVisible(false);
+                    refreshProgressBar.setVisibility(View.VISIBLE);
+                    //invalidateOptionsMenu();
+                    //refreshProgressBar.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }*/
 }

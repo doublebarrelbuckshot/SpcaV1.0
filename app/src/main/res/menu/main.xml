@@ -3,8 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item
         android:id="@+id/removeAllMI"
-        android:icon="@android:drawable/ic_delete"
+        android:icon="@android:drawable/ic_menu_delete"
         app:showAsAction="ifRoom|withText"
         android:title="@string/removeAll"
         android:visible="false"/>
+
+    <item
+        android:id="@+id/statusSyncError"
+        android:icon="@android:drawable/ic_dialog_alert"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/systemStateOutOfSync"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_action_refresh"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/refresh"
+        android:visible="true"/>
+
+    <!--
+        <item
+        android:id="@+id/menuProgressBar"
+        android:actionLayout="@android:layout/action_progress"
+        android:menuCategory="container"
+        android:showAsAction="always"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:visibility="invisible"
+        android:id="@+id/menuProgressBar"/>
+    -->
 </menu>

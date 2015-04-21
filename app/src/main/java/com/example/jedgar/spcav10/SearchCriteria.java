@@ -149,7 +149,7 @@ public class SearchCriteria implements Parcelable {
         dump();
         int reqAgeMax;
 
-        if (ageMax == 0)
+        if (ageMax == 0 || ageMax == 24)
             reqAgeMax = 1000;
         else
             reqAgeMax = ageMax;

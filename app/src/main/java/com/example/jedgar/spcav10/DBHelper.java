@@ -130,6 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String CURSOR_NAME_FAVORITE_ANIMALS = "Favorites";
     static final String CURSOR_NAME_SEARCH_ANIMALS = "Search";
     static HashMap<String, Cursor> cursors;
+    static boolean firstTimeIn = true;
 
     private static DBHelper instance;
     private static Context appcontext;
@@ -556,6 +557,13 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.clear();
         cv.put(DBHelper.T_PREFERENCES_SESSION_MODE, T_PREFERENCES_SESSION_MODE_OFFLINE);
         db.update(DBHelper.TABLE_PREFERENCES, cv, null, null);
+    }
+
+    public void setSessionModeOnLineIfStart(SQLiteDatabase db) {
+        if (firstTimeIn) {
+            setSessionModeOnLine(db);
+            firstTimeIn = false;
+        }
     }
     public void setSessionModeOnLine(SQLiteDatabase db) {
         ContentValues cv = new ContentValues();
