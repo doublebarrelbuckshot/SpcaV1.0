@@ -2,8 +2,11 @@ package com.example.jedgar.spcav10;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
@@ -11,28 +14,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.TimePicker;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Calendar;
 
+import java.util.Calendar;
 
 
 
 public class NotificationPageFragment extends Fragment implements OnTimeSetListener, View.OnClickListener, GetActionBarTitle {
     static final int ALARM_ID = 1234567;
-    static com.example.jedgar.spcav10.Alarm alarm;
-    static  View rootView;
-    static CheckBox ck_alarm;
-    static AlarmManager am;
+    static Alarm alarm;
+    View rootView;
+    CheckBox ck_alarm;
+    //long interval=MainActivity.interv;
+
+    RadioButton ck_heure, ck_sixheures, ck_douzeheures, ck_jours, ck_semaines;
+
+    AlarmManager alarmManager;
     PendingIntent pendingintent;
+
     public static NotificationPageFragment newInstance(){
 
         NotificationPageFragment fragment = new NotificationPageFragment();
@@ -45,16 +50,30 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.notification_page_fragment, container, false);
-        ck_alarm = (CheckBox)rootView.findViewById(R.id.heure);
+
+        ck_alarm = (CheckBox)rootView.findViewById(R.id.activer);
         ck_alarm.setOnClickListener(NotificationPageFragment.this);
 
-        //Chargement des informations du reveil
-        charger();
-        //Affichage
-        //CheckBox ck_alarm = (CheckBox)rootView.findViewById(R.id.heure);
-        affichage();
-        //Planification
-        planifierAlarm();
+        ck_heure = (RadioButton)rootView.findViewById(R.id.heure);
+        ck_heure.setOnClickListener(NotificationPageFragment.this);
+
+
+        ck_sixheures = (RadioButton)rootView.findViewById(R.id.sixheures);
+        ck_sixheures.setOnClickListener(NotificationPageFragment.this);
+
+        ck_douzeheures = (RadioButton)rootView.findViewById(R.id.douzeheures);
+        ck_douzeheures.setOnClickListener(NotificationPageFragment.this);
+
+        ck_jours = (RadioButton)rootView.findViewById(R.id.jours);
+        ck_jours.setOnClickListener(NotificationPageFragment.this);
+
+        ck_semaines = (RadioButton)rootView.findViewById(R.id.semaines);
+        ck_semaines.setOnClickListener(NotificationPageFragment.this);
+
+
+        etatAvant();
+
+
         return rootView;
     }
 
@@ -76,118 +95,152 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
         t.hour = hourOfDay;
         t.minute = minute;
         alarm.setHeure(t);
-        affichage();
-        planifierAlarm();
     }
-
-    /*
-     * Chargement des informations du reveil.
-     * Ici pour la sauvegarde on a simplement déserialiser l'objet Alarm.
-     */
-    public void charger(){
-        alarm = null;
-        try {
-            ObjectInputStream alarmOIS= new ObjectInputStream(this.getActivity().openFileInput("alarm.serial"));
-            alarm = (com.example.jedgar.spcav10.Alarm) alarmOIS.readObject();
-            alarmOIS.close();
-
-        }
-        catch(FileNotFoundException fnfe){
-            alarm = new com.example.jedgar.spcav10.Alarm();
-            alarm.setActive(true);
-            Time t = new Time();
-            t.hour = 7;
-            t.minute = 30;
-            alarm.setHeure(t);
-
-        }
-        catch(IOException ioe) {
-            ioe.printStackTrace();
-        }
-        catch(ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-        }
-    }
-
-
-    public static void affichage() {
-        //Ici on a juste voulu créer un affichage de l'heure qui soit au format hh:mm.
-
-        String heureReveil = "";
-        heureReveil += alarm.getHeure().hour >10 ? alarm.getHeure().hour : "0" + alarm.getHeure().hour;
-        heureReveil +=":";
-        heureReveil += alarm.getHeure().minute >10 ? alarm.getHeure().minute : "0" + alarm.getHeure().minute;
-        ck_alarm = (CheckBox)rootView.findViewById(R.id.heure);
-        ck_alarm.setText(heureReveil);
-        ck_alarm.setChecked(alarm.isActive());
-    }
-
-
     /*
    * Job de planification du reveil
    */
     public void planifierAlarm() {
-        //Récupération de l'instance du service AlarmManager.
-         am = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
-        //On instancie l'Intent qui va être appelé au moment du reveil.
-        Intent intent = new Intent(this.getActivity(), com.example.jedgar.spcav10.AlarmReceiver.class);
+        int val=(int) (MainActivity.interval/1000) ;
 
-        //On créer le pending Intent qui identifie l'Intent de reveil avec un ID et un/des flag(s)
-         pendingintent = PendingIntent.getBroadcast(this.getActivity(), ALARM_ID, intent, 0);
-
-        //On annule l'alarm pour replanifier si besoin
-        am.cancel(pendingintent);
-
-        //La on va déclencher un calcul pour connaitre le temps qui nous sépare du prochain reveil.
+        Intent intent = new Intent(this.getActivity(), AlarmReceiver.class);
+        pendingintent = PendingIntent.getBroadcast(this.getActivity(), ALARM_ID, intent, 0);
+        //pendingintent = PendingIntent.getService(this.getActivity(), 0, intent, 0);
+        alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingintent);
         Calendar reveil  = Calendar.getInstance();
-        reveil.set(Calendar.HOUR_OF_DAY, alarm.getHeure().hour);
-        reveil.set(Calendar.MINUTE, alarm.getHeure().minute);
-        if(reveil.compareTo(Calendar.getInstance()) == -1)
-            reveil.add(Calendar.DAY_OF_YEAR, 1);
+        reveil.setTimeInMillis(System.currentTimeMillis());
+        reveil.add(Calendar.SECOND, val);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, reveil.getTimeInMillis(), MainActivity.interval, pendingintent);
 
-        Calendar cal = Calendar.getInstance();
-        reveil.set(Calendar.SECOND, 0);
-        cal.set(Calendar.SECOND, 0);
-        long diff = reveil.getTimeInMillis() - cal.getTimeInMillis();
-
-        //On ajoute le reveil au service de l'AlarmManager
-        am.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis() + diff, pendingintent);
-        Toast.makeText(this.getActivity(), "Alarme programmée; le " +
-                reveil.get(Calendar.DAY_OF_MONTH) + " à " +
-                reveil.get(Calendar.HOUR_OF_DAY) + ":" + +
-                reveil.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
     }
-    /*
-    * Sauvegarde des informations du reveil
-    */
-    public void sauver(){
-        try {
-            ObjectOutputStream alarmOOS= new ObjectOutputStream(this.getActivity().openFileOutput("alarm.serial",this.getActivity(). MODE_WORLD_WRITEABLE));
-            alarmOOS.writeObject(alarm);
-            alarmOOS.flush();
-            alarmOOS.close();
+    public void cancel(){
+        alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingintent);
+        Toast.makeText(this.getActivity(), "Notification desactivée!!!!!!!.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void message(){
+        if(ck_heure.isChecked()){
+            Toast.makeText(this.getActivity(),"Notification activée chaque heure!", Toast.LENGTH_LONG).show();
+        }else if(ck_sixheures.isChecked()){
+            Toast.makeText(this.getActivity(),"Notification activée  chaque six heures!", Toast.LENGTH_LONG).show();
+        }else if(ck_douzeheures.isChecked()){
+            Toast.makeText(this.getActivity(),"Notification activée chaque douze heures!", Toast.LENGTH_LONG).show();
+        }else if((ck_jours.isChecked())){
+            Toast.makeText(this.getActivity(),"Notification activée chaque jour!", Toast.LENGTH_LONG).show();
+        }else if((ck_semaines.isChecked())){
+            Toast.makeText(this.getActivity(),"Notification activée chaque semaine!", Toast.LENGTH_LONG).show();
         }
-        catch(IOException ioe) {
-            ioe.printStackTrace();
+    }
+    public void optionActive(){
+        // if(MainActivity.interval==AlarmManager.INTERVAL_HOUR){
+        if(MainActivity.interval==((AlarmManager.INTERVAL_HOUR)/60)/2){
+            ck_heure.setChecked(true);
+        }else if(MainActivity.interval==6*(AlarmManager.INTERVAL_HOUR)){
+            ck_sixheures.setChecked(true);
+        }else if( MainActivity.interval==AlarmManager.INTERVAL_HALF_DAY){
+            ck_douzeheures.setChecked(true);
+        }else if(MainActivity.interval==AlarmManager.INTERVAL_DAY){
+            ck_jours.setChecked(true);
+        }else if(MainActivity.interval==(7*(AlarmManager.INTERVAL_DAY))){
+            ck_semaines.setChecked(true);
         }
+    }
+
+    public void optionVisible(){
+        ck_heure.setVisibility(View.VISIBLE);
+        ck_sixheures.setVisibility(View.VISIBLE);
+        ck_douzeheures.setVisibility(View.VISIBLE);
+        ck_jours.setVisibility(View.VISIBLE);
+        ck_semaines.setVisibility(View.VISIBLE);
+        ck_alarm.setChecked(true);
+    }
+    public void optionInvisible(){
+        ck_heure.setVisibility(View.INVISIBLE);
+        ck_sixheures.setVisibility(View.INVISIBLE);
+        ck_douzeheures.setVisibility(View.INVISIBLE);
+        ck_jours.setVisibility(View.INVISIBLE);
+        ck_semaines.setVisibility(View.INVISIBLE);
+        ck_alarm.setChecked(false);
+    }
+    public void etatAvant(){
+        //Toast.makeText(this.getActivity(), "Intervalll="+ MainActivity.interval, Toast.LENGTH_SHORT).show();
+        if(MainActivity.interval==0) {
+            //MainActivity.interval=0;
+            optionInvisible();
+            cancel();
+        }else{
+            optionVisible();
+            optionActive();
+            planifierAlarm();
+            message();
+
+        }
+
     }
 
 
     @Override
     public void onClick(View v) {
+
         if (v.getId() == R.id.heure) {
-            //Si on active l'alarm alors on veut choisir l'heure.
-           // if(!(alarm.getHeure().hour==Calendar.HOUR_OF_DAY)) {
-                if (ck_alarm.isChecked()) {
-                    TimePickerDialog dialog = new TimePickerDialog(getActivity(), this, alarm.getHeure().hour, alarm.getHeure().minute, true);
-                    dialog.show();
-                    //On replanifie l'alarme.
+            //juste pour tester j<ai fais un interval de 30 sec
+            MainActivity.interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
+            //interval=AlarmManager.INTERVAL_HOUR;
+            planifierAlarm();
+            message();
+
+        }else if (v.getId() == R.id.sixheures) {
+            MainActivity.interval=6*(AlarmManager.INTERVAL_HOUR);
+            //interval=(60*1000);
+            planifierAlarm();
+            message();
+
+        }else if (v.getId() == R.id.douzeheures){
+            MainActivity.interval=AlarmManager.INTERVAL_HALF_DAY;
+            //interval=AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+            planifierAlarm();
+            message();
+
+        }else if (v.getId() == R.id.jours){
+            MainActivity.interval=AlarmManager.INTERVAL_DAY;
+            planifierAlarm();
+            message();
+
+        }else if(v.getId() == R.id.semaines){
+            MainActivity.interval=7*(AlarmManager.INTERVAL_DAY);
+            planifierAlarm();
+            message();
+
+        }else if(v.getId() == R.id.activer) {
+
+            if (ck_alarm.isChecked()) {
+                //Toast.makeText(this.getActivity(), "ischecked", Toast.LENGTH_SHORT).show();
+                ck_heure.setVisibility(View.VISIBLE);
+                ck_sixheures.setVisibility(View.VISIBLE);
+                ck_douzeheures.setVisibility(View.VISIBLE);
+                ck_jours.setVisibility(View.VISIBLE);
+                ck_semaines.setVisibility(View.VISIBLE);
+                if(MainActivity.interval!=0){
                     planifierAlarm();
-                } else {
-                    am.cancel(pendingintent);
-                    Toast.makeText(this.getActivity(), "Alarme desactivé!!!!!!!.", Toast.LENGTH_SHORT).show();
+                    message();
                 }
-            //}
+
+            } else {
+               // Toast.makeText(this.getActivity(), "isnot", Toast.LENGTH_SHORT).show();
+                MainActivity.interval=1000;
+                planifierAlarm();
+                cancel();
+                MainActivity.interval=0;
+                ck_heure.setVisibility(View.INVISIBLE);
+                ck_sixheures.setVisibility(View.INVISIBLE);
+                ck_douzeheures.setVisibility(View.INVISIBLE);
+                ck_jours.setVisibility(View.INVISIBLE);
+                ck_semaines.setVisibility(View.INVISIBLE);
+                ck_alarm.setChecked(false);
+
+
+            }
         }
     }
 

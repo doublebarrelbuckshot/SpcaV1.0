@@ -55,10 +55,10 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     private static SearchCriteria sc;
 
     private OnFragmentInteractionListener mListener;
-    DBHelper dbh;
-    SQLiteDatabase db;
+     DBHelper dbh;
+     static SQLiteDatabase db;
 
-    private Cursor c;
+    private  Cursor c;
 
     BaseAdapter adapter = null;
 
@@ -198,6 +198,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             String sql = new String(sc.getCommandForNotifs());
             dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
             c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
+
             /*
             dbh.setCursorForNewAnimalsList(db);
             c = dbh.getCursorForNewAnimalsList();
@@ -254,6 +255,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
         return rootView;
     }
+
 
 
     // TODO: Rename method, update argument and hook method into UI event

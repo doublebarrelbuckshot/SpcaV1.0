@@ -27,6 +27,7 @@ public class MainActivity extends ActionBarActivity
     MenuItem mRemoveAllMI;
     MenuItem mSystemStatus;
     MenuItem mRefresh = null;
+    static long interval;
     int systemStatusCode = 0;
     int sectionAttached = 0;
     static Activity mainActivity = null;
