@@ -3,6 +3,7 @@
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/home_page"
         android:layout_width="match_parent"
@@ -15,7 +16,6 @@
             android:layout_height="130dp"
             android:id="@+id/important_message"
             android:layout_gravity="center_vertical"
-            android:text="@string/important_message"
             android:textSize="35sp"/>
 
         <!-- I'm nesting a  horizontal layout to put the buttons for the selection -->
