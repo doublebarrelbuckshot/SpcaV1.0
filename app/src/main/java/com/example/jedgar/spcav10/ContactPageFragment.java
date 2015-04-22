@@ -78,7 +78,7 @@ public class ContactPageFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
 
         if(v.getId()==R.id.buttonSend){
-            Toast.makeText(ContactPageFragment.this.getActivity(), "envoyer un courriel ", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ContactPageFragment.this.getActivity(), "envoyer un courriel ", Toast.LENGTH_SHORT).show();
 
             String to=ident.getText().toString();
             String message = send.getText().toString();

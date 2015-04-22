@@ -182,7 +182,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
 
             double rawAge = Double.parseDouble(animalAge);
             int yrs = (int) Math.floor(rawAge / 12);
-            Toast.makeText(getActivity(), ""+ animalAge, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), ""+ animalAge, Toast.LENGTH_LONG).show();
 
             if(rawAge < 12){
                 animalAge =  animalAge + " " + getResources().getText(R.string.months);

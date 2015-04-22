@@ -124,7 +124,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dbh.removeAllFromFavoriteList(db);
-                                                Toast.makeText(getActivity(), "All Favorites Cleared", Toast.LENGTH_SHORT).show();
+                                                // we have the list that updates itself, no need for a toast.
+                                                //Toast.makeText(getActivity(), "All Favorites Cleared", Toast.LENGTH_SHORT).show();
                                                 c = dbh.getFavoriteList(db);
                                                 adapter.notifyDataSetChanged();
                                             }
@@ -141,7 +142,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dbh.removeAllFromNewList(db);
-                                                Toast.makeText(getActivity(), "All New Cleared", Toast.LENGTH_SHORT).show();
+                                                // we have the list that updates itself, no need for a toast.
+                                                //Toast.makeText(getActivity(), "All New Cleared", Toast.LENGTH_SHORT).show();
                                                 c = dbh.getNewAnimalsList(db);
                                                 adapter.notifyDataSetChanged();
                                             }
@@ -364,9 +366,9 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             TextView animalName = (TextView) vi.findViewById(R.id.animalName);
             TextView animalAge = (TextView) vi.findViewById(R.id.animalAge);
 
-            animalID.setText("ID: "+animalIDStr);
-            animalName.setText("Name: "+d);
-            animalAge.setText("Age: "+a);
+            animalID.setText(getString(R.string.browseID) + ": "+animalIDStr);
+            animalName.setText(getString(R.string.browseName) + ": " + d);
+            animalAge.setText(getString(R.string.browseAge) + ": " + a);
 
 
             ImageButton btnFav = (ImageButton)vi.findViewById(R.id.btnFav);

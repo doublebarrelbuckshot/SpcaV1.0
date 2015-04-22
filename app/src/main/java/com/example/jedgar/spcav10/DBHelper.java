@@ -208,7 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sql = "CREATE TABLE " + TABLE_PREFERENCES + "(" +
                 T_PREFERENCES_APP_STATE + " int  CHECK(" + T_PREFERENCES_APP_STATE + " IN ('New','InitialLoadDone'))," +
                 T_PREFERENCES_NOTICE_ENABLED + " char CHECK(" + T_PREFERENCES_NOTICE_ENABLED + " IN('Y','N'))," +
-                T_PREFERENCES_NOTICE_FREQUENCY + " int  CHECK(" + T_PREFERENCES_NOTICE_FREQUENCY + " IN (1,60,1440,10080))," +
+                T_PREFERENCES_NOTICE_FREQUENCY + " int  CHECK(" + T_PREFERENCES_NOTICE_FREQUENCY + " IN (30,60,3600,21600,43200,86400,604800))," +
                 T_PREFERENCES_SESSION_MODE + " int  CHECK(" + T_PREFERENCES_SESSION_MODE + " IN ('" + T_PREFERENCES_SESSION_MODE_ONLINE + "','" + T_PREFERENCES_SESSION_MODE_OFFLINE + "'))" +
                 ");";
         db.execSQL(sql);
@@ -575,6 +575,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getPreferences(SQLiteDatabase db) {
         return db.rawQuery("SELECT * FROM " + TABLE_PREFERENCES + ";", null);
+    }
+
+    public void setNotifications(SQLiteDatabase db, String noticeEnabled, int interval) {
+        ContentValues cv = new ContentValues();
+        cv.clear();
+        cv.put(DBHelper.T_PREFERENCES_NOTICE_ENABLED, noticeEnabled);
+        cv.put(DBHelper.T_PREFERENCES_NOTICE_FREQUENCY, interval);
+        db.update(DBHelper.TABLE_PREFERENCES, cv, null, null);
     }
 
     public void appFirstTimeFalse(SQLiteDatabase db)  throws SQLException {

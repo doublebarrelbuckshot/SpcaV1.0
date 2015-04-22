@@ -125,7 +125,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Log.d("MainPageFrag", "In onCreateView");
+        //Log.d("MainPageFrag", "In onCreateView");
         if (!loaded) {
             dbh = DBHelper.getInstance(getActivity());
             db = dbh.getWritableDatabase();
@@ -288,7 +288,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
     public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
 
-        Log.d("MAIN", "In asyncTaskFinished");
+        //Log.d("MAIN", "In asyncTaskFinished");
 
         /*
         if (downloadMode == MODE_ACTION_BAR) {
@@ -367,7 +367,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void asyncTaskProgressUpdate(Integer... values) {
-        Log.d("MAIN", "In asyncTaskProgressUpdate");
+        //Log.d("MAIN", "In asyncTaskProgressUpdate");
         Integer progress = values[0];
         /*
         if (downloadMode == MODE_ACTION_BAR) {
@@ -449,7 +449,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
 
-        Log.d("MainPageFrag", "In onPrepareOptionsMenu");
+        //Log.d("MainPageFrag", "In onPrepareOptionsMenu");
 
         refreshMI = menu.findItem(R.id.refresh);
         if (refreshMI != null) {
@@ -479,7 +479,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        Log.d("MainPageFrag", "In onAttach()");
+        //Log.d("MainPageFrag", "In onAttach()");
 
         ((MainActivity) activity).onSectionAttached(1);
     }

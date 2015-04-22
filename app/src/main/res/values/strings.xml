@@ -169,6 +169,14 @@
     <string name="months">months</string>
 
 
+    <!-- browse row -->
+    <string name="browseID">ID</string>
+    <string name="browseName">Name</string>
+    <string name="browseAge">age</string>
+
+
+
+
     <string name="name">Name</string>
     <string name="animalID">Animal ID</string>
 
