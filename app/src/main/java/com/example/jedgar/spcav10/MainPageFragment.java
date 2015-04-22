@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Random;
 
 
 public class MainPageFragment extends Fragment implements View.OnClickListener, GetActionBarTitle, DownloadAdoptableSearch.AsyncTaskDelegate {
@@ -54,6 +58,40 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     int downloadMode;
     static final int MODE_DEFAULT = 0;
     static final int MODE_ACTION_BAR = 1;
+
+
+    /**
+     * Define timer handler and timer Runnable object to handle
+     * to modify the textview content(Les pub vont defiler a chaque interval de temps regulier)
+     */
+
+    private TextView pubText;
+    long mStartTime = 0;
+
+    private Handler timerHandler = new Handler();
+
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            long millis = SystemClock.uptimeMillis() - mStartTime;
+
+            // random number used to choose the message we want to display as ads.
+            Random rn = new Random();
+            int i = rn.nextInt(4);
+            if(i == 0)
+                pubText.setText(R.string.important_message);
+
+            else if(i == 1)
+                pubText.setText(R.string.pub1);
+            else if(i == 3)
+                pubText.setText(R.string.pub2);
+            else
+                pubText.setText(R.string.pub3);
+
+            timerHandler.postDelayed(this, 1000);
+        }
+    };
 
     @Override
     public int getActionBarTitleId() {
@@ -98,6 +136,13 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         setHasOptionsMenu(true);
 
         View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
+
+
+        // Find and get the textView and update its content.
+        pubText = (TextView) rootView.findViewById(R.id.important_message);
+        timerHandler.removeCallbacks(timerRunnable);
+        mStartTime = System.currentTimeMillis();
+        timerHandler.postDelayed(timerRunnable, 0); // end of update textView that display adds
 
         ageText = (TextView) rootView.findViewById(R.id.ageTV);
 
@@ -437,6 +482,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         Log.d("MainPageFrag", "In onAttach()");
 
         ((MainActivity) activity).onSectionAttached(1);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHandler.removeCallbacks(timerRunnable);
+
     }
 
 /*

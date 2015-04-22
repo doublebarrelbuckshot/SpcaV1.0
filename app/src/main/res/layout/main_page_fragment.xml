@@ -16,7 +16,6 @@
             android:layout_height="130dp"
             android:id="@+id/important_message"
             android:layout_gravity="center_vertical"
-            android:text="@string/important_message"
             android:textSize="35sp"/>
 
         <!-- I'm nesting a  horizontal layout to put the buttons for the selection -->

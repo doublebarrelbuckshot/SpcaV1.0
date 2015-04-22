@@ -15,7 +15,13 @@
     <string name="title_section6">Contact</string>
 
     <!-- Here are the Strings for the main_page_fragment -->
+    <!-- Adds to display in TextView on the main_page_fragment-->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
+    <string name="pub1">SPRING OFFERS</string>
+    <string name="pub2">ADOPT ONE ANIMALS AND GET TWO FOR FREE</string>
+    <string name="pub3">WE HAVE WHAT YOU NEED.FOR MORE INFO SEE THE INFO MENU</string>
+
+
     <string name="age_text_view">Age</string>
     <string name="gender_text_view">Gender</string>
     <string name="checkbox_male">Male</string>
