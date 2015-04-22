@@ -46,7 +46,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private static String cameFrom;
+    private String cameFrom;
     private int titleID;
     private LayoutInflater inflater;
     // TODO: Rename and change types of parameters
@@ -55,10 +55,10 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     private static SearchCriteria sc;
 
     private OnFragmentInteractionListener mListener;
-    static DBHelper dbh;
-    static SQLiteDatabase db;
+     DBHelper dbh;
+     static SQLiteDatabase db;
 
-    private static Cursor c;
+    private  Cursor c;
 
     BaseAdapter adapter = null;
 
@@ -193,17 +193,17 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             cameFrom = "Favorites";
             emptyListMsg = getString(R.string.emptyListFavoritesMSG);
         } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
-           /* Log.d("Browse","New");
+            Log.d("Browse","New");
             SearchCriteria sc = new SearchCriteria(db);
             String sql = new String(sc.getCommandForNotifs());
             dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
-            c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);*/
-            newFrame();
+            c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
+
             /*
             dbh.setCursorForNewAnimalsList(db);
             c = dbh.getCursorForNewAnimalsList();
             */
-            /*cameFrom = "New";*/
+            cameFrom = "New";
             emptyListMsg = getString(R.string.emptyListNewMSG);
         } else {
             Log.d("Browse","else");
@@ -256,15 +256,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         return rootView;
     }
 
-    static public void newFrame(){
-        Log.d("Browse","New");
-        SearchCriteria sc = new SearchCriteria(db);
-        String sql = new String(sc.getCommandForNotifs());
-        dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
-        c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
-        cameFrom = "New";
-        //emptyListMsg = getString(R.string.emptyListNewMSG);
-    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

@@ -111,7 +111,7 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
         reveil.setTimeInMillis(System.currentTimeMillis());
         reveil.add(Calendar.SECOND, val);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, reveil.getTimeInMillis(), MainActivity.interval, pendingintent);
-        message();
+
     }
     public void cancel(){
         alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
@@ -164,7 +164,7 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
         ck_alarm.setChecked(false);
     }
     public void etatAvant(){
-        Toast.makeText(this.getActivity(), "Intervalll="+ MainActivity.interval, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getActivity(), "Intervalll="+ MainActivity.interval, Toast.LENGTH_SHORT).show();
         if(MainActivity.interval==0) {
             //MainActivity.interval=0;
             optionInvisible();
@@ -173,6 +173,7 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
             optionVisible();
             optionActive();
             planifierAlarm();
+            message();
 
         }
 
@@ -187,28 +188,34 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
             MainActivity.interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
             //interval=AlarmManager.INTERVAL_HOUR;
             planifierAlarm();
+            message();
 
         }else if (v.getId() == R.id.sixheures) {
             MainActivity.interval=6*(AlarmManager.INTERVAL_HOUR);
             //interval=(60*1000);
             planifierAlarm();
+            message();
 
         }else if (v.getId() == R.id.douzeheures){
             MainActivity.interval=AlarmManager.INTERVAL_HALF_DAY;
             //interval=AlarmManager.INTERVAL_FIFTEEN_MINUTES;
             planifierAlarm();
+            message();
 
         }else if (v.getId() == R.id.jours){
             MainActivity.interval=AlarmManager.INTERVAL_DAY;
             planifierAlarm();
+            message();
 
         }else if(v.getId() == R.id.semaines){
             MainActivity.interval=7*(AlarmManager.INTERVAL_DAY);
             planifierAlarm();
+            message();
 
         }else if(v.getId() == R.id.activer) {
-            // Toast.makeText(this.getActivity(), "Intervalll="+ MainActivity.interval, Toast.LENGTH_SHORT).show();
+
             if (ck_alarm.isChecked()) {
+                //Toast.makeText(this.getActivity(), "ischecked", Toast.LENGTH_SHORT).show();
                 ck_heure.setVisibility(View.VISIBLE);
                 ck_sixheures.setVisibility(View.VISIBLE);
                 ck_douzeheures.setVisibility(View.VISIBLE);
@@ -216,12 +223,15 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
                 ck_semaines.setVisibility(View.VISIBLE);
                 if(MainActivity.interval!=0){
                     planifierAlarm();
+                    message();
                 }
 
             } else {
-
-               // MainActivity.interval=0;
+               // Toast.makeText(this.getActivity(), "isnot", Toast.LENGTH_SHORT).show();
+                MainActivity.interval=1000;
+                planifierAlarm();
                 cancel();
+                MainActivity.interval=0;
                 ck_heure.setVisibility(View.INVISIBLE);
                 ck_sixheures.setVisibility(View.INVISIBLE);
                 ck_douzeheures.setVisibility(View.INVISIBLE);

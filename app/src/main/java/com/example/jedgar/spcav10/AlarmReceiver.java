@@ -35,10 +35,11 @@ public class AlarmReceiver extends BroadcastReceiver{
                 //Le PendingIntent c'est ce qui va nous permettre d'atteindre notre deuxième Activity
                 //ActivityNotification sera donc le nom de notre seconde Activity
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, ActivityNotification.class), 0);
+
                 //On définit le titre de la notification
-                String titreNotification = "SPCA  : Message important !";
+                String titreNotification = "SPCA";
                 //On définit le texte qui caractérise la notification
-                String texteNotification = "YEEH !! On a trouvé un animal qui correspond à ta dernière recherche...";
+                String texteNotification = "YEEH !! Il y a des nouveaux animaux qui pourrait t'interesser...";
                 //On configure notre notification avec tous les paramètres que l'on vient de créer
                 notification.setLatestEventInfo(context, titreNotification, texteNotification, pendingIntent);
                 //On regle la notification pour que ca suit le reglage du telephone
