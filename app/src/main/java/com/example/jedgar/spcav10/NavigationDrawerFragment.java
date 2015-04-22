@@ -1,5 +1,6 @@
 package com.example.jedgar.spcav10;
 
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -107,9 +108,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section3),
                         getString(R.string.title_section4),
                         getString(R.string.title_section5),
-                        getString(R.string.title_section6)/*,
-                        "Details",
-                        "Browse"*/
+                        getString(R.string.title_section6)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

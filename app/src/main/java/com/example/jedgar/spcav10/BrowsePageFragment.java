@@ -374,7 +374,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
             animalID.setText("ID: "+animalIDStr);
             animalName.setText("Name: "+d);
-            animalAge.setText("Age: :"+a);
+            animalAge.setText("Age: "+a);
 
 
             ImageButton btnFav = (ImageButton)vi.findViewById(R.id.btnFav);

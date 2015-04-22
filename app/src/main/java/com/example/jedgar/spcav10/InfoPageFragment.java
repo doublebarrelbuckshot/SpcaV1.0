@@ -64,13 +64,13 @@ public class InfoPageFragment extends Fragment implements /*View.OnClickListener
 
         Bundle arg3 = new Bundle();
         arg3.putInt("Arg for Frag3", 3);
-        tabHost.addTab(tabHost.newTabSpec("Tab3").setIndicator(getString(R.string.others_tab)),
-                OthersInfoFragment.class, arg3);
+        tabHost.addTab(tabHost.newTabSpec("Tab3").setIndicator(getString(R.string.dog_tab)),
+                DogInfoFragment.class, arg3);
 
         Bundle arg4 = new Bundle();
         arg4.putInt("Arg for Frag4", 4);
-        tabHost.addTab(tabHost.newTabSpec("Tab4").setIndicator(getString(R.string.dog_tab)),
-                DogInfoFragment.class, arg4);
+        tabHost.addTab(tabHost.newTabSpec("Tab4").setIndicator(getString(R.string.others_tab)),
+                OthersInfoFragment.class, arg4);
 
         return tabHost;
 

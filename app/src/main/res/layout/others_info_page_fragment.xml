@@ -15,95 +15,43 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/adoption"
+
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/rabbit_title" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rabbits_adopt_info"
+            android:padding="15sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/birds_title" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/birds_adopt_info"
+            android:padding="15sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/others_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/adoption_fees_exotic_animal"
             android:padding="15sp"/>
 
     </LinearLayout>
 </ScrollView>
 
-<!--
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SPCA de Montréal"
-        android:padding="10dp"
-        android:textSize="30sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5215, rue Jean-Talon Ouest"
-        android:padding="10dp"
-        android:textSize="25sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Montréal (Québec) H4P 1X4
-(Métro Namur)"
-        android:padding="10dp"
-        android:textSize="25sp"/>
-
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fone"
-            android:layout_weight="1"
-            android:text="514-898-4814"
-            android:padding="10dp"
-            android:textSize="20sp"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/appel_b"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:src="@android:drawable/sym_action_call" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/send"
-            android:layout_weight="1"
-            android:text="telephoniste@spcamontreal.com"
-            android:padding="10dp"
-            android:textSize="18sp"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonSend"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:src="@android:drawable/sym_action_email" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ident"
-            android:layout_weight="1"
-            android:text="Id : XXXX"
-            android:padding="10dp"
-            android:textSize="35sp"/>
-        />
-
-
-    </LinearLayout>
--->

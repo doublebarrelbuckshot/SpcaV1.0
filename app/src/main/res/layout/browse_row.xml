@@ -9,12 +9,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:descendantFocusability="blocksDescendants"
-        android:background="#FE1B14"
+        android:background="@drawable/back_border"
+
         android:padding="3sp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            
+
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="ADOPTED"
             android:id="@+id/adoptedOverlayTV"
@@ -24,7 +27,6 @@
             android:layout_alignRight="@+id/animalID"
             android:layout_alignEnd="@+id/animalID"
             android:layout_alignBottom="@+id/animalAge"
-            android:background="#FFFFFFFF"
             android:gravity="center"
             android:visibility="invisible"/>
 
@@ -65,6 +67,7 @@
         android:layout_alignTop="@+id/animalAge"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
 
         <ImageButton
             android:layout_width="wrap_content"

@@ -2,27 +2,27 @@
     <string name="app_name">SpcaV1.0</string>
 
     <!-- MainPageFragment -->
-    <string name="InitialDownloadMsg">Downloading animal information</string>
-    <string name="SynchMsg">Checking for new adoptable animals</string>
+    <string name="InitialDownloadMsg">Téléchargement des informations</string>
+    <string name="SynchMsg">Vérification de nouveaux animaux</string>
 
 
     <!-- Here are the Strings for the drawer -->
-    <string name="title_section1">Main Page</string>
+    <string name="title_section1">Accueil</string>
     <string name="title_section2">Info</string>
-    <string name="title_section3">Favorites</string>
-    <string name="title_section4">New</string>
+    <string name="title_section3">Favoris</string>
+    <string name="title_section4">Nouveau</string>
     <string name="title_section5">Notifications</string>
     <string name="title_section6">Contact</string>
 
     <!-- Here are the Strings for the main_page_fragment -->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
     <string name="age_text_view">Age</string>
-    <string name="gender_text_view">Gender</string>
-    <string name="checkbox_male">Male</string>
-    <string name="checkbox_female">Female</string>
-    <string name="search_button">Search</string>
-    <string name="more_details">Details</string>
-    <string name="loading_data">Loading Data</string>
+    <string name="gender_text_view">Sexe</string>
+    <string name="checkbox_male">Mâle</string>
+    <string name="checkbox_female">Femelle</string>
+    <string name="search_button">Recherche</string>
+    <string name="more_details">Détails</string>
+    <string name="loading_data">Chargement de données </string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -33,91 +33,111 @@
 
     <!-- Here are the Strings for the all tabs on the info_page_fragment -->
     <string name="adoption">Adoption</string>
-    <string name="compassionate_adoption_text">*\t Compassionate adoption depends on the animal’s health or age – the evaluation is made case by case</string>
-    <string name="general_tab">General</string>
-        <string name="b4_adoption_title">Before Adopting</string>
+    <string name="compassionate_adoption_text">*\t Adoption humanitaire selon la santé ou l’âge de l’animal – l’évaluation s’effectue cas par cas</string>
+    <string name="general_tab">Général</string>
+        <string name="b4_adoption_title">Avant d\'adopter</string>
         <string name="before_adoption">
-            it is important to:\n
-            - Assess the costs of having a pet: food, visits to the veterinarian, litter, care products, and so on.\n
-            - Know your animal’s life expectancy and whether you have the time and energy to take care of a pet day after day.\n
-            - Anticipate that your new pet will need time to adapt to his or her new surroundings and understand that he could cause damages during this period.
+            il est important de :\n
+            - Évaluer les coûts reliés à avoir un animal: nourriture,\n visites chez le vétérinaire, divers produits de soin animal, etc\n.
+            - Connaître son espérance de vie et déterminer si vous avez le temps et l’énergie d’en prendre soin jour après jour.\n
+            - Prévoir une période d’adaptation à son nouvel environnement\n et comprendre que l’animal pourrait causer certains dégâts durant cette période.
         </string>
 
-        <string name="open_hours">Opening Hours</string>
+        <string name="open_hours">Heures D\'Ouverture</string>
 
         <string name="opening_hours">
-            - Monday to Friday: 12:00 pm to 8:00 pm\n
-            - Saturday and Sunday: 11:00 am to 5:00 pm
+            - Lundi a Vendredi: 12:00 pm to 8:00 pm\n
+            - Samedi et Dimanche: 11:00 am to 5:00 pm
         </string>
 
 
-        <string name="fees">Fees</string>
+        <string name="fees">Frais</string>
         <string name="mandatory">
-            The fees include sterilization (spaying or neutering), which is mandatory for all adopted dogs and cats,\n
-            the first set of vaccines, deworming treatment, a microchip and a 15-day health guarantee (an additional fee of $20 applies to open a file).\n
-            **A $100 deposit is required for those animals who cannot be sterilized at the time of their adoption.\n
-            The deposit will be reimbursed after the animal has been sterilized.
+            frais incluent la stérilisation obligatoire pour tous les chiens et chats adopté), le premier vaccin de base, un traitement contre les vers, une micropuce et 15 jours de garantie de santé
+            (des frais 20$ additionnels sont applicables pour l’ouverture d’un dossier).
+            ** Un dépôt de 100 $ est exigé pour les animaux qui ne peuvent être stérilisés lors de l’adoption.\n
+            Ce dépôt est remboursable lors de la stérilisation.
         </string>
 
 
 
     <string name="dog_tab">Dogs</string>
             <string name="adoption_fees_dogs">
-                - Puppies – less than 8 months: $295 \n(if you adopt a second puppy at the same time, the adoption fees of second one are $200)\n
-                \n- Dogs – 8 months and older: $255 \n(if you adopt a second dog at the same time, the adoption fees of second one are $125)\n
-                \n- Compassionate adoption: $75
+                - Chiots – moins de 8 mois : 295$ \n(si vous adoptez un 2e chiot en même temps, les frais d’adoption du 2e sont de 200$)\n
+                \n- Chiens – 8 mois et plus : 255$ \n(si vous adoptez un 2e chien en même temps, les frais d’adoption du 2e sont de 125$)\n
+                \n- Adoption humanitaire: $75
             </string>
 
 
 
     <string name="cat_tab">Cats</string>
             <string name="adoption_fees_cats">
-                - Kitten – up to 5 months: $175
-                \n - Cat – 5 months and more: $125
-                \n - Compassionate adoption: $75
+                - Chaton – moins de 5 mois: 175$
+                \n- Chat – 5 mois et plus: 125$
+                \n- Adoption humanitaire: 75$
             </string>
 
 
 
 
-    <string name="others_tab">Others</string>
-    <string name="rabbit_title">Rabbits</string>
-    <string name="birds_title">Birds</string>
-    <string name="others_title">Others</string>
+    <string name="others_tab">Autres</string>
+    <string name="rabbit_title">Lapins</string>
+    <string name="birds_title">Oiseaux</string>
+    <string name="others_title">Autres</string>
 
     <string name="rabbits_adopt_info">
-        - Sterilized male $60\n
-        - Sterilized female $80\n
-        - Non sterilized female $20
+
+         - Mâle stérilisé 60 $\n
+         - Femelle stérilisée 80 $\n
+         - Femelle non stérilisée 20 $
     </string>
 
     <string name="birds_adopt_info">
 
-        - Lovebird $50\n
-        - Canary $40\n
-        - Cockatiel $35\n
-        - Finch $15\n
-        - Budgie $10\n
-        - Dove $8\n
-        - Turtle-dove $8
+        - Inséparables 50 $\n
+        - Canari 40 $\n
+        - Cockatiel 35 $\n
+        - Pinson 15 $\n
+        - Perruche 10 $\n
+        - Colombe 8 $\n
+        - Tourterelle 8 $
     </string>
 
 
 
     <string name="adoption_fees_exotic_animal">
-        - Ferret $100\n
-        - Chinchilla $50 \n
-        - Guinea-Pig $15 \n
-        - Rat $10 \n
-        - Hamster $5 \n
-        - Hedgehog $50\n
-        - Mouse $5\n
-        - Gerbil $5\n
-        - Degu $5
+        Furet 100 $\n
+        Chinchilla 50 $\n
+        Cochon d’inde 15 $\n
+        Rat 10 $\n
+        Hamster 5 $\n
+        Hérisson 50 $\n
+        Souris 5 $\n
+        Gerbille 5 $\n
+        Dégu 5 $
     </string>
 
 
 
+
+
+    <!-- Here are the Strings for notificaton -->
+    <string name="radio_heure">Chaque Heure</string>
+    <string name="radio_sixheures">Chaque 6 heures</string>
+    <string name="radio_douzeheures">Chaque 12 heures</string>
+    <string name="radio_jours">Chaque Jour</string>
+    <string name="radio_semaines">Chaque Semaine</string>
+    <string name="check_activer">Activer les notifications</string>
+    <string name="text_titre">Gestion des notification</string>
+
+
+<!--
+    #########################################################################
+
+     JUSQU'A ICI C EST TRADUIT
+
+     ########################################################################
+-->
 
 
 
@@ -229,13 +249,6 @@
     <string name="clearNew">Clear new animals list?</string>
 
 
-    <!-- Here are the Strings for notificaton -->
-    <string name="radio_heure">Every Hour</string>
-    <string name="radio_sixheures">Every 6 Hours</string>
-    <string name="radio_douzeheures">Every 12 Hours</string>
-    <string name="radio_jours">Every Day</string>
-    <string name="radio_semaines">Every Week</string>
-    <string name="check_activer">Enable notifications</string>
-    <string name="text_titre">Notifications Management</string>
+
 
 </resources>
