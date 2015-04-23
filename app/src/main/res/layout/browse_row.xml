@@ -19,7 +19,7 @@
             
 
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="ADOPTED"
+            android:text="@string/adoptedCAPS"
             android:id="@+id/adoptedOverlayTV"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -28,7 +28,8 @@
             android:layout_alignEnd="@+id/animalID"
             android:layout_alignBottom="@+id/animalAge"
             android:gravity="center"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:background="#46000000" />
 
         <ImageView
         android:layout_width="75dp"

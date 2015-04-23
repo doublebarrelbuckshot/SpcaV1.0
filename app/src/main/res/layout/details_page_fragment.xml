@@ -9,107 +9,112 @@
 
 
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/detailsImageLayout"
+
+        >
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/detailsImageLayout"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp"
 
             >
-            <RelativeLayout
-                android:layout_width="match_parent"
+
+
+
+
+            <android.support.v4.view.ViewPager
+                android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:paddingTop="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageViewPager"
+                android:background="#FE1B14"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
-                >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnFav"
+                android:src="@drawable/ic_favorite_outline_black_36dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/imageViewPager"
+                android:layout_alignEnd="@+id/imageViewPager"
+                android:background="#b7fcfcfc"
+                android:layout_alignTop="@+id/imageViewPager"
+                />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnShare"
+                android:src="@drawable/ic_share_black_36dp"
+                android:background="#b7fcfcfc"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/btnFav"
+                android:layout_toStartOf="@+id/btnFav" />
 
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp">
 
-
-                <android.support.v4.view.ViewPager
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/imageViewPager"
-                    android:background="#FE1B14"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-
-                <ImageButton
+                <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/pageIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnFav"
-                    android:src="@drawable/ic_favorite_outline_black_36dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignRight="@+id/imageViewPager"
-                    android:layout_alignEnd="@+id/imageViewPager"
-                    android:background="#b7fcfcfc"
-                    android:layout_alignTop="@+id/imageViewPager"
+                    android:layout_gravity="bottom"
+                    android:src="@android:drawable/radiobutton_off_background"
+                    android:padding="5dip"
+                    app:fillColor="#FF888888"
+                    app:pageColor="#88FFFFFF"
+                    app:strokeColor="#FF000000"
                     />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnShare"
-                    android:src="@drawable/ic_share_black_36dp"
-                    android:background="#b7fcfcfc"
-                    android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/btnFav"
-                    android:layout_toStartOf="@+id/btnFav" />
+
+            </LinearLayout>
 
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="5dp">
+        </RelativeLayout>
+    </LinearLayout>
 
-                    <com.viewpagerindicator.CirclePageIndicator
-                        android:id="@+id/pageIndicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:src="@android:drawable/radiobutton_off_background"
-                        android:padding="5dip"
-                        app:fillColor="#FF888888"
-                        app:pageColor="#88FFFFFF"
-                        app:strokeColor="#FF000000"
-                        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:clickable="false"
 
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
+        android:id="@+id/detailsLayout"
+        android:background="#ffffffff">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
             android:clickable="false"
-
-            android:id="@+id/detailsLayout"
-            android:background="#ffffffff">
-            <ScrollView
+            >
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:fillViewport="true"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:clickable="false">
-
+                android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/detailRelative"
                     android:background="#FFFFFF"
-                    android:clickable="true">
+                    android:clickable="true"
+                    android:layout_weight="1">
 
 
                     <TextView
@@ -154,25 +159,16 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="fill_parent"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/more_details"
                         android:id="@+id/detailsText"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="bottom"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/animalDeclawedTV"/>
 
-                    <Button
-                        android:id="@+id/adoptBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_below="@+id/detailsText"
-                        android:text="@string/adopt"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -216,8 +212,25 @@
                         />
 
                 </RelativeLayout>
-            </ScrollView>
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="vertical"
+                    android:layout_weight="0"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    >
+                    <Button
+                        android:id="@+id/adoptBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:text="@string/adopt"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1" />
 
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
+</LinearLayout>
