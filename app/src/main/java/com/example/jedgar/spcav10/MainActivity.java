@@ -1,6 +1,7 @@
 package com.example.jedgar.spcav10;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,7 @@ public class MainActivity extends ActionBarActivity
     MenuItem mRemoveAllMI;
     MenuItem mSystemStatus;
     MenuItem mRefresh = null;
-    static long interval;
+    //static long interval;
     int systemStatusCode = 0;
     int sectionAttached = 0;
     static Activity mainActivity = null;
@@ -53,6 +54,35 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     @Override
+    protected void onNewIntent(Intent intent){ ///Traite le cas ou l'application tourne deja, et on est venu de la notification
+        super.onNewIntent(intent);
+        setIntent(intent);
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            if(b.getString("key") != null)
+            {//mettre du code ICI
+
+              //  Log.d("FROM NOTIFI xxx", b.getString("key") + "intent already exists");
+                /*getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, BrowsePageFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                mTitle = getString(R.string.favoritesTitle);*/
+
+
+                getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, BrowsePageFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                mTitle = getString(R.string.newTitle);
+            }}
+        else{
+           // Log.d("NOT FROM NOTIF", "NOT FROM NOTIFICAITON");
+        }
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -65,6 +95,33 @@ public class MainActivity extends ActionBarActivity
                 fragmentManager.findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+        if(b.getString("key") != null)
+        { //on est venu du notification, mettre du code ici
+          //  Log.d("FROM NOTIFI", b.getString("key"));
+
+           /* getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+            mTitle = getString(R.string.favoritesTitle);*/
+
+            getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+            mTitle = getString(R.string.newTitle);
+
+
+        }}
+        else{
+          //  Log.d("NOT FROM NOTIF", "NOT FROM NOTIFICAITON");
+        }
+
+
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -73,7 +130,7 @@ public class MainActivity extends ActionBarActivity
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                Log.d("BACKSTACK", "BACKSTACK ACTIVATED");
+              //  Log.d("BACKSTACK", "BACKSTACK ACTIVATED");
                 int backCount = getSupportFragmentManager().getBackStackEntryCount();
                 if (backCount == 0)
                 {

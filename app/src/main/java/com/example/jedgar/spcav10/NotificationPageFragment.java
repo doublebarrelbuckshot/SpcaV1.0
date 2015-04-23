@@ -5,6 +5,8 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -26,11 +28,16 @@ import java.util.Calendar;
 
 
 
-public class NotificationPageFragment extends Fragment implements OnTimeSetListener, View.OnClickListener, GetActionBarTitle {
+public class NotificationPageFragment extends Fragment implements  View.OnClickListener, GetActionBarTitle {
     static final int ALARM_ID = 1234567;
     static Alarm alarm;
     View rootView;
     CheckBox ck_alarm;
+    long interval;
+    int val ;
+    DBHelper dbh;
+    SQLiteDatabase db;
+    Cursor c;
     //long interval=MainActivity.interv;
 
     RadioButton ck_heure, ck_sixheures, ck_douzeheures, ck_jours, ck_semaines;
@@ -48,6 +55,16 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        dbh = DBHelper.getInstance(getActivity());
+        db = dbh.getWritableDatabase();
+
+        /*dbh = DBHelper.getInstance(this.getActivity());
+        db = dbh.getWritableDatabase();*/
+
+       /* SearchCriteria sc = new SearchCriteria(db);
+        String sql = new String(sc.getCommandForNotifs());*/
+
 
         rootView = inflater.inflate(R.layout.notification_page_fragment, container, false);
 
@@ -70,10 +87,19 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
         ck_semaines = (RadioButton)rootView.findViewById(R.id.semaines);
         ck_semaines.setOnClickListener(NotificationPageFragment.this);
 
-
+        c=dbh.getPreferences(db);
+        if (c.moveToFirst()) {
+            val=c.getInt(2);
+            //Toast.makeText(this.getActivity(), "avant interval = "+interval+", Val = "+val, Toast.LENGTH_SHORT).show();
+        }
+        if (val==60){
+            interval=0;
+            val=0;
+        }else{
+            interval=val*1000;
+        }
+        //Toast.makeText(this.getActivity(), "avant interval = "+interval+", Val = "+val, Toast.LENGTH_SHORT).show();
         etatAvant();
-
-
         return rootView;
     }
 
@@ -89,7 +115,7 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
         * En fait on sauvegarde simplement la nouvelle heure. On l'affiche comme il faut et on replanifie le reveil
         * @see android.app.TimePickerDialog.OnTimeSetListener#onTimeSet(android.widget.TimePicker, int, int)
         */
-    @Override
+   /* @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Time t = new Time();
         t.hour = hourOfDay;
@@ -100,23 +126,21 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
    * Job de planification du reveil
    */
     public void planifierAlarm() {
-        int val=(int) (MainActivity.interval/1000) ;
-
+        val= (int) (interval/1000);
         Intent intent = new Intent(this.getActivity(), AlarmReceiver.class);
         pendingintent = PendingIntent.getBroadcast(this.getActivity(), ALARM_ID, intent, 0);
-        //pendingintent = PendingIntent.getService(this.getActivity(), 0, intent, 0);
         alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingintent);
         Calendar reveil  = Calendar.getInstance();
         reveil.setTimeInMillis(System.currentTimeMillis());
         reveil.add(Calendar.SECOND, val);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, reveil.getTimeInMillis(), MainActivity.interval, pendingintent);
-
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, reveil.getTimeInMillis(), interval, pendingintent);
     }
+
     public void cancel(){
         alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingintent);
-        Toast.makeText(this.getActivity(), "Notification desactivée!!!!!!!.", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getActivity(), "Notification desactivée!!!!!!!.", Toast.LENGTH_SHORT).show();
     }
 
     public void message(){
@@ -132,116 +156,94 @@ public class NotificationPageFragment extends Fragment implements OnTimeSetListe
             Toast.makeText(this.getActivity(),"Notification activée chaque semaine!", Toast.LENGTH_LONG).show();
         }
     }
-    public void optionActive(){
-        // if(MainActivity.interval==AlarmManager.INTERVAL_HOUR){
-        if(MainActivity.interval==((AlarmManager.INTERVAL_HOUR)/60)/2){
-            ck_heure.setChecked(true);
-        }else if(MainActivity.interval==6*(AlarmManager.INTERVAL_HOUR)){
-            ck_sixheures.setChecked(true);
-        }else if( MainActivity.interval==AlarmManager.INTERVAL_HALF_DAY){
-            ck_douzeheures.setChecked(true);
-        }else if(MainActivity.interval==AlarmManager.INTERVAL_DAY){
-            ck_jours.setChecked(true);
-        }else if(MainActivity.interval==(7*(AlarmManager.INTERVAL_DAY))){
-            ck_semaines.setChecked(true);
+    public void optionActive(boolean etat){
+
+        ck_alarm.setChecked(etat);
+        if(interval==((AlarmManager.INTERVAL_HOUR)/60)/2){
+            ck_heure.setChecked(etat);
+        }else if(interval==6*(AlarmManager.INTERVAL_HOUR)){
+            ck_sixheures.setChecked(etat);
+        }else if( interval==AlarmManager.INTERVAL_HALF_DAY){
+            ck_douzeheures.setChecked(etat);
+        }else if(interval==AlarmManager.INTERVAL_DAY){
+            ck_jours.setChecked(etat);
+        }else if(interval==(7*(AlarmManager.INTERVAL_DAY))){
+            ck_semaines.setChecked(etat);
         }
     }
 
-    public void optionVisible(){
-        ck_heure.setVisibility(View.VISIBLE);
-        ck_sixheures.setVisibility(View.VISIBLE);
-        ck_douzeheures.setVisibility(View.VISIBLE);
-        ck_jours.setVisibility(View.VISIBLE);
-        ck_semaines.setVisibility(View.VISIBLE);
-        ck_alarm.setChecked(true);
-    }
-    public void optionInvisible(){
-        ck_heure.setVisibility(View.INVISIBLE);
-        ck_sixheures.setVisibility(View.INVISIBLE);
-        ck_douzeheures.setVisibility(View.INVISIBLE);
-        ck_jours.setVisibility(View.INVISIBLE);
-        ck_semaines.setVisibility(View.INVISIBLE);
-        ck_alarm.setChecked(false);
-    }
     public void etatAvant(){
         //Toast.makeText(this.getActivity(), "Intervalll="+ MainActivity.interval, Toast.LENGTH_SHORT).show();
-        if(MainActivity.interval==0) {
-            //MainActivity.interval=0;
-            optionInvisible();
+        //Toast.makeText(this.getActivity(), "etat avanttttt : intervalll = "+interval+", Val = "+val, Toast.LENGTH_SHORT).show();
+        if(interval==0) {
             cancel();
+            optionActive(false);
         }else{
-            optionVisible();
-            optionActive();
+            optionActive(true);
             planifierAlarm();
-            message();
-
+           // message();
         }
-
     }
-
 
     @Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.heure) {
-            //juste pour tester j<ai fais un interval de 30 sec
-            MainActivity.interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
+            interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
             //interval=AlarmManager.INTERVAL_HOUR;
             planifierAlarm();
-            message();
+            ck_alarm.setChecked(true);
+
+            //message();
+            //optionActive();
 
         }else if (v.getId() == R.id.sixheures) {
-            MainActivity.interval=6*(AlarmManager.INTERVAL_HOUR);
+            interval=6*(AlarmManager.INTERVAL_HOUR);
             //interval=(60*1000);
+            ck_alarm.setChecked(true);
             planifierAlarm();
-            message();
+            //message();
 
         }else if (v.getId() == R.id.douzeheures){
-            MainActivity.interval=AlarmManager.INTERVAL_HALF_DAY;
-            //interval=AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+            interval=AlarmManager.INTERVAL_HALF_DAY;
+            ck_alarm.setChecked(true);
             planifierAlarm();
-            message();
+            //message();
 
         }else if (v.getId() == R.id.jours){
-            MainActivity.interval=AlarmManager.INTERVAL_DAY;
+            interval=AlarmManager.INTERVAL_DAY;
+            ck_alarm.setChecked(true);
             planifierAlarm();
-            message();
+            //message();
 
         }else if(v.getId() == R.id.semaines){
-            MainActivity.interval=7*(AlarmManager.INTERVAL_DAY);
+            interval=7*(AlarmManager.INTERVAL_DAY);
+            ck_alarm.setChecked(true);
             planifierAlarm();
-            message();
+            //message();
 
         }else if(v.getId() == R.id.activer) {
-
             if (ck_alarm.isChecked()) {
-                //Toast.makeText(this.getActivity(), "ischecked", Toast.LENGTH_SHORT).show();
-                ck_heure.setVisibility(View.VISIBLE);
-                ck_sixheures.setVisibility(View.VISIBLE);
-                ck_douzeheures.setVisibility(View.VISIBLE);
-                ck_jours.setVisibility(View.VISIBLE);
-                ck_semaines.setVisibility(View.VISIBLE);
-                if(MainActivity.interval!=0){
+                if(interval!=0){
                     planifierAlarm();
-                    message();
+
                 }
 
             } else {
-               // Toast.makeText(this.getActivity(), "isnot", Toast.LENGTH_SHORT).show();
-                MainActivity.interval=1000;
-                planifierAlarm();
+                optionActive(false);
                 cancel();
-                MainActivity.interval=0;
-                ck_heure.setVisibility(View.INVISIBLE);
-                ck_sixheures.setVisibility(View.INVISIBLE);
-                ck_douzeheures.setVisibility(View.INVISIBLE);
-                ck_jours.setVisibility(View.INVISIBLE);
-                ck_semaines.setVisibility(View.INVISIBLE);
-                ck_alarm.setChecked(false);
-
-
+                interval=0;
+                val=0;
             }
+
         }
+      if(interval!=0){
+          val= (int) (interval/1000);
+          dbh.setNotifications(db,"Y",val);
+      }else{
+          val= 60;
+          dbh.setNotifications(db,"Y",val);
+      }
     }
 
     @Override
