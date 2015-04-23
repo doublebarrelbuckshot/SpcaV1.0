@@ -11,12 +11,18 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:id="@+id/important_message"
             android:layout_gravity="center_vertical"
-            android:textSize="35sp"/>
+            />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:id="@+id/important_message"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:textSize="35sp"/>-->
 
         <!-- I'm nesting a  horizontal layout to put the buttons for the selection -->
         <!-- If you have a better idea on how to modify this please do -->

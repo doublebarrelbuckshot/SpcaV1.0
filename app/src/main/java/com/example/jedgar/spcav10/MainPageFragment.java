@@ -29,6 +29,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.Random;
 
 
@@ -55,43 +57,18 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     MenuItem refreshMI = null;
     ProgressBar refreshProgressBar;
 
+    String newsImage;
+    String newsText;
+    String newsHeadline;
+
+
     int downloadMode;
     static final int MODE_DEFAULT = 0;
     static final int MODE_ACTION_BAR = 1;
 
 
-    /**
-     * Define timer handler and timer Runnable object to handle
-     * to modify the textview content(Les pub vont defiler a chaque interval de temps regulier)
-     */
+    private ImageView important_message;
 
-    private TextView pubText;
-    long mStartTime = 0;
-
-    private Handler timerHandler = new Handler();
-
-    private Runnable timerRunnable = new Runnable() {
-        @Override
-        public void run() {
-
-            long millis = SystemClock.uptimeMillis() - mStartTime;
-
-            // random number used to choose the message we want to display as ads.
-            Random rn = new Random();
-            int i = rn.nextInt(4);
-            if(i == 0)
-                pubText.setText(R.string.important_message);
-
-            else if(i == 1)
-                pubText.setText(R.string.pub1);
-            else if(i == 3)
-                pubText.setText(R.string.pub2);
-            else
-                pubText.setText(R.string.pub3);
-
-            timerHandler.postDelayed(this, 1000);
-        }
-    };
 
     @Override
     public int getActionBarTitleId() {
@@ -125,6 +102,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         //Log.d("MainPageFrag", "In onCreateView");
         if (!loaded) {
             dbh = DBHelper.getInstance(getActivity());
@@ -139,10 +117,22 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
 
         // Find and get the textView and update its content.
-        pubText = (TextView) rootView.findViewById(R.id.important_message);
-        timerHandler.removeCallbacks(timerRunnable);
-        mStartTime = System.currentTimeMillis();
-        timerHandler.postDelayed(timerRunnable, 0); // end of update textView that display adds
+
+
+       /*
+       Load news image and information
+        */
+        important_message = (ImageView) rootView.findViewById(R.id.important_message);
+
+        new DownloadNews().execute();
+
+        important_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)MainPageFragment.this.getActivity()).doNews(newsHeadline, newsText);
+            }
+        });
+
 
         ageText = (TextView) rootView.findViewById(R.id.ageTV);
 
@@ -215,19 +205,19 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         searchButton.setOnClickListener(this);
 
         // create RangeSeekBar as Integer range between 20 and 75
-        int max = 24;
+        int max = 16;
         seekBar = new RangeSeekBar<Integer>(0, max, MainPageFragment.this.getActivity());
         if (sc.ageMax == 0)
             seekBar.setSelectedMaxValue(max);
         else
-            seekBar.setSelectedMaxValue(sc.ageMax);
-        seekBar.setSelectedMinValue(sc.ageMin);
+            seekBar.setSelectedMaxValue(sc.ageMax/12);
+        seekBar.setSelectedMinValue(sc.ageMin/12);
         seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
                 // handle changed range values
                 //Log.i("rangeSeek", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
-                sc.setAgeMin(minValue);
+                sc.setAgeMin(minValue*12);
                 if (maxValue == seekBar.getAbsoluteMaxValue()) {
                     ageText.setText(getResources().getString(R.string.age_text_view) +
                             getResources().getString(R.string.rsbAgeFrom) + minValue +
@@ -238,7 +228,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                             getResources().getString(R.string.rsbAgeFrom) + minValue +
                             getResources().getString(R.string.rsbAgeTo) + maxValue +
                             getResources().getString(R.string.rsbAgeYears));
-                    sc.setAgeMax(maxValue);
+                    sc.setAgeMax(maxValue*12);
                 }
             }
         });
@@ -483,12 +473,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         ((MainActivity) activity).onSectionAttached(1);
     }
-    @Override
-    public void onPause() {
-        super.onPause();
-        timerHandler.removeCallbacks(timerRunnable);
 
-    }
 
 /*
     public class ActionDownloadDelegate implements DownloadAdoptableSearch.AsyncTaskDelegate {
@@ -525,4 +510,37 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             }
         }
     }*/
+
+
+
+
+
+    public class DownloadNews extends AsyncTask<Void, Void, NewsWebAPI> {
+        @Override
+        protected NewsWebAPI doInBackground(Void... params) {
+            NewsWebAPI nwapi = new NewsWebAPI();
+            return nwapi;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(NewsWebAPI nwapi) {
+            newsImage = nwapi.newsImage;
+            newsText = nwapi.newsText;
+            newsHeadline = nwapi.newsHeadline;
+
+            Picasso.with(getActivity().getApplicationContext()).load(newsImage).into(important_message);
+//        ArrayList<String> titres = toutvWebAPI.titres;
+//        MyAdapter adapter = new MyAdapter(titres);
+//        listv.setAdapter(adapter);
+        }
+
+    }
+
+    public interface OnNewsListener {
+        public void doNews(String newsHeadline, String news);
+    }
 }

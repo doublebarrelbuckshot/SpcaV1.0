@@ -21,6 +21,7 @@ public class MainActivity extends ActionBarActivity
                     MainPageFragment.OnSearchListener,
                     BrowsePageFragment.OnDetailsListener,
                     DetailsPageFragment.OnAdoptListener,
+                    MainPageFragment.OnNewsListener,
                     SystemStatus {
 
     FragmentManager fragmentManager;
@@ -38,6 +39,7 @@ public class MainActivity extends ActionBarActivity
     static final int SECTION_ID_SEARCH        = 4;
     static final int SECTION_ID_NOTIFICATIONS = 5;
     static final int SECTION_ID_CONTACT       = 6;
+    static final int SECTION_ID_NEWS          = 7;
 
 
     /**
@@ -174,6 +176,8 @@ public class MainActivity extends ActionBarActivity
                 Log.d("MAIN", "onSectionAttached ???Page");
                 mTitle = getString(R.string.contactTitle);
                 break;
+            case SECTION_ID_NEWS:
+                mTitle = getString(R.string.newsTitle);
         }
         Log.d("SECTION ATTACHED", "" + number);
     }
@@ -290,6 +294,17 @@ public class MainActivity extends ActionBarActivity
                 .addToBackStack(null)
                 .commit();
         mTitle = getString(R.string.contactTitle);//getString(R.string.title_section5); //notificationPage
+        restoreActionBar();
+    }
+
+    @Override
+    public void doNews(String newsHeadline, String news) {
+        Fragment frag = NewsPageFragment.newInstance(newsHeadline, news);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, frag)
+                .addToBackStack(null)
+                .commit();
+        mTitle = getString(R.string.newsTitle);//getString(R.string.title_section5); //notificationPage
         restoreActionBar();
     }
 

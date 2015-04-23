@@ -150,7 +150,7 @@
 
     <string name="rsbAgeFrom">" between "</string>
     <string name="rsbAgeTo">" to "</string>
-    <string name="rsbAgeYears">" months"</string>
+    <string name="rsbAgeYears">" years"</string>
     <string name="rsbIllimited">" illimited"</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -172,7 +172,7 @@
     <!-- browse row -->
     <string name="browseID">ID</string>
     <string name="browseName">Name</string>
-    <string name="browseAge">age</string>
+    <string name="browseAge">Age</string>
 
 
 
@@ -195,6 +195,7 @@
     <string name="infoTitle">Info</string>
     <string name="contactTitle">Contact</string>
     <string name="mainPageTitle">Main Page</string>
+    <string name="newsTitle">News</string>
 
     <string name="searchResultsTitle">Search Results</string>
     <string name="detailsTitle">Details</string>
