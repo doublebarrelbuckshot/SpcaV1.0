@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.jedgar.spcav10" >
+    package="com.example.jedgar.spca" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
@@ -15,7 +15,7 @@
 
    >
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.jedgar.spca.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-            android:name=".ActivityNotification"
+            android:name="com.example.jedgar.spca.ActivityNotification"
             android:label="@string/app_name"></activity>
 
 
@@ -43,10 +43,10 @@
          android:label="@string/title_activity_splash_page" >
    </activity>-->
         <receiver
-            android:name=".AlarmReceiver"
+            android:name="com.example.jedgar.spca.AlarmReceiver"
             android:process=":remote" />
         <receiver
-            android:name=".AlarmBootReceiver">
+            android:name="com.example.jedgar.spca.AlarmBootReceiver">
             <intent-filter>
                 <action
                     android:name="android.intent.action.BOOT_COMPLETED" />

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpcaV1.0</string>
+    <string name="app_name">Spca</string>
 
     <!-- MainPageFragment -->
     <string name="InitialDownloadMsg">Téléchargement des informations</string>
@@ -61,7 +61,7 @@
 
 
 
-    <string name="dog_tab">Dogs</string>
+    <string name="dog_tab">Chiens</string>
             <string name="adoption_fees_dogs">
                 - Chiots – moins de 8 mois : 295$ \n(si vous adoptez un 2e chiot en même temps, les frais d’adoption du 2e sont de 200$)\n
                 \n- Chiens – 8 mois et plus : 255$ \n(si vous adoptez un 2e chien en même temps, les frais d’adoption du 2e sont de 125$)\n
@@ -70,7 +70,7 @@
 
 
 
-    <string name="cat_tab">Cats</string>
+    <string name="cat_tab">Chats</string>
             <string name="adoption_fees_cats">
                 - Chaton – moins de 5 mois: 175$
                 \n- Chat – 5 mois et plus: 125$
@@ -131,13 +131,7 @@
     <string name="text_titre">Gestion des notification</string>
 
 
-<!--
-    #########################################################################
 
-     JUSQU'A ICI C EST TRADUIT
-
-     ########################################################################
--->
 
 
 
@@ -163,25 +157,28 @@
        <string name="title_activity_main_activity2">MainActivity2</string>
        <string name="title_activity_splash_page">SplashPage</string>
 
-    <string name="rsbAgeFrom">" between "</string>
-    <string name="rsbAgeTo">" to "</string>
-    <string name="rsbAgeYears">" months"</string>
-    <string name="rsbIllimited">" illimited"</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="sterilized">Sterilized</string>
-    <string name="declawed">Declawed</string>
-    <string name="abandoned">Abandoned</string>
 
 
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+
+    <string name="rsbAgeFrom">" entre "</string>
+    <string name="rsbAgeTo">" à "</string>
+    <string name="rsbAgeYears">" mois"</string>
+    <string name="rsbIllimited">" illimité"</string>
+    <string name="male">Mâle</string>
+    <string name="female">Femelle</string>
+    <string name="sterilized">Stérilisé</string>
+    <string name="declawed">Dégriffé</string>
+    <string name="abandoned">Abandonné</string>
+
+
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
     <string name="front">Front</string>
     <string name="back">Back</string>
     <string name="both">Both</string>
 
-    <string name="years">years</string>
-    <string name="months">months</string>
+    <string name="years">ans</string>
+    <string name="months">mois</string>
 
 
     <string name="name">Name</string>
@@ -193,27 +190,33 @@
     <string name="sex">Sex</string>
     <string name="description">Description</string>
     <string name="images">Images</string>
-    <string name="lookAtWhatIFound">Look at what I found!</string>
+    <string name="lookAtWhatIFound">Regardez ce que je trouve!</string>
 
 
-    <string name="favoritesTitle">Favorites</string>
-    <string name="newTitle">New</string>
+    <string name="favoritesTitle">Favoris</string>
+    <string name="newTitle">Nouveau</string>
     <string name="notificationsTitle">Notifications</string>
     <string name="infoTitle">Info</string>
     <string name="contactTitle">Contact</string>
-    <string name="mainPageTitle">Main Page</string>
+    <string name="mainPageTitle">Accueil</string>
 
-    <string name="searchResultsTitle">Search Results</string>
-    <string name="detailsTitle">Details</string>
-    <string name="helpMeFindAHome">Help me find a home!</string>
-    <string name="adopt">Adopt!</string>
-    <string name="removeAll">Remove All</string>
-    <string name="adoptedCAPS">ADOPTED</string>
-    <string name="systemStateOutOfSync">System may be out of sync</string>
-    <string name="refresh">Refresh</string>
+    <string name="searchResultsTitle">Résultats de la recherche</string>
+    <string name="detailsTitle">Détails</string>
+    <string name="helpMeFindAHome">Aidez-moi à trouver une maison!</string>
+    <string name="adopt">Adopter!</string>
+    <string name="removeAll">Enlever Tout</string>
+    <string name="adoptedCAPS">ADOPTÉ</string>
+    <string name="systemStateOutOfSync">Le système peut être désynchronisé</string>
+    <string name="refresh">Rafraîchir</string>
 
 
+    <!--
+        #########################################################################
 
+         JUSQU'A ICI C EST TRADUIT
+
+         ########################################################################
+    -->
 
 
 
@@ -229,24 +232,24 @@
 
 
 
-    <string name="share_with">Share Animal Details</string>
+    <string name="share_with">Partager Détails Animal</string>
 
     <!-- Empty list Strings (Favorites, new and general browse) -->
-    <string name="emptyListFavoritesMSG">There is no animal in favorite list.</string>
-    <string name="emptyListNewMSG">No new animal.\nTry again later.</string>
-    <string name="emptyListMSG">No animal matched selection criteria.</string>
+    <string name="emptyListFavoritesMSG">Il n\'y a aucun animal dans la liste des favoris.</string>
+    <string name="emptyListNewMSG">Aucun nouvel animal.\nRéessayez plus tard.</string>
+    <string name="emptyListMSG">Aucun animal ne correspondait critères de sélection.</string>
 
     <!-- ERROR DIALOG Strings -->
-    <string name="adoptableSearchError">There was a communication error while downloading list of adoptable animals</string>
-    <string name="adoptableDetailsErrors">There was a problem getting information about some animals.  You may not have up-to date information.</string>
-    <string name="adoptableSearchPostJobError">There was a problem updating animal information.  Your animal lists may not be up-to date.</string>
+    <string name="adoptableSearchError">Il y avait une erreur de communication tout en téléchargeant la liste des animaux adoptables</string>
+    <string name="adoptableDetailsErrors">Il y avait un problème à obtenir des informations sur certains animaux. Vous pouvez ne pas avoir les informations à jour.</string>
+    <string name="adoptableSearchPostJobError">Il y avait un problème de mise à jour des informations animal. Vos listes d\'animaux peuvent ne pas être à jour.</string>
     <string name="ok">Ok</string>
-    <string name="retry">Retry</string>
-    <string name="offline">Off-line mode</string>
+    <string name="retry">Réessayer</string>
+    <string name="offline">Mode hors ligne</string>
 
     <!-- confirm dialog for clear all favorites and clear all new. -->
-    <string name="clearFavs">Clear favorite animals list?</string>
-    <string name="clearNew">Clear new animals list?</string>
+    <string name="clearFavs">Effacer la liste des animaux préférés?</string>
+    <string name="clearNew"> Effacer la liste des nouveaux animaux?</string>
 
 
 

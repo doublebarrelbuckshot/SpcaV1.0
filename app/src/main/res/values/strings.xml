@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpcaV1.0</string>
+    <string name="app_name"> SPCA </string>
 
     <!-- MainPageFragment -->
     <string name="InitialDownloadMsg">Downloading animal information</string>

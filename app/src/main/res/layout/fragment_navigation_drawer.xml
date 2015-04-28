@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
     android:divider="@android:color/holo_red_light"
     android:dividerHeight="0dp"
-    android:background="@color/transparent_red"
+    android:background="@color/translucent_red"
     tools:context=".NavigationDrawerFragment" />

@@ -9,15 +9,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:descendantFocusability="blocksDescendants"
-        android:background="@drawable/back_border"
-
         android:padding="3sp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
-
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/adoptedCAPS"
             android:id="@+id/adoptedOverlayTV"
