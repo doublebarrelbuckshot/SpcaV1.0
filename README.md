@@ -51,7 +51,10 @@ Est-ce-que j'ai manque des autres bugs? (surement)..
 
 
 "NICE TO HAVE" -- Seulment si on a vraiment de temps en extra
+
 --Autres parametres de recherche (declawed)
+
 --Sort by -- (**Est-ce qu'on essaye d'ajouter ca ou ca reste un nice to have??**) -- Sort by (age, name(peut etre la personne essaye de trouver un animal specifique?)) On decide le sort by avant de cliquer "Search"..
+
 --Prix des animaux qui se charge dynamiquement (en utilisant le meme appel JSON qu'on a utilise pour les nouvelles ("news")... -- vraiment la dernier priorite dans mon opinion..
 
