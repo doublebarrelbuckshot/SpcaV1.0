@@ -96,7 +96,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         //Log.d("MainPageFrag", "In onCreateView");
         if (!loaded) {
             dbh = DBHelper.getInstance(getActivity());
@@ -109,14 +108,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
 
-
-        // Find and get the textView and update its content.
-
-
        /*
        Load news image and information
         */
         important_message = (ImageView) rootView.findViewById(R.id.important_message);
+        newsText = getResources().getString(R.string.hardcodedNews);
+        newsHeadline =getResources().getString(R.string.hardcodeNewsHeadline);
 
         new DownloadNews().execute();
 
@@ -280,9 +277,9 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             refreshMI.setVisible(true);
         }
         else {*/
-            progressBar.setVisibility(View.GONE);
-            progressText.setVisibility(View.GONE);
-            searchButton.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+        progressText.setVisibility(View.GONE);
+        searchButton.setVisibility(View.VISIBLE);
         //}
 
         Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
@@ -371,25 +368,25 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             }
         }
         else {*/
-            switch (progress) {
-                case 0:
-                    searchButton.setVisibility(View.GONE);
-                    progressBar.setProgress(0);
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressBar.incrementProgressBy(1);
-                    progressText.setVisibility(View.VISIBLE);
-                    break;
-                case 1:
-                    progressBar.incrementProgressBy(5);
-                    progressBar.setMax(values[1] + 6);
-                    break;
-                case 2:
-                    progressBar.incrementProgressBy(1);
-                    break;
-                default:
-                    progressBar.setProgress(6 + progress);
-                    break;
-            }
+        switch (progress) {
+            case 0:
+                searchButton.setVisibility(View.GONE);
+                progressBar.setProgress(0);
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.incrementProgressBy(1);
+                progressText.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                progressBar.incrementProgressBy(5);
+                progressBar.setMax(values[1] + 6);
+                break;
+            case 2:
+                progressBar.incrementProgressBy(1);
+                break;
+            default:
+                progressBar.setProgress(6 + progress);
+                break;
+        }
         //}
     }
 
@@ -512,7 +509,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     public class DownloadNews extends AsyncTask<Void, Void, NewsWebAPI> {
         @Override
         protected NewsWebAPI doInBackground(Void... params) {
-            NewsWebAPI nwapi = new NewsWebAPI();
+            NewsWebAPI nwapi = new NewsWebAPI(getActivity().getApplicationContext());
             return nwapi;
         }
         @Override
@@ -522,14 +519,16 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         @Override
         protected void onPostExecute(NewsWebAPI nwapi) {
-            newsImage = nwapi.newsImage;
-            newsText = nwapi.newsText;
-            newsHeadline = nwapi.newsHeadline;
+            if(nwapi.errorCode == 0) {
+                newsText = nwapi.newsText;
+                newsHeadline = nwapi.newsHeadline;
+                Picasso.with(getActivity().getApplicationContext()).load(nwapi.newsImage).into(important_message);
+            }
+            else{
+                Picasso.with(getActivity().getApplicationContext()).load(R.drawable.makefurhistory).into(important_message);
+            }
 
-            Picasso.with(getActivity().getApplicationContext()).load(newsImage).into(important_message);
-//        ArrayList<String> titres = toutvWebAPI.titres;
-//        MyAdapter adapter = new MyAdapter(titres);
-//        listv.setAdapter(adapter);
+
         }
 
     }

@@ -1,6 +1,9 @@
 package com.example.jedgar.spca;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,8 +28,9 @@ public class NewsWebAPI {
     String newsImage;
     String newsText;
     String newsHeadline;
+    int errorCode; //if 0 all ok, else error occured
 
-    public NewsWebAPI(){
+    public NewsWebAPI(Context c){
         String url = "http://doublebarrelbuckshot.github.io/apptest/";
 
         try {
@@ -36,15 +40,20 @@ public class NewsWebAPI {
             this.newsImage = js.getString("newsImage");
             this.newsText = js.getString("newsText");
             this.newsHeadline = js.getString("newsHeadline");
+            this.errorCode = 0;
 
 
         } catch (IOException e) {
             Log.d("Web ", "Erreur: " + e.getMessage());
+            this.errorCode = 1;
+
+
         } catch (JSONException e) {
             Log.d("JSON ", "Erreur: " + e.getMessage());
+            this.errorCode = 1;
         }
 
-        Log.d("NEWS", "Image: " + newsImage + "   Text:" + newsText + "    Headline:" + newsHeadline );
+        //Log.d("NEWS", "Image: " + newsImage + "   Text:" + newsText + "    Headline:" + newsHeadline );
     }
 
 
