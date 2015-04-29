@@ -207,7 +207,8 @@ public class SearchCriteria implements Parcelable {
 
     public String getCommandForNotifs() {
         String where = getWhereFromPrefs();
-        where += " AND n." + DBHelper.T_NEW_ANIMALS_ANIMAL_ID + " = a." + DBHelper.T_ANIMAL_ID + ";";
+        where += " AND n." + DBHelper.T_NEW_ANIMALS_ANIMAL_ID + " = a." + DBHelper.T_ANIMAL_ID +
+                 " AND n." + DBHelper.T_NEW_ANIMALS_DATE + " > (SELECT " + DBHelper.T_PREFERENCES_LAST_NOTIFICATION_DATE + " FROM " + DBHelper.TABLE_PREFERENCES + ");";
         return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + " as a, " +
                                   DBHelper.TABLE_NEW_ANIMALS + " as n " + where;
     }

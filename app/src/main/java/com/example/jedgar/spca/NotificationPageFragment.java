@@ -230,13 +230,14 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
             }
 
         }
-      if(interval!=0){
+
+        if(interval!=0){
           val= (int) (interval/1000);
           dbh.setNotifications(db,"Y",val);
-      }else{
+        }else{
           val= 60;
           dbh.setNotifications(db,"Y",val);
-      }
+        }
     }
 
     @Override

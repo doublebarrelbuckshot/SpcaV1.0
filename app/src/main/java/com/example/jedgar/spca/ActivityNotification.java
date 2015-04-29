@@ -32,14 +32,13 @@ public class ActivityNotification extends Activity {
 
         SearchCriteria sc = new SearchCriteria(db);
         String sql = new String(sc.getCommandForNotifs());
-       //KEEP THESE 2 LINES
-       // dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
-      //  c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
-//
+        dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
+        c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
+
 
         //TEST WITH c = FAVORITES
-        dbh.setCursorForFavoriteList(db);
-        c = dbh.getCursorForFavoriteList();
+      //  dbh.setCursorForFavoriteList(db);
+       // c = dbh.getCursorForFavoriteList();
         //END TEST
 
         c.moveToFirst();
@@ -59,8 +58,7 @@ public class ActivityNotification extends Activity {
 //            mTitle = getString(R.string.newTitle);
 //
         }
-
-else {
+        else {
             TextView txt = new TextView(this);
             Log.d("ACTIVIYYNOTI", "TESTESTESTEST");
 

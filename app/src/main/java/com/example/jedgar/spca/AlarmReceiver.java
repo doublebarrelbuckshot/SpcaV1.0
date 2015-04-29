@@ -1,9 +1,11 @@
 package com.example.jedgar.spca;
 
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.database.Cursor;
@@ -15,10 +17,12 @@ import android.util.Log;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.view.View;
 
 
-
-public class AlarmReceiver extends BroadcastReceiver{
+public class AlarmReceiver extends BroadcastReceiver implements DownloadAdoptableSearch.AsyncTaskDelegate{
+    boolean finishedDownload;
+    boolean downloadErrors;
     DBHelper dbh;
     SQLiteDatabase db;
     Cursor c;
@@ -27,13 +31,40 @@ public class AlarmReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        try {
-            dbh = DBHelper.getInstance(context);
-            db = dbh.getWritableDatabase();
 
+        dbh = DBHelper.getInstance(context);
+        db = dbh.getWritableDatabase();
+
+        Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
+        finishedDownload = downloadErrors = false;
+        try {
+            Log.d("DownloadAdoptableSearch", "About to call trigger AdopdatableSearch in update mode.");
+            new DownloadAdoptableSearch(context, animalList, this).execute();
+        } catch (Exception e) {
+            Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
+            return;
+        }
+
+        while (finishedDownload == false) {
+            try {
+                Thread.sleep((long) 1000);
+            } catch (InterruptedException e) {
+                Log.d("ACTIVIYYNOTI", "Sleep Failure: " + e.getMessage());
+                return;
+            }
+        }
+
+        if (downloadErrors) {  // do not proceed with notif.
+            Log.d("Notifs", "Download error.");
+            return;
+        }
+
+        try {
+            Log.d("Notifs", "Checking new.");
             SearchCriteria sc = new SearchCriteria(db);
             String sql = new String(sc.getCommandForNotifs());
            //KEEP THESE 2 LINES
+            Log.d("Notifs", sql);
             dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
             c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
 
@@ -45,7 +76,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             c.moveToFirst();
             if (c.isAfterLast() != true) {
 
-
+                Log.d("Notifs", "Found new.");
 
                 //On crée un "gestionnaire de notification"
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -92,6 +123,9 @@ public class AlarmReceiver extends BroadcastReceiver{
 
                 //Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
                 notificationManager.notify(ID_NOTIFICATION, notification);
+
+                // update time stamp of last call datetime.
+                //dbh.setNotificationLastCall(db);
             }
             else {
             Log.d("ACTIVIYYNOTI", "NO ANIMALS, notification cancelled");
@@ -101,4 +135,31 @@ public class AlarmReceiver extends BroadcastReceiver{
             Log.d("Notif", e.getMessage());
         }
     }
+
+    public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
+
+        //Log.d("MAIN", "In asyncTaskFinished");
+        finishedDownload = true;
+        downloadErrors = false;
+
+        Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
+        if (response.adoptableSearchErrorCode != 0) {
+            downloadErrors = true;
+            return;
+        }
+
+        if (response.adoptableDetailsErrors > 0) {
+            downloadErrors = true;
+            return;
+        }
+        /*
+        if (response.postJobError) { post Job is to flag favorites and delete animals not adoptable anymore.
+            return;
+        }*/
+    }
+
+    public void asyncTaskProgressUpdate(Integer... values) {
+        //Log.d("MAIN", "In asyncTaskProgressUpdate");
+    }
+
 }
