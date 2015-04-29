@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jedgar.spca" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
     <uses-permission android:name="android.permission.VIBRATE" ></uses-permission>
@@ -13,9 +13,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
 
-   >
+        >
         <activity
-            android:name="com.example.jedgar.spca.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
@@ -27,9 +27,9 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.example.jedgar.spca.ActivityNotification"
-            android:label="@string/app_name"></activity>
+        <!--activity
+            android:name=".ActivityNotification"
+            android:label="@string/app_name"></activity>-->
 
 
 
@@ -42,16 +42,43 @@
             android:name=".MainActivity2">
          android:label="@string/title_activity_splash_page" >
    </activity>-->
-        <receiver
-            android:name="com.example.jedgar.spca.AlarmReceiver"
+
+        <!--receiver
+            android:name=".AlarmReceiver"
             android:process=":remote" />
         <receiver
-            android:name="com.example.jedgar.spca.AlarmBootReceiver">
+            android:name=".AlarmBootReceiver">
             <intent-filter>
                 <action
                     android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
+        </receiver>-->
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true">
+            <intent-filter>
+
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+
+
+
+            </intent-filter>
         </receiver>
+
+
+        <!--receiver android:name=".AlarmReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>-->
+
+        <!--receiver android:name="AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>-->
 
     </application>
 

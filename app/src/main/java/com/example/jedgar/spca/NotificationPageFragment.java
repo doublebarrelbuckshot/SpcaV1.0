@@ -2,23 +2,32 @@ package com.example.jedgar.spca;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.ComponentName;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.TimePicker;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
 import java.util.Calendar;
-
 
 
 public class NotificationPageFragment extends Fragment implements  View.OnClickListener, GetActionBarTitle {
@@ -38,6 +47,7 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
     AlarmManager alarmManager;
     PendingIntent pendingintent;
 
+
     public static NotificationPageFragment newInstance(){
 
         NotificationPageFragment fragment = new NotificationPageFragment();
@@ -52,8 +62,7 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         dbh = DBHelper.getInstance(getActivity());
         db = dbh.getWritableDatabase();
 
-        /*dbh = DBHelper.getInstance(this.getActivity());
-        db = dbh.getWritableDatabase();*/
+
 
        /* SearchCriteria sc = new SearchCriteria(db);
         String sql = new String(sc.getCommandForNotifs());*/
@@ -80,6 +89,12 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         ck_semaines = (RadioButton)rootView.findViewById(R.id.semaines);
         ck_semaines.setOnClickListener(NotificationPageFragment.this);
 
+        //Activé Receiver
+
+
+
+
+
         c=dbh.getPreferences(db);
         if (c.moveToFirst()) {
             val=c.getInt(2);
@@ -103,24 +118,34 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         ((MainActivity)activity).onSectionAttached(5);
     }
 
-    /*
-        * Est activé après avoir valider l'heure du reveil.
-        * En fait on sauvegarde simplement la nouvelle heure. On l'affiche comme il faut et on replanifie le reveil
-        * @see android.app.TimePickerDialog.OnTimeSetListener#onTimeSet(android.widget.TimePicker, int, int)
-        */
-   /* @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Time t = new Time();
-        t.hour = hourOfDay;
-        t.minute = minute;
-        alarm.setHeure(t);
-    }
+
     /*
    * Job de planification du reveil
    */
     public void planifierAlarm() {
         val= (int) (interval/1000);
-        Intent intent = new Intent(this.getActivity(), AlarmReceiver.class);
+
+
+        ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
+         int status = this.getActivity().getPackageManager().getComponentEnabledSetting(component);
+
+
+        //Toast.makeText(this.getActivity(), "status "+ status+" PackageManager "+PackageManager.COMPONENT_ENABLED_STATE_DISABLED, Toast.LENGTH_SHORT).show();
+
+            if(status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+
+
+                Log.d("avantplanificationnnnn", "enableddd");
+               /* getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
+                Log.d("avantplanifucationnnn", "disabledddd");*/
+            }else if(status == PackageManager.COMPONENT_ENABLED_STATE_DISABLED){
+                this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
+
+                Log.d("avantplanificationnnnn", "enableddd");
+        }
+
+
+        Intent intent = new Intent(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
         pendingintent = PendingIntent.getBroadcast(this.getActivity(), ALARM_ID, intent, 0);
         alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingintent);
@@ -128,12 +153,35 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         reveil.setTimeInMillis(System.currentTimeMillis());
         reveil.add(Calendar.SECOND, val);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, reveil.getTimeInMillis(), interval, pendingintent);
+
+        //Toast.makeText(this.getActivity(), "avantttttt", Toast.LENGTH_SHORT).show();
+
+        //  Log.d("avant", intent.getAction()==null);
+
     }
 
     public void cancel(){
         alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingintent);
-        //Toast.makeText(this.getActivity(), "Notification desactivée!!!!!!!.", Toast.LENGTH_SHORT).show();
+
+        ComponentName component = new ComponentName(getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
+        int status = this.getActivity().getPackageManager().getComponentEnabledSetting(component);
+
+
+       // Toast.makeText(this.getActivity(), "status "+ status+" PackageManager "+PackageManager.COMPONENT_ENABLED_STATE_ENABLED, Toast.LENGTH_SHORT).show();
+
+        if(status == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
+
+            Log.d("avantcancelll", "disabledddd");
+            //this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
+           /* getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
+            Log.d("avantcancelll", "enabledddd");*/
+        }else if (status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED){
+            this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
+
+            Log.d("avantcancelll", "disabledddd");
+        }
+       // Toast.makeText(this.getActivity(), "Notification desactivée!!!!!!!.", Toast.LENGTH_SHORT).show();
     }
 
     public void message(){
@@ -166,15 +214,15 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
     }
 
     public void etatAvant(){
-        //Toast.makeText(this.getActivity(), "Intervalll="+ MainActivity.interval, Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this.getActivity(), "etat avanttttt : intervalll = "+interval+", Val = "+val, Toast.LENGTH_SHORT).show();
+
+
         if(interval==0) {
             cancel();
             optionActive(false);
         }else{
             optionActive(true);
             planifierAlarm();
-           // message();
+            // message();
         }
     }
 
@@ -184,8 +232,10 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         if (v.getId() == R.id.heure) {
             interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
             //interval=AlarmManager.INTERVAL_HOUR;
-            planifierAlarm();
+            //cancel();
+
             ck_alarm.setChecked(true);
+            planifierAlarm();
 
             //message();
             //optionActive();
@@ -194,6 +244,7 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
             interval=6*(AlarmManager.INTERVAL_HOUR);
             //interval=(60*1000);
             ck_alarm.setChecked(true);
+           // cancel();
             planifierAlarm();
             //message();
 
@@ -218,7 +269,7 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         }else if(v.getId() == R.id.activer) {
             if (ck_alarm.isChecked()) {
                 if(interval!=0){
-                    planifierAlarm();
+                   // planifierAlarm();
 
                 }
 
@@ -227,16 +278,17 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
                 cancel();
                 interval=0;
                 val=0;
+
             }
 
         }
-      if(interval!=0){
-          val= (int) (interval/1000);
-          dbh.setNotifications(db,"Y",val);
-      }else{
-          val= 60;
-          dbh.setNotifications(db,"Y",val);
-      }
+        if(interval!=0){
+            val= (int) (interval/1000);
+            dbh.setNotifications(db,"Y",val);
+        }else{
+            val= 60;
+            dbh.setNotifications(db,"Y",val);
+        }
     }
 
     @Override

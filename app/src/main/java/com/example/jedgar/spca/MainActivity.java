@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity
             {//mettre du code ICI
 
               //  Log.d("FROM NOTIFI xxx", b.getString("key") + "intent already exists");
-                /*getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
+               /* getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, BrowsePageFragment.newInstance())
                         .addToBackStack(null)
@@ -100,7 +100,7 @@ public class MainActivity extends ActionBarActivity
         { //on est venu du notification, mettre du code ici
           //  Log.d("FROM NOTIFI", b.getString("key"));
 
-           /* getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
+            /*getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, BrowsePageFragment.newInstance())
                     .addToBackStack(null)
