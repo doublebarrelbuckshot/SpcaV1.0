@@ -95,6 +95,15 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
+
+       /*
+       Load news image and information
+        */
+        important_message = (ImageView) rootView.findViewById(R.id.important_message);
+        newsText = getResources().getString(R.string.hardcodedNews);
+        newsHeadline =getResources().getString(R.string.hardcodeNewsHeadline);
+        new DownloadNews().execute();
 
         //Log.d("MainPageFrag", "In onCreateView");
         if (!loaded) {
@@ -106,16 +115,9 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         setHasOptionsMenu(true);
 
-        View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
 
-       /*
-       Load news image and information
-        */
-        important_message = (ImageView) rootView.findViewById(R.id.important_message);
-        newsText = getResources().getString(R.string.hardcodedNews);
-        newsHeadline =getResources().getString(R.string.hardcodeNewsHeadline);
 
-        new DownloadNews().execute();
+
 
         important_message.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -343,8 +343,8 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void doAdopt(String animalID) {
-        Fragment frag = ContactPageFragment.newInstance(animalID);
+    public void doAdopt(String animalID, String animalImage) {
+        Fragment frag = ContactPageFragment.newInstance(animalID, animalImage);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, frag)
                 .addToBackStack(null)
