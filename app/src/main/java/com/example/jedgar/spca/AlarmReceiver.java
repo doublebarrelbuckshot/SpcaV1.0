@@ -27,7 +27,7 @@ import android.app.NotificationManager;
 import android.view.View;
 
 
-public class AlarmReceiver extends BroadcastReceiver implements DownloadAdoptableSearch.AsyncTaskDelegate{
+public class AlarmReceiver extends BroadcastReceiver {
     boolean finishedDownload;
     boolean downloadErrors;
     DBHelper dbh;
@@ -39,41 +39,60 @@ public class AlarmReceiver extends BroadcastReceiver implements DownloadAdoptabl
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        if (context == null) {
+            Log.d("AlarmReceiver", "context == null");
+            return;
+        }
+
         dbh = DBHelper.getInstance(context);
         db = dbh.getWritableDatabase();
 
+        /*
+        String deleteWhereClause = DBHelper.T_ANIMAL_ID + " = 27648585 OR " + DBHelper.T_ANIMAL_ID + " = 19340025";
+        db.delete(DBHelper.TABLE_ANIMAL, deleteWhereClause, null);
+        Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_ANIMAL + " WHERE " + deleteWhereClause + ";");
+        db.delete(DBHelper.TABLE_NEW_ANIMALS, deleteWhereClause, null);
+        Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_NEW_ANIMALS + " WHERE " + deleteWhereClause + ";");
+
         Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
-        finishedDownload = downloadErrors = false;
-       // Log.d("avant2", "aloooo");
+
+        finishedDownload = false;
+        downloadErrors = false;
+
+        // Log.d("avant2", "aloooo");
 
         //if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
         //if (("android.intent.action.BOOT_COMPLETED".equals(intent.getAction()))){
-        // Set the alarm here.*/
-       // Log.d("aprdddddddddddes", " apaaaares");
-        // Toast.makeText(context, "apresssss" + c.isAfterLast(), Toast.LENGTH_SHORT).show();
+        // Set the alarm here.
 
         try {
             Log.d("DownloadAdoptableSearch", "About to call trigger AdopdatableSearch in update mode.");
-            new DownloadAdoptableSearch(context, animalList, this).execute();
+            new DownloadAdoptableSearch(context, animalList, new AlarmDownloadMSGDelegate(this)).execute();
         } catch (Exception e) {
             Log.d("DownloadAdoptableSearch", "Failure" + e.getMessage());
             return;
         }
 
+        Log.d("Notifs", "7");
+
         while (finishedDownload == false) {
+            Log.d("Notifs", "8");
             try {
-                Thread.sleep((long) 1000);
+                Thread.sleep((long) 3000);
             } catch (InterruptedException e) {
                 Log.d("ACTIVIYYNOTI", "Sleep Failure: " + e.getMessage());
                 return;
             }
         }
 
+        Log.d("Notifs", "9");
+
         if (downloadErrors) {  // do not proceed with notif.
             Log.d("Notifs", "Download error.");
             return;
         }
-
+        Log.d("Notifs", "A");
+*/
         try {
             Log.d("Notifs", "Checking new.");
             SearchCriteria sc = new SearchCriteria(db);
@@ -119,7 +138,7 @@ public class AlarmReceiver extends BroadcastReceiver implements DownloadAdoptabl
 
                 //Le PendingIntent c'est ce qui va nous permettre d'atteindre notre deuxième Activity
                 //ActivityNotification sera donc le nom de notre seconde Activity
- // Log.d("pending intent", "PENDING INTENT!!!!!!!");
+                // Log.d("pending intent", "PENDING INTENT!!!!!!!");
 
                 //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, ActivityNotification.class), 0);
 
@@ -142,7 +161,7 @@ public class AlarmReceiver extends BroadcastReceiver implements DownloadAdoptabl
                 notificationManager.notify(ID_NOTIFICATION, notification);
 
                 // update time stamp of last call datetime.
-                //dbh.setNotificationLastCall(db);
+                dbh.setNotificationLastCall(db);
             }
             else {
                 Log.d("ACTIVIYYNOTI", "NO ANIMALS, notification cancelled");
@@ -157,30 +176,39 @@ public class AlarmReceiver extends BroadcastReceiver implements DownloadAdoptabl
 
     }
 
-    public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
+    public class AlarmDownloadMSGDelegate implements DownloadAdoptableSearch.AsyncTaskDelegate {
 
-        //Log.d("MAIN", "In asyncTaskFinished");
-        finishedDownload = true;
-        downloadErrors = false;
 
-        Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
-        if (response.adoptableSearchErrorCode != 0) {
-            downloadErrors = true;
-            return;
+        AlarmReceiver alarmReceiver;
+
+        public AlarmDownloadMSGDelegate(AlarmReceiver ar) {
+            alarmReceiver = ar;
         }
 
-        if (response.adoptableDetailsErrors > 0) {
-            downloadErrors = true;
-            return;
-        }
+        public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
+
+            Log.d("AlarmReceiver", "In asyncTaskFinished");
+            alarmReceiver.finishedDownload = true;
+            alarmReceiver.downloadErrors = false;
+
+            Log.d("AlarmReceiver", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
+            if (response.adoptableSearchErrorCode != 0) {
+                alarmReceiver.downloadErrors = true;
+                return;
+            }
+
+            if (response.adoptableDetailsErrors > 0) {
+                alarmReceiver.downloadErrors = true;
+                return;
+            }
         /*
         if (response.postJobError) { post Job is to flag favorites and delete animals not adoptable anymore.
             return;
         }*/
-    }
+        }
 
-    public void asyncTaskProgressUpdate(Integer... values) {
-        //Log.d("MAIN", "In asyncTaskProgressUpdate");
+        public void asyncTaskProgressUpdate(Integer... values) {
+            Log.d("AlarmReceiver", "In asyncTaskProgressUpdate");
+        }
     }
-
 }

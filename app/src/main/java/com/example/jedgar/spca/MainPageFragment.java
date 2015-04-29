@@ -2,6 +2,7 @@ package com.example.jedgar.spca;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -509,7 +510,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     public class DownloadNews extends AsyncTask<Void, Void, NewsWebAPI> {
         @Override
         protected NewsWebAPI doInBackground(Void... params) {
-            NewsWebAPI nwapi = new NewsWebAPI(getActivity().getApplicationContext());
+
+            Context activity = getActivity();
+            if (activity == null)
+                return null;
+
+            NewsWebAPI nwapi = new NewsWebAPI(activity.getApplicationContext());
             return nwapi;
         }
         @Override
@@ -519,7 +525,11 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         @Override
         protected void onPostExecute(NewsWebAPI nwapi) {
-            if(nwapi.errorCode == 0) {
+            Context activity = getActivity();
+            if (nwapi == null || activity == null)
+                return;
+
+            if (nwapi.errorCode == 0) {
                 newsText = nwapi.newsText;
                 newsHeadline = nwapi.newsHeadline;
                 Picasso.with(getActivity().getApplicationContext()).load(nwapi.newsImage).into(important_message);
@@ -527,10 +537,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             else{
                 Picasso.with(getActivity().getApplicationContext()).load(R.drawable.makefurhistory).into(important_message);
             }
-
-
         }
-
     }
 
     public interface OnNewsListener {
