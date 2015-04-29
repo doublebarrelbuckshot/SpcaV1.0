@@ -10,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by JEdgar on 4/19/2015.
@@ -22,17 +25,20 @@ public class ContactPageFragment extends Fragment implements View.OnClickListene
     ImageButton appel_b;
     TextView send;
     TextView fone;
+    ImageView animalImage;
     String animalID = "";
-
+    String animalImageUrl = "";
     public static ContactPageFragment newInstance(){
         ContactPageFragment fragment = new ContactPageFragment();
         return fragment;
     }
 
-    public static ContactPageFragment newInstance(String animalIDT){
+    public static ContactPageFragment newInstance(String animalIDT, String animalImageUrl){
 
         ContactPageFragment fragment = new ContactPageFragment();
         fragment.animalID = animalIDT;
+        if(animalImageUrl != null)
+            fragment.animalImageUrl = animalImageUrl;
         return fragment;
     }
 
@@ -48,7 +54,7 @@ public class ContactPageFragment extends Fragment implements View.OnClickListene
         ident =(TextView)rootView.findViewById(R.id.ident);
         appel_b = (ImageButton)rootView.findViewById(R.id.appel_b);
         buttonSend = (ImageButton)rootView.findViewById(R.id.buttonSend);
-
+        animalImage = (ImageView)rootView.findViewById(R.id.animalImage);
         appel_b.setOnClickListener(ContactPageFragment.this);
         buttonSend.setOnClickListener(ContactPageFragment.this);
 
@@ -59,6 +65,15 @@ public class ContactPageFragment extends Fragment implements View.OnClickListene
         }
         else{
             ident.setText("ID: " + animalID);
+        }
+
+        if(animalImageUrl.equals("")){
+            animalImage.setVisibility(View.GONE);
+        }
+        else{
+            Picasso.with(getActivity().getApplicationContext()).load(animalImageUrl).into(animalImage);
+
+
         }
 
 

@@ -306,12 +306,15 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
             }
 
             Button adoptButton = (Button)detail.findViewById(R.id.adoptBtn);
-            adoptButton.setTag(animalID);
+            adoptButton.setTag(R.id.adoptIDTag, animalID);
+            adoptButton.setTag(R.id.adoptImageTag, imagesUrl.get(0));
             adoptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String animalIDT = (String) v.getTag();
-                    ((MainActivity)DetailsPageFragment.this.getActivity()).doAdopt(animalIDT);
+
+                    String animalIDT = (String) v.getTag(R.id.adoptIDTag);
+                    String adoptImage = (String) v.getTag(R.id.adoptImageTag);
+                    ((MainActivity)DetailsPageFragment.this.getActivity()).doAdopt(animalIDT, adoptImage);
 
 
                 }
@@ -572,7 +575,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
     }
 
     public interface OnAdoptListener {
-        public void doAdopt(String animalID);
+        public void doAdopt(String animalID, String animalImage);
     }
 }
 

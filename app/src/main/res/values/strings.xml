@@ -209,6 +209,8 @@
 
 
 
+    <item type="id" name="adoptIDTag"/>
+    <item type="id" name="adoptImageTag"/>
 
 
     <item type="id" name="favTag"/>
