@@ -251,7 +251,10 @@
     <string name="clearFavs">Effacer la liste des animaux préférés?</string>
     <string name="clearNew"> Effacer la liste des nouveaux animaux?</string>
 
-
+    <!--Strings for Hardcoded News (if no internet)-->
+    <string name="hardcodeNewsHeadline">#FiniLaFourrure</string>
+    <string name="hardcodedNews">Afin de sensibiliser le public au sort des animaux dans l’industrie de la fourrure, la SPCA de Montréal, en partenariat avec l’Association pour la protection des animaux à fourrure (APFA) et les Cosmétiques LUSH, a récemment lancé la campagne Fini la fourrure (‪#‎MakeFurHistory‬).
+Visitez www.finilafourrure.com afin d’en apprendre davantage sur la campagne et vous engager à dire NON à la fourrure.</string>
 
 
 </resources>

@@ -252,4 +252,10 @@
     <string name="check_activer">Enable notifications</string>
     <string name="text_titre">Notifications Management</string>
 
+
+    <!--Strings for Hardcoded News (if no internet)-->
+    <string name="hardcodeNewsHeadline">#MakeFurHistory</string>
+    <string name="hardcodedNews">In order to raise awareness of the plight of animals in the commercial fur trade, the Montreal SPCA, in partnership with the Association for the Protection of Fur Bearing Animals (APFA) and LUSH Cosmetics, recently launched the #MakeFurHistory campaign.
+Visit www.makefurhistory.com to learn more about the campaign and to take the fur-free pledge.</string>
+
 </resources>
