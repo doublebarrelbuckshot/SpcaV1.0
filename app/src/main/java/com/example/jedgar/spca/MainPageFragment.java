@@ -96,7 +96,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         //Log.d("MainPageFrag", "In onCreateView");
         if (!loaded) {
             dbh = DBHelper.getInstance(getActivity());
@@ -109,14 +108,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
 
-
-        // Find and get the textView and update its content.
-
-
        /*
        Load news image and information
         */
         important_message = (ImageView) rootView.findViewById(R.id.important_message);
+        newsText = getResources().getString(R.string.hardcodedNews);
+        newsHeadline =getResources().getString(R.string.hardcodeNewsHeadline);
 
         new DownloadNews().execute();
 
@@ -512,7 +509,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     public class DownloadNews extends AsyncTask<Void, Void, NewsWebAPI> {
         @Override
         protected NewsWebAPI doInBackground(Void... params) {
-            NewsWebAPI nwapi = new NewsWebAPI();
+            NewsWebAPI nwapi = new NewsWebAPI(getActivity().getApplicationContext());
             return nwapi;
         }
         @Override
@@ -522,24 +519,16 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
         @Override
         protected void onPostExecute(NewsWebAPI nwapi) {
-            if(nwapi.newsHeadline == null || nwapi.newsText == null)
-            {//hard-coded values in case can't access internet
-                Picasso.with(getActivity().getApplicationContext()).load(R.drawable.makefurhistory).into(important_message);
-                newsText = getResources().getString(R.string.hardcodedNews);
-                newsHeadline =getResources().getString(R.string.hardcodeNewsHeadline);
-            }
-            else{
-                newsImage = nwapi.newsImage;
-
+            if(nwapi.errorCode == 0) {
                 newsText = nwapi.newsText;
                 newsHeadline = nwapi.newsHeadline;
-                Picasso.with(getActivity().getApplicationContext()).load(newsImage).into(important_message);
-
+                Picasso.with(getActivity().getApplicationContext()).load(nwapi.newsImage).into(important_message);
+            }
+            else{
+                Picasso.with(getActivity().getApplicationContext()).load(R.drawable.makefurhistory).into(important_message);
             }
 
-//        ArrayList<String> titres = toutvWebAPI.titres;
-//        MyAdapter adapter = new MyAdapter(titres);
-//        listv.setAdapter(adapter);
+
         }
 
     }
