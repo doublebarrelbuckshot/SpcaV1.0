@@ -127,13 +127,11 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
 
             LinearLayout detailImages = (LinearLayout) detail.findViewById(R.id.detailsImageLayout);
 
-            //c = dbh.getAnimalList(db);
             if (position == goToPosition) {
                 int bookmark = c.getPosition();
                 c.moveToPosition(position);
                 String aID = c.getString(DBHelper.C_ANIMAL_ID);
                 dbh.removeFromNewList(db, aID);
-                //c.moveToPosition(bookmark);
             }
 
             c.moveToPosition(position);
@@ -219,8 +217,6 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
 
             TextView detailsText = (TextView)detail.findViewById(R.id.detailsText);
             detailsText.setText(Html.fromHtml(animalDescription));
-
-
 
 
 
@@ -539,20 +535,8 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
             // Button button = (Button)detail.findViewById(R.id.button);
 
 
-//            c = dbh.getAnimalList(db);
-//            c.moveToPosition(position);
-//            String t = Integer.toString(c.getInt(C_ANIMAL_ID));
-//            String d = c.getString(C_ANIMAL_NAME);
-//            String p1 = c.getString(C_ANIMAL_PHOTO1);
-//            String p2 = c.getString(C_ANIMAL_PHOTO2);
-//            String p3 = c.getString(C_ANIMAL_PHOTO3);
-
             ImageView detailsText = (ImageView)detail.findViewById(R.id.animalImage);
             Picasso.with(getActivity().getApplicationContext()).load(imagesUrl.get(position)).into(detailsText);
-            //  for (int i =0; i<imageCounterImages.size(); i++){
-            //      imageCounterImages.get(i).setImageResource(android.R.drawable.radiobutton_off_background);
-            //  }
-            //  imageCounterImages.get(position).setImageResource(android.R.drawable.radiobutton_on_background);
 
             ((ViewPager) collection).addView(detail, 0);
 

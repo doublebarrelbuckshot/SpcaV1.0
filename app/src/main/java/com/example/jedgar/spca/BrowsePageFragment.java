@@ -87,19 +87,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         // Required empty public constructor
     }
 
-//    public BrowsePageFragment(String title){
-//        super();
-//        if(title.equals("Favorites"))
-//            titleID = R.string.favoritesTitle;
-//        else titleID = R.string.searchResults;
-//    }
-
-
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
-    }*/
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -160,7 +147,6 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             }
         }
 
-        //((MainActivity)getActivity()).displaySystemStatus(this, menu);
 
         return;
     }
@@ -199,10 +185,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
             c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
 
-            /*
-            dbh.setCursorForNewAnimalsList(db);
-            c = dbh.getCursorForNewAnimalsList();
-            */
+
             cameFrom = "New";
             emptyListMsg = getString(R.string.emptyListNewMSG);
         } else {
