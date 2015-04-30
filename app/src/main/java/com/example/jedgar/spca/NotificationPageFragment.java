@@ -155,8 +155,8 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
 
     public void optionActive(boolean etat){
         ck_alarm.setChecked(etat);
-        //if(interval==((AlarmManager.INTERVAL_HOUR)/60)/2){
-        if(interval==AlarmManager.INTERVAL_HOUR){
+        if(interval==((AlarmManager.INTERVAL_HOUR)/60)/2){
+       // if(interval==AlarmManager.INTERVAL_HOUR){
             ck_heure.setChecked(etat);
         }else if(interval==6*(AlarmManager.INTERVAL_HOUR)){
             ck_sixheures.setChecked(etat);
@@ -183,8 +183,8 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
     public void onClick(View v) {
 
         if (v.getId() == R.id.heure) {
-            //interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
-            interval=AlarmManager.INTERVAL_HOUR;
+            interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
+            //interval=AlarmManager.INTERVAL_HOUR;
             ck_alarm.setChecked(true);
             planifierAlarm();
         }else if (v.getId() == R.id.sixheures) {
