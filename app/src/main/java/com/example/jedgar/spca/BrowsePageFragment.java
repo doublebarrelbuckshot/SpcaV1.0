@@ -195,16 +195,22 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
             SearchCriteria sc = new SearchCriteria(db);
-            String sql = new String(sc.getCommandForNotifs());
+            String sql = new String(sc.getCommandForNew());
             dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NEW_ANIMALS);
             c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
-
-            /*
-            dbh.setCursorForNewAnimalsList(db);
-            c = dbh.getCursorForNewAnimalsList();
-            */
             cameFrom = "New";
             emptyListMsg = getString(R.string.emptyListNewMSG);
+        } else if (sender.equals(DBHelper.CURSOR_NAME_NOTIFICATIONS)) {
+            Log.d("Browse","New notifs");
+            String sql = data.getString("command");
+            Log.d("Browse", sql);
+            dbh.setCursorForSelect(db, sql, DBHelper.CURSOR_NAME_NOTIFICATIONS);
+            c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NOTIFICATIONS);
+            Log.d("Browse", "Cursor count:" + c.getCount());
+            //dbh.setNotificationLastCall(db);
+            cameFrom = "notifs";
+            //emptyListMsg = getString(R.string.emptyListNewMSG);
+            emptyListMsg = "";
         } else {
             Log.d("Browse","else");
             // do default search
@@ -241,6 +247,14 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NEW_ANIMALS, position);
+                }
+            });
+        } else if (sender.equals(DBHelper.CURSOR_NAME_NOTIFICATIONS)) {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view,
+                                        int position, long id) {
+                    ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NOTIFICATIONS, position);
                 }
             });
         } else {

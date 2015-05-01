@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -285,69 +286,73 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         searchButton.setVisibility(View.VISIBLE);
         //}
 
-        Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
-        if (response.adoptableSearchErrorCode != 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.adoptableSearchError)
-                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            getData(true);
-                        }
-                    })
-                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dbh.setSessionModeOffLine(db);
-                        }
-                    });
-            builder.create();
-            builder.show();
-            ((MainActivity) getActivity()).setSystemStatus(1);
-            return;
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+
+            Log.d("asyncTaskFinished", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
+            if (response.adoptableSearchErrorCode != 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.adoptableSearchError)
+                        .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getData(true);
+                            }
+                        })
+                        .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dbh.setSessionModeOffLine(db);
+                            }
+                        });
+                builder.create();
+                builder.show();
+                ((MainActivity) getActivity()).setSystemStatus(1);
+                return;
+            }
+
+            if (response.adoptableDetailsErrors > 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.adoptableDetailsErrors)
+                        .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getData(true);
+                            }
+                        })
+                        .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dbh.setSessionModeOffLine(db);
+                            }
+                        });
+                builder.create();
+                builder.show();
+                ((MainActivity) getActivity()).setSystemStatus(1);
+                return;
+            }
+
+            if (response.postJobError) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.adoptableSearchPostJobError)
+                        .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getData(true);
+                            }
+                        })
+                        .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dbh.setSessionModeOffLine(db);
+                            }
+                        });
+                builder.create();
+                builder.show();
+                ((MainActivity) getActivity()).setSystemStatus(1);
+                return;
+            }
+
+            downloadMode = MODE_DEFAULT;
+            // unset out of sync state.
+            ((MainActivity) getActivity()).setSystemStatus(0);
+
+            dbh.setSessionModeOffLine(db);
         }
-
-        if (response.adoptableDetailsErrors > 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.adoptableDetailsErrors)
-                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            getData(true);
-                        }
-                    })
-                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dbh.setSessionModeOffLine(db);
-                        }
-                    });
-            builder.create();
-            builder.show();
-            ((MainActivity) getActivity()).setSystemStatus(1);
-            return;
-        }
-
-        if (response.postJobError) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.adoptableSearchPostJobError)
-                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            getData(true);
-                        }
-                    })
-                    .setNegativeButton(R.string.offline, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dbh.setSessionModeOffLine(db);
-                        }
-                    });
-            builder.create();
-            builder.show();
-            ((MainActivity) getActivity()).setSystemStatus(1);
-            return;
-        }
-
-        downloadMode = MODE_DEFAULT;
-        // unset out of sync state.
-        ((MainActivity) getActivity()).setSystemStatus(0);
-
-        dbh.setSessionModeOffLine(db);
     }
 
     public void asyncTaskProgressUpdate(Integer... values) {

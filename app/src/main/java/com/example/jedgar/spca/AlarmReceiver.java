@@ -2,6 +2,7 @@ package com.example.jedgar.spca;
 
 
 import android.app.AlertDialog;
+import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +20,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -27,7 +30,7 @@ import android.app.NotificationManager;
 import android.view.View;
 
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends WakefulBroadcastReceiver {
     boolean finishedDownload;
     boolean downloadErrors;
     DBHelper dbh;
@@ -39,6 +42,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Log.d("AlarmReceiver", "onReceive");
+
         if (context == null) {
             Log.d("AlarmReceiver", "context == null");
             return;
@@ -47,24 +52,31 @@ public class AlarmReceiver extends BroadcastReceiver {
         dbh = DBHelper.getInstance(context);
         db = dbh.getWritableDatabase();
 
-        /*
         String deleteWhereClause = DBHelper.T_ANIMAL_ID + " = 27648585 OR " + DBHelper.T_ANIMAL_ID + " = 19340025";
         db.delete(DBHelper.TABLE_ANIMAL, deleteWhereClause, null);
         Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_ANIMAL + " WHERE " + deleteWhereClause + ";");
         db.delete(DBHelper.TABLE_NEW_ANIMALS, deleteWhereClause, null);
         Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_NEW_ANIMALS + " WHERE " + deleteWhereClause + ";");
 
-        Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
+        Intent service = new Intent(context, IntentServiceSPAC.class);
+        //Intent intent = new Intent(this.getActivity(), com.example.jedgar.spca.IntentServiceSPAC.class);
+        Log.d("IntentServiceSPAC", "Starting service @ " + SystemClock.elapsedRealtime());
+        context.startService(service);
 
-        finishedDownload = false;
-        downloadErrors = false;
+        /*
+
+
 
         // Log.d("avant2", "aloooo");
 
         //if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
         //if (("android.intent.action.BOOT_COMPLETED".equals(intent.getAction()))){
         // Set the alarm here.
-
+*/
+        /*
+        finishedDownload = false;
+        downloadErrors = false;
+        Cursor animalList = dbh.getAnimalListOrdered(db, dbh.T_ANIMAL_ID + " asc ");
         try {
             Log.d("DownloadAdoptableSearch", "About to call trigger AdopdatableSearch in update mode.");
             new DownloadAdoptableSearch(context, animalList, new AlarmDownloadMSGDelegate(this)).execute();
@@ -84,7 +96,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 return;
             }
         }
-
+/*
         Log.d("Notifs", "9");
 
         if (downloadErrors) {  // do not proceed with notif.
@@ -92,7 +104,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             return;
         }
         Log.d("Notifs", "A");
-*/
+
         try {
             Log.d("Notifs", "Checking new.");
             SearchCriteria sc = new SearchCriteria(db);
@@ -113,7 +125,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             if (c.isAfterLast() != true) {
 
                 Log.d("Notifs", "Found new.");
-
                 //On crée un "gestionnaire de notification"
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -147,6 +158,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 //On définit le texte qui caractérise la notification
                 String texteNotification = "Il y a des nouveaux animaux qui correspond à vos criteres de recherche...";
                 //On configure notre notification avec tous les paramètres que l'on vient de créer
+
                 notification.setLatestEventInfo(context, titreNotification, texteNotification, pendingIntent);
                 //On regle la notification pour que ca suit le reglage du telephone
 
@@ -159,7 +171,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 //Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
                 notificationManager.notify(ID_NOTIFICATION, notification);
-
+/*
                 // update time stamp of last call datetime.
                 dbh.setNotificationLastCall(db);
             }
@@ -171,44 +183,9 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d("Notif", e.getMessage());
         }
         //
-
+*/
 
 
     }
 
-    public class AlarmDownloadMSGDelegate implements DownloadAdoptableSearch.AsyncTaskDelegate {
-
-
-        AlarmReceiver alarmReceiver;
-
-        public AlarmDownloadMSGDelegate(AlarmReceiver ar) {
-            alarmReceiver = ar;
-        }
-
-        public void asyncTaskFinished(DownloadAdoptableSearch.DownloadAdoptableSearchResponse response) {
-
-            Log.d("AlarmReceiver", "In asyncTaskFinished");
-            alarmReceiver.finishedDownload = true;
-            alarmReceiver.downloadErrors = false;
-
-            Log.d("AlarmReceiver", "AScode:" + response.adoptableSearchErrorCode + " ADerrors:" + response.adoptableDetailsErrors + " postJobError:" + response.postJobError);
-            if (response.adoptableSearchErrorCode != 0) {
-                alarmReceiver.downloadErrors = true;
-                return;
-            }
-
-            if (response.adoptableDetailsErrors > 0) {
-                alarmReceiver.downloadErrors = true;
-                return;
-            }
-        /*
-        if (response.postJobError) { post Job is to flag favorites and delete animals not adoptable anymore.
-            return;
-        }*/
-        }
-
-        public void asyncTaskProgressUpdate(Integer... values) {
-            Log.d("AlarmReceiver", "In asyncTaskProgressUpdate");
-        }
-    }
 }

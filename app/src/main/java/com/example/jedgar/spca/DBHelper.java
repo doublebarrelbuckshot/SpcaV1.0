@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.format.DateFormat;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,7 +20,7 @@ import java.util.HashMap;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "SPCA.DB";
-    static final int DB_VERSION = 41;
+    static final int DB_VERSION = 43;
 
     // table AdoptableSearch Results
     static final String TABLE_ANIMAL_MATCHED = "animalMatched";
@@ -116,6 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
     static final int  C_PREFERENCES_NOTICE_ENABLED   = 1;
     static final int  C_PREFERENCES_NOTICE_FREQUENCY = 2;
     static final int  C_PREFERENCES_SESSION_MODE     = 3;
+    static final int  C_PREFERENCES_LAST_NOTIFICATION_DATE = 4;
 
 
     //table favorites
@@ -130,6 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     static final String CURSOR_NAME_NEW_ANIMALS = "New";
     static final String CURSOR_NAME_FAVORITE_ANIMALS = "Favorites";
+    static final String CURSOR_NAME_NOTIFICATIONS = "Notifications";
     static final String CURSOR_NAME_SEARCH_ANIMALS = "Search";
     static HashMap<String, Cursor> cursors;
     static boolean firstTimeIn = true;
@@ -308,10 +312,12 @@ public class DBHelper extends SQLiteOpenHelper {
         if (animal.photo3 != null) cv.put(DBHelper.T_ANIMAL_PHOTO3, animal.photo3);
         db.beginTransaction();
         try {
+            String now = getDate();
+            Log.d("INSERTING", "NEW id:" + animal.id + " indate:" + now);
             db.insertOrThrow(DBHelper.TABLE_ANIMAL, null, cv);
             cv.clear();
             cv.put(DBHelper.T_NEW_ANIMALS_ANIMAL_ID, animal.id);
-            cv.put(DBHelper.T_NEW_ANIMALS_DATE, getDate());
+            cv.put(DBHelper.T_NEW_ANIMALS_DATE, now);
             db.insertOrThrow(DBHelper.TABLE_NEW_ANIMALS, null, cv);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -592,19 +598,28 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public String getDate() {
-        Calendar now = Calendar.getInstance();
-        String date = Integer.toString(now.get(Calendar.YEAR));
-        date += Integer.toString(now.get(Calendar.DAY_OF_YEAR));
-        date += Integer.toString(now.get(Calendar.HOUR));
-        date += Integer.toString(now.get(Calendar.MINUTE));
-        date += Integer.toString(now.get(Calendar.SECOND));
-        return date;
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+        Date now = Calendar.getInstance().getTime();
+        String dateStr = df.format(now);
+        Log.d("DBHelper", "date is:" + dateStr);
+        return df.format(now);
     }
     public void setNotificationLastCall(SQLiteDatabase db) {
         ContentValues cv = new ContentValues();
         cv.clear();
         cv.put(DBHelper.T_PREFERENCES_LAST_NOTIFICATION_DATE, getDate());
         db.update(DBHelper.TABLE_PREFERENCES, cv, null, null);
+    }
+
+    public String getNotificationLastCall(SQLiteDatabase db) {
+        Cursor c = getPreferences(db);
+        if (c == null)
+            return null;
+        if (c.isAfterLast()) {
+            return null;
+        }
+        c.moveToFirst();
+        return c.getString(C_PREFERENCES_LAST_NOTIFICATION_DATE);
     }
 
     public void appFirstTimeFalse(SQLiteDatabase db)  throws SQLException {

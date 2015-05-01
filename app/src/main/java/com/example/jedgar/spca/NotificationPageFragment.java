@@ -126,19 +126,17 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         val= (int) (interval/1000);
 
 
-        ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
-         int status = this.getActivity().getPackageManager().getComponentEnabledSetting(component);
-
+        //ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
+        ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.IntentServiceSPAC.class);
+        int status = this.getActivity().getPackageManager().getComponentEnabledSetting(component);
 
         //Toast.makeText(this.getActivity(), "status "+ status+" PackageManager "+PackageManager.COMPONENT_ENABLED_STATE_DISABLED, Toast.LENGTH_SHORT).show();
 
-            if(status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-
-
+        if(status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
                 Log.d("avantplanificationnnnn", "enableddd");
                /* getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
                 Log.d("avantplanifucationnnn", "disabledddd");*/
-            }else if(status == PackageManager.COMPONENT_ENABLED_STATE_DISABLED){
+        }else if(status == PackageManager.COMPONENT_ENABLED_STATE_DISABLED){
                 this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
 
                 Log.d("avantplanificationnnnn", "enableddd");
@@ -146,6 +144,7 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
 
 
         Intent intent = new Intent(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
+        //Intent intent = new Intent(this.getActivity(), com.example.jedgar.spca.IntentServiceSPAC.class);
         pendingintent = PendingIntent.getBroadcast(this.getActivity(), ALARM_ID, intent, 0);
         alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingintent);

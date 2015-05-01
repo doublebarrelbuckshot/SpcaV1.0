@@ -32,6 +32,7 @@ public class SearchCriteria implements Parcelable {
     int declawed;       //('Y = 1','N = 2')
     int ageMin;
     int ageMax;
+    String lastCallDate;
 
     public void dump() {
         Log.d("SC", "species:" + species + " ageMin:" + ageMin + " ageMax:" + ageMax + " sex:" + sex);
@@ -143,7 +144,7 @@ public class SearchCriteria implements Parcelable {
         }
     }
 
-    private String getWhereFromPrefs() {
+    public String getWhereFromPrefs() {
         int reqAgeMax;
 
         if (ageMax == 0 || ageMax == 24)
@@ -211,6 +212,21 @@ public class SearchCriteria implements Parcelable {
                  " AND n." + DBHelper.T_NEW_ANIMALS_DATE + " > (SELECT " + DBHelper.T_PREFERENCES_LAST_NOTIFICATION_DATE + " FROM " + DBHelper.TABLE_PREFERENCES + ");";
         return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + " as a, " +
                                   DBHelper.TABLE_NEW_ANIMALS + " as n " + where;
+    }
+
+    public String getCommandForNotifs(String from, String to) {
+        String where = getWhereFromPrefs();
+        where += " AND n." + DBHelper.T_NEW_ANIMALS_ANIMAL_ID + " = a." + DBHelper.T_ANIMAL_ID +
+                " AND n." + DBHelper.T_NEW_ANIMALS_DATE + " > '" + from + "' AND n." + DBHelper.T_NEW_ANIMALS_DATE + " <= '" + to + "';";
+        return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + " as a, " +
+                DBHelper.TABLE_NEW_ANIMALS + " as n " + where;
+    }
+
+    public String getCommandForNew() {
+        String where = getWhereFromPrefs();
+        where += " AND n." + DBHelper.T_NEW_ANIMALS_ANIMAL_ID + " = a." + DBHelper.T_ANIMAL_ID + ";";
+        return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + " as a, " +
+                DBHelper.TABLE_NEW_ANIMALS + " as n " + where;
     }
 
     public SearchCriteria (Parcel in){

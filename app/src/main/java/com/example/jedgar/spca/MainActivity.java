@@ -2,6 +2,8 @@ package com.example.jedgar.spca;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -54,36 +56,31 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onNewIntent(Intent intent){ ///Traite le cas ou l'application tourne deja, et on est venu de la notification
+        Log.d("MAIN", " in onNewIntent");
         super.onNewIntent(intent);
         setIntent(intent);
         Bundle b = getIntent().getExtras();
         if(b != null){
-            if(b.getString("key") != null)
-            {//mettre du code ICI
+            if(b.getString("command") != null) {//mettre du code ICI
+                Log.d("FROM NOTIFI xxx", b.getString("command"));
 
-              //  Log.d("FROM NOTIFI xxx", b.getString("key") + "intent already exists");
-               /* getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, BrowsePageFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
-                mTitle = getString(R.string.favoritesTitle);*/
-
-
-                getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
+                /*
+                *  ne pas mettre des extra ici.
+                //getIntent().putExtra("sender", "notifs");
+                //getIntent().putExtra("command", b.getString("command"));
+                 */
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, BrowsePageFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
                 mTitle = getString(R.string.newTitle);
-            }}
-        else{
-           // Log.d("NOT FROM NOTIF", "NOT FROM NOTIFICAITON");
+            }
         }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Log.d("MAIN", " in onCreate");
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -96,28 +93,19 @@ public class MainActivity extends ActionBarActivity
 
         Bundle b = getIntent().getExtras();
         if(b != null){
-        if(b.getString("key") != null)
-        { //on est venu du notification, mettre du code ici
-          //  Log.d("FROM NOTIFI", b.getString("key"));
-
-            /*getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, BrowsePageFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit();
-            mTitle = getString(R.string.favoritesTitle);*/
-
-            getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, BrowsePageFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit();
-            mTitle = getString(R.string.newTitle);
-
-
-        }}
-        else{
-          //  Log.d("NOT FROM NOTIF", "NOT FROM NOTIFICAITON");
+            if(b.getString("command") != null) { //on est venu du notification, mettre du code ici
+                Log.d("FROM NOTIFI", b.getString("command"));
+                /*
+                *  ne pas mettre des extra ici.
+                //getIntent().putExtra("sender", "notifs");
+                //getIntent().putExtra("command", b.getString("command"));
+                 */
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, BrowsePageFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                mTitle = getString(R.string.newTitle);
+            }
         }
 
 
@@ -313,6 +301,7 @@ public class MainActivity extends ActionBarActivity
         Log.d("main", "SHOWING DETAILS FRAGMENT");
         Fragment frag = DetailsPageFragment.newInstance(pos);
 
+        Log.d("MAIN", "In doDetails with cursorName:" + cursorName);
         Bundle args = new Bundle();
         args.putString("cursorName", cursorName);
         frag.setArguments(args);
@@ -389,7 +378,6 @@ public class MainActivity extends ActionBarActivity
         Log.d("MAIN", "In displaySystemStatus.  systemStatusCode = " + systemStatusCode);
         setSystemStateVisibility(menu);
     }
-
 
 
 //    @Override
