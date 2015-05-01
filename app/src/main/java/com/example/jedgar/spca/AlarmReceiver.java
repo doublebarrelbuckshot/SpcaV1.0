@@ -154,9 +154,9 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
                 //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, ActivityNotification.class), 0);
 
                 //On définit le titre de la notification
-                String titreNotification = "SPCA";
+                String titreNotification = context.getResources().getString(R.string.spcaMontreal);
                 //On définit le texte qui caractérise la notification
-                String texteNotification = "Il y a des nouveaux animaux qui correspond à vos criteres de recherche...";
+                String texteNotification = context.getResources().getString(R.string.notificationText); //
                 //On configure notre notification avec tous les paramètres que l'on vient de créer
 
                 notification.setLatestEventInfo(context, titreNotification, texteNotification, pendingIntent);

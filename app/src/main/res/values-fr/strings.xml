@@ -257,4 +257,7 @@
 Visitez www.finilafourrure.com afin d’en apprendre davantage sur la campagne et vous engager à dire NON à la fourrure.</string>
 
 
+    <!--Strings for notifications-->
+    <string name="notificationText">Il y a des nouveaux animaux qui correspond à vos criteres de recherche...</string>
+
 </resources>

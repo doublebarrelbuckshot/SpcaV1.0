@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.app.PendingIntent;
@@ -37,13 +38,14 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
     CheckBox ck_alarm;
     long interval;
     int val ;
+    String notifActiv;
     DBHelper dbh;
     SQLiteDatabase db;
     Cursor c;
     //long interval=MainActivity.interv;
 
     RadioButton ck_heure, ck_sixheures, ck_douzeheures, ck_jours, ck_semaines;
-
+    RadioGroup radioInterval;
     AlarmManager alarmManager;
     PendingIntent pendingintent;
 
@@ -70,6 +72,9 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
 
         rootView = inflater.inflate(R.layout.notification_page_fragment, container, false);
 
+        radioInterval=(RadioGroup)rootView.findViewById(R.id.radioInterval);
+        radioInterval.setOnClickListener(NotificationPageFragment.this);
+
         ck_alarm = (CheckBox)rootView.findViewById(R.id.activer);
         ck_alarm.setOnClickListener(NotificationPageFragment.this);
 
@@ -89,24 +94,17 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         ck_semaines = (RadioButton)rootView.findViewById(R.id.semaines);
         ck_semaines.setOnClickListener(NotificationPageFragment.this);
 
-        //Activé Receiver
-
-
-
-
 
         c=dbh.getPreferences(db);
         if (c.moveToFirst()) {
             val=c.getInt(2);
-            //Toast.makeText(this.getActivity(), "avant interval = "+interval+", Val = "+val, Toast.LENGTH_SHORT).show();
+            notifActiv=c.getString(1);
+          //  Toast.makeText(this.getActivity(), "notifActiv" +notifActiv, Toast.LENGTH_SHORT).show();
+
         }
-        if (val==60){
-            interval=0;
-            val=0;
-        }else{
+
             interval=val*1000;
-        }
-        //Toast.makeText(this.getActivity(), "avant interval = "+interval+", Val = "+val, Toast.LENGTH_SHORT).show();
+
         etatAvant();
         return rootView;
     }
@@ -124,25 +122,17 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
    */
     public void planifierAlarm() {
         val= (int) (interval/1000);
-
-
-        //ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
-        ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.IntentServiceSPAC.class);
+        ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
+        //ComponentName  component = new ComponentName(this.getActivity(), com.example.jedgar.spca.IntentServiceSPAC.class);
         int status = this.getActivity().getPackageManager().getComponentEnabledSetting(component);
-
-        //Toast.makeText(this.getActivity(), "status "+ status+" PackageManager "+PackageManager.COMPONENT_ENABLED_STATE_DISABLED, Toast.LENGTH_SHORT).show();
-
-        if(status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-                Log.d("avantplanificationnnnn", "enableddd");
-               /* getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
-                Log.d("avantplanifucationnnn", "disabledddd");*/
-        }else if(status == PackageManager.COMPONENT_ENABLED_STATE_DISABLED){
-                this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
-
-                Log.d("avantplanificationnnnn", "enableddd");
+        if (status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+            Log.d("avantplanificationnnnn", "enableddd");
+           /* getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
+            Log.d("avantplanifucationnnn", "disabledddd");*/
+        } else if (status == PackageManager.COMPONENT_ENABLED_STATE_DISABLED){
+            this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
+           // Log.d("avantplanificationnnnn", "enableddd");
         }
-
-
         Intent intent = new Intent(this.getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
         //Intent intent = new Intent(this.getActivity(), com.example.jedgar.spca.IntentServiceSPAC.class);
         pendingintent = PendingIntent.getBroadcast(this.getActivity(), ALARM_ID, intent, 0);
@@ -152,54 +142,26 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         reveil.setTimeInMillis(System.currentTimeMillis());
         reveil.add(Calendar.SECOND, val);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, reveil.getTimeInMillis(), interval, pendingintent);
-
-        //Toast.makeText(this.getActivity(), "avantttttt", Toast.LENGTH_SHORT).show();
-
-        //  Log.d("avant", intent.getAction()==null);
-
     }
 
     public void cancel(){
         alarmManager = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingintent);
-
         ComponentName component = new ComponentName(getActivity(), com.example.jedgar.spca.AlarmReceiver.class);
         int status = this.getActivity().getPackageManager().getComponentEnabledSetting(component);
 
-
-       // Toast.makeText(this.getActivity(), "status "+ status+" PackageManager "+PackageManager.COMPONENT_ENABLED_STATE_ENABLED, Toast.LENGTH_SHORT).show();
-
         if(status == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
-
-            Log.d("avantcancelll", "disabledddd");
-            //this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
-           /* getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
-            Log.d("avantcancelll", "enabledddd");*/
+           // Log.d("avantcancelll", "disabledddd");
         }else if (status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED){
             this.getActivity().getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
-
-            Log.d("avantcancelll", "disabledddd");
-        }
-       // Toast.makeText(this.getActivity(), "Notification desactivée!!!!!!!.", Toast.LENGTH_SHORT).show();
-    }
-
-    public void message(){
-        if(ck_heure.isChecked()){
-            Toast.makeText(this.getActivity(),"Notification activée chaque heure!", Toast.LENGTH_LONG).show();
-        }else if(ck_sixheures.isChecked()){
-            Toast.makeText(this.getActivity(),"Notification activée  chaque six heures!", Toast.LENGTH_LONG).show();
-        }else if(ck_douzeheures.isChecked()){
-            Toast.makeText(this.getActivity(),"Notification activée chaque douze heures!", Toast.LENGTH_LONG).show();
-        }else if((ck_jours.isChecked())){
-            Toast.makeText(this.getActivity(),"Notification activée chaque jour!", Toast.LENGTH_LONG).show();
-        }else if((ck_semaines.isChecked())){
-            Toast.makeText(this.getActivity(),"Notification activée chaque semaine!", Toast.LENGTH_LONG).show();
+            //Log.d("avantcancelll", "disabledddd");
         }
     }
+
     public void optionActive(boolean etat){
-
         ck_alarm.setChecked(etat);
         if(interval==((AlarmManager.INTERVAL_HOUR)/60)/2){
+       // if(interval==AlarmManager.INTERVAL_HOUR){
             ck_heure.setChecked(etat);
         }else if(interval==6*(AlarmManager.INTERVAL_HOUR)){
             ck_sixheures.setChecked(etat);
@@ -213,16 +175,16 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
     }
 
     public void etatAvant(){
-
-
-        if(interval==0) {
+        if(notifActiv.equals("N")) {
             cancel();
             optionActive(false);
-        }else{
+           // Toast.makeText(this.getActivity(), "etatAvantIf" +notifActiv, Toast.LENGTH_SHORT).show();
+        }else if(notifActiv.equals("Y")){
             optionActive(true);
             planifierAlarm();
-            // message();
+           // Toast.makeText(this.getActivity(), "etatAvantElse" +notifActiv, Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -231,65 +193,66 @@ public class NotificationPageFragment extends Fragment implements  View.OnClickL
         if (v.getId() == R.id.heure) {
             interval=((AlarmManager.INTERVAL_HOUR)/60)/2;
             //interval=AlarmManager.INTERVAL_HOUR;
-            //cancel();
-
             ck_alarm.setChecked(true);
             planifierAlarm();
-
-            //message();
-            //optionActive();
-
         }else if (v.getId() == R.id.sixheures) {
             interval=6*(AlarmManager.INTERVAL_HOUR);
             //interval=(60*1000);
             ck_alarm.setChecked(true);
-           // cancel();
             planifierAlarm();
-            //message();
-
         }else if (v.getId() == R.id.douzeheures){
             interval=AlarmManager.INTERVAL_HALF_DAY;
             ck_alarm.setChecked(true);
             planifierAlarm();
-            //message();
-
         }else if (v.getId() == R.id.jours){
             interval=AlarmManager.INTERVAL_DAY;
             ck_alarm.setChecked(true);
             planifierAlarm();
-            //message();
-
         }else if(v.getId() == R.id.semaines){
             interval=7*(AlarmManager.INTERVAL_DAY);
             ck_alarm.setChecked(true);
             planifierAlarm();
-            //message();
-
         }else if(v.getId() == R.id.activer) {
-            if (ck_alarm.isChecked()) {
-                if(interval!=0){
-                   // planifierAlarm();
-
+            if (ck_alarm.isChecked()==true) {
+               ////
+                c=dbh.getPreferences(db);
+                if (c.moveToFirst()) {
+                    val=c.getInt(2);
                 }
-
-            } else {
-                optionActive(false);
+                ////
+                optionActive(true);
+                planifierAlarm();
+            }else{
                 cancel();
-                interval=0;
-                val=0;
-
+                radioInterval.clearCheck();
+                //interval=0;
+                //val=0;
             }
-
         }
 
 
-        if(interval!=0){
+        /*if(interval!=0){
           val= (int) (interval/1000);
           dbh.setNotifications(db,"Y",val);
         }else{
           val= 60;
-          dbh.setNotifications(db,"Y",val);
+          dbh.setNotifications(db,"",val);
+        }*/
+        if(ck_alarm.isChecked()==true){
+          val= (int) (interval/1000);
+          //dbh.setNotifications(db,"Y",val);
+            notifActiv="Y";
+           // Toast.makeText(this.getActivity(), "(ck_alarm.isChecked()==true)" +notifActiv, Toast.LENGTH_SHORT).show();
+        }else{
+          //val= 60;
+            notifActiv="N";
+           // Toast.makeText(this.getActivity(), "(ck_alarm.isChecked()==false)" +notifActiv, Toast.LENGTH_SHORT).show();
+          //dbh.setNotifications(db,"N",val);
         }
+        dbh.setNotifications(db,notifActiv,val);
+
+       // Toast.makeText(this.getActivity(), "notifActiv" +notifActiv, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

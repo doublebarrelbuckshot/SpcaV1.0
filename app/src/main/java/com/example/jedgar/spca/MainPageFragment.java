@@ -140,7 +140,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                 sc.searchCats();
                 if (!v.findViewById(R.id.cat_button).isSelected()) {
                     v.findViewById(R.id.cat_button).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "cat selected!", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(MainPageFragment.this.getActivity(), "cat selected!", Toast.LENGTH_SHORT).show();
                 } else {
                     v.findViewById(R.id.cat_button).setSelected(false);
                 }
@@ -156,7 +156,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                 sc.searchDogs();
                 if (!v.findViewById(R.id.dog_button).isSelected()) {
                     v.findViewById(R.id.dog_button).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "dog selected!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainPageFragment.this.getActivity(), "dog selected!", Toast.LENGTH_SHORT).show();
                 } else {
                     v.findViewById(R.id.dog_button).setSelected(false);
                 }
@@ -173,7 +173,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                 sc.searchRabbits();
                 if (!v.findViewById(R.id.rabbit_button).isSelected()) {
                     v.findViewById(R.id.rabbit_button).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();
                 } else {
                     v.findViewById(R.id.rabbit_button).setSelected(false);
                 }
@@ -189,7 +189,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                 sc.searchSmallFurry();
                 if (!v.findViewById(R.id.other_button).isSelected()) {
                     v.findViewById(R.id.other_button).setSelected(true);
-                    Toast.makeText(MainPageFragment.this.getActivity(), "others selected!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainPageFragment.this.getActivity(), "others selected!", Toast.LENGTH_SHORT).show();
                 } else {
                     v.findViewById(R.id.other_button).setSelected(false);
                 }

@@ -260,4 +260,9 @@
     <string name="hardcodedNews">In order to raise awareness of the plight of animals in the commercial fur trade, the Montreal SPCA, in partnership with the Association for the Protection of Fur Bearing Animals (APFA) and LUSH Cosmetics, recently launched the #MakeFurHistory campaign.
 Visit www.makefurhistory.com to learn more about the campaign and to take the fur-free pledge.</string>
 
+
+
+    <!--Strings for notifications-->
+    <string name="notificationText">There are new animals available matching your search criteria...</string>
+
 </resources>
