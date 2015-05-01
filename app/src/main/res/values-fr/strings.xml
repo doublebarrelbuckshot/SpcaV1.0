@@ -162,7 +162,7 @@
 
     <string name="rsbAgeFrom">" entre "</string>
     <string name="rsbAgeTo">" à "</string>
-    <string name="rsbAgeYears">" mois"</string>
+    <string name="rsbAgeYears">" ans"</string>
     <string name="rsbIllimited">" illimité"</string>
     <string name="male">Mâle</string>
     <string name="female">Femelle</string>
