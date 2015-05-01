@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity
                 //getIntent().putExtra("command", b.getString("command"));
                  */
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, BrowsePageFragment.newInstance())
+                        .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_NOTIFICATIONS)
                         .addToBackStack(null)
                         .commit();
                 mTitle = getString(R.string.newTitle);
@@ -101,7 +101,7 @@ public class MainActivity extends ActionBarActivity
                 //getIntent().putExtra("command", b.getString("command"));
                  */
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, BrowsePageFragment.newInstance())
+                        .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_NOTIFICATIONS)
                         .addToBackStack(null)
                         .commit();
                 mTitle = getString(R.string.newTitle);
@@ -156,7 +156,7 @@ public class MainActivity extends ActionBarActivity
         } else if (position == 2) {
             getIntent().putExtra("sender", DBHelper.CURSOR_NAME_FAVORITE_ANIMALS);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)
                     .addToBackStack(null)
                     .commit();
             mTitle = getString(R.string.favoritesTitle);
@@ -165,7 +165,7 @@ public class MainActivity extends ActionBarActivity
         } else if (position == 3) {
             getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .replace(R.id.container, BrowsePageFragment.newInstance(),DBHelper.CURSOR_NAME_NEW_ANIMALS)
                     .addToBackStack(null)
                     .commit();
             mTitle = getString(R.string.newTitle);
@@ -323,7 +323,7 @@ public class MainActivity extends ActionBarActivity
         getIntent().putExtra("SearchCriteria", sc);
         getIntent().putExtra("sender", DBHelper.CURSOR_NAME_SEARCH_ANIMALS);
         fragmentManager.beginTransaction()
-                .replace(R.id.container, frag)
+                .replace(R.id.container, frag, DBHelper.CURSOR_NAME_SEARCH_ANIMALS)
                 .addToBackStack(null)
                 .commit();
         mTitle = getString(R.string.searchResultsTitle);//getString(R.string.title_section5); //notificationPage

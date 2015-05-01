@@ -165,12 +165,13 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_browse_page, container, false);
         this.inflater = inflater;
-
+        Log.d("BACKSTACK NAME", this.getTag());
         setHasOptionsMenu(true);
 
         Intent intent = ((MainActivity)BrowsePageFragment.this.getActivity()).getIntent();
         Bundle data = intent.getExtras();
-        String sender = data.getString("sender");
+        //String sender = data.getString("sender");
+        String sender = this.getTag();
         String emptyListMsg;
         if (sender.equals(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)) {
             Log.d("Browse", "Favorites");
