@@ -367,7 +367,7 @@ public class RangeSeekBar<T extends Number> extends ImageView {
         // draw seek bar background line
         final RectF rect = new RectF(padding, 0.5f * (getHeight() - lineHeight), getWidth() - padding, 0.5f * (getHeight() + lineHeight));
         paint.setStyle(Style.FILL);
-        paint.setColor(Color.GRAY);
+        paint.setColor(Color.RED);
         paint.setAntiAlias(true);
         canvas.drawRect(rect, paint);
 
@@ -376,7 +376,7 @@ public class RangeSeekBar<T extends Number> extends ImageView {
         rect.right = normalizedToScreen(normalizedMaxValue);
 
         // orange color
-        paint.setColor(DEFAULT_COLOR);
+        paint.setColor(Color.RED);
         canvas.drawRect(rect, paint);
 
         // draw minimum thumb
