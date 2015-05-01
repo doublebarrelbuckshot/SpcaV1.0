@@ -285,7 +285,11 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
         }
         else if(cameFrom.equals("New")){
-                   return R.string.newTitle;
+            return R.string.newTitle;
+
+        }
+        else if(cameFrom.equals("notifs")){
+            return R.string.notificationsTitle;
 
         }
         else //cameFrom equals search
