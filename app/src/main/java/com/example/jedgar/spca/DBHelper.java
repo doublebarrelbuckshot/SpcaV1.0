@@ -435,7 +435,27 @@ public class DBHelper extends SQLiteOpenHelper {
                 TABLE_NEW_ANIMALS + " as n " +
                 " WHERE n." + T_NEW_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
     }
+    public void updateAnimalPictures(SQLiteDatabase db, String animalID, String photo1, String photo2, String photo3)
+    {
+        String tableName = TABLE_ANIMAL;
+//        if (sender.equals(CURSOR_NAME_NEW_ANIMALS))
+//        {
+//
+//        }
+//        else if(sender.equals()) {
+//            tableName = TABLE_FAVORITE_ANIMALS;
+//        }
+//        else if(sender.equals()) {
+//        }
+//        else if(sender.equals()) {
+//        }
 
+        ContentValues data=new ContentValues();
+        data.put(T_ANIMAL_PHOTO1,photo1);
+        data.put(T_ANIMAL_PHOTO2,photo2);
+        data.put(T_ANIMAL_PHOTO3,photo3);
+        db.update(tableName, data, T_ANIMAL_ID + "=" + animalID, null);
+    }
 
     public Cursor getNewAnimalsList(SQLiteDatabase db){
         // pas testée
@@ -641,6 +661,8 @@ public class DBHelper extends SQLiteOpenHelper {
             throw e;
         }
     }
+
+
 /*
     public void deleteAll(SQLiteDatabase db) {
         String sql = "DELETE FROM " + TABLE_ANIMAL + ";";

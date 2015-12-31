@@ -57,7 +57,9 @@ public class DownloadWebAdoptableDetailsTask implements Runnable, DownloadAdopta
         for (int i = range_from; i < range_to; i++) {
             Animal a;
             try {
-                a = web.callAdoptableDetails(i);
+                boolean updatingPictures = false;
+                String animalID = "";
+                a = web.callAdoptableDetails(i,updatingPictures, animalID);
             }
             catch (IOException e) {
                 Log.e("callAdoptableDetails", e.getMessage());

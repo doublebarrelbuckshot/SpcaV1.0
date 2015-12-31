@@ -22,7 +22,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 
@@ -43,7 +45,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private String sender = "";
     private String cameFrom;
     private int titleID;
     private LayoutInflater inflater;
@@ -171,7 +173,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
         Intent intent = ((MainActivity)BrowsePageFragment.this.getActivity()).getIntent();
         Bundle data = intent.getExtras();
         //String sender = data.getString("sender");
-        String sender = this.getTag();
+        sender = this.getTag();
         String emptyListMsg;
         if (sender.equals(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS)) {
             Log.d("Browse", "Favorites");
@@ -224,6 +226,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
+                    adapter.notifyDataSetChanged();
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_FAVORITE_ANIMALS, position);
                 }
             });
@@ -233,6 +236,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
+                    adapter.notifyDataSetChanged();
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NEW_ANIMALS, position);
                 }
             });
@@ -241,6 +245,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
+                    adapter.notifyDataSetChanged();
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NOTIFICATIONS, position);
                 }
             });
@@ -249,6 +254,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
                                         int position, long id) {
+                    adapter.notifyDataSetChanged();
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_SEARCH_ANIMALS, position);
                 }
             });
@@ -345,13 +351,26 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
             LinearLayout vi = (LinearLayout) inflater.inflate(R.layout.browse_row, null);
             c.moveToPosition(position);
-            String animalIDStr = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
+            final String animalIDStr = Integer.toString(c.getInt(DBHelper.C_ANIMAL_ID));
             String d = c.getString(DBHelper.C_ANIMAL_NAME);
             String p1 = c.getString(DBHelper.C_ANIMAL_PHOTO1);
             String a = c.getString(DBHelper.C_ANIMAL_AGE);
             if(p1 != null && !p1.equals("")) {
-                ImageView animalImage = (ImageView) vi.findViewById(R.id.animalImage);
-                Picasso.with(getActivity().getApplicationContext()).load(p1).into(animalImage);
+                final ImageView animalImage = (ImageView) vi.findViewById(R.id.animalImage);
+
+                Picasso.with(getActivity().getApplicationContext()).load(p1).into(animalImage, new Callback(){
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Picasso.with(getActivity().getApplicationContext()).load(R.drawable.image_unavailable).into(animalImage);
+                        new UpdateAdoptableDetails(getActivity(), animalIDStr).execute();
+                    }
+
+                });
             }
 
 

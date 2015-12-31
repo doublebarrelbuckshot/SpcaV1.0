@@ -60,22 +60,28 @@ public class MainActivity extends ActionBarActivity
         super.onNewIntent(intent);
         setIntent(intent);
         Bundle b = getIntent().getExtras();
-        if(b != null){
-            if(b.getString("command") != null) {//mettre du code ICI
-                Log.d("FROM NOTIFI xxx", b.getString("command"));
 
-                /*
-                *  ne pas mettre des extra ici.
-                //getIntent().putExtra("sender", "notifs");
-                //getIntent().putExtra("command", b.getString("command"));
-                 */
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_NOTIFICATIONS)
-                        .addToBackStack(null)
-                        .commit();
-                mTitle = getString(R.string.newTitle);
-            }
-        }
+        /*
+         *
+         * ONLY FOR NOTIFICATIONS
+         *
+         */
+//        if(b != null){
+//            if(b.getString("command") != null) {//mettre du code ICI
+//                Log.d("FROM NOTIFI xxx", b.getString("command"));
+//
+//                /*
+//                *  ne pas mettre des extra ici.
+//                //getIntent().putExtra("sender", "notifs");
+//                //getIntent().putExtra("command", b.getString("command"));
+//                 */
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_NOTIFICATIONS)
+//                        .addToBackStack(null)
+//                        .commit();
+//                mTitle = getString(R.string.newTitle);
+//            }
+//        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,21 +98,27 @@ public class MainActivity extends ActionBarActivity
         mTitle = getTitle();
 
         Bundle b = getIntent().getExtras();
-        if(b != null){
-            if(b.getString("command") != null) { //on est venu du notification, mettre du code ici
-                Log.d("FROM NOTIFI", b.getString("command"));
-                /*
-                *  ne pas mettre des extra ici.
-                //getIntent().putExtra("sender", "notifs");
-                //getIntent().putExtra("command", b.getString("command"));
-                 */
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_NOTIFICATIONS)
-                        .addToBackStack(null)
-                        .commit();
-                mTitle = getString(R.string.newTitle);
-            }
-        }
+
+        /*
+         *
+         *   FOR NOTIFICATIONS
+         *
+         */
+//        if(b != null){
+//            if(b.getString("command") != null) { //on est venu du notification, mettre du code ici
+//                Log.d("FROM NOTIFI", b.getString("command"));
+//                /*
+//                *  ne pas mettre des extra ici.
+//                //getIntent().putExtra("sender", "notifs");
+//                //getIntent().putExtra("command", b.getString("command"));
+//                 */
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_NOTIFICATIONS)
+//                        .addToBackStack(null)
+//                        .commit();
+//                mTitle = getString(R.string.newTitle);
+//            }
+//        }
 
 
         // Set up the drawer.
@@ -162,6 +174,7 @@ public class MainActivity extends ActionBarActivity
             mTitle = getString(R.string.favoritesTitle);
 
 
+/*
         } else if (position == 3) {
             getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
             fragmentManager.beginTransaction()
@@ -176,8 +189,9 @@ public class MainActivity extends ActionBarActivity
                     .addToBackStack(null)
                     .commit();
             mTitle = getString(R.string.notificationsTitle);
+*/
 
-        } else if (position == 5) {
+        } else if (position == 3/*5*/) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, ContactPageFragment.newInstance())
                     .addToBackStack(null)
@@ -212,10 +226,10 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.searchResultsTitle);
                 Log.d("MAIN", "onSectionAttached searchResultsPage");
                 break;
-            case SECTION_ID_NOTIFICATIONS:
-                Log.d("MAIN", "onSectionAttached notificationsPage");
-                mTitle = getString(R.string.notificationsTitle);
-                break;
+//            case SECTION_ID_NOTIFICATIONS:
+//                Log.d("MAIN", "onSectionAttached notificationsPage");
+//                mTitle = getString(R.string.notificationsTitle);
+//                break;
             case SECTION_ID_CONTACT:
                 Log.d("MAIN", "onSectionAttached ???Page");
                 mTitle = getString(R.string.contactTitle);
@@ -267,7 +281,7 @@ public class MainActivity extends ActionBarActivity
                 case SECTION_ID_SEARCH:
                 case SECTION_ID_INFO:
                 case SECTION_ID_FAVORITES:
-                case SECTION_ID_NOTIFICATIONS:
+                //case SECTION_ID_NOTIFICATIONS:
                 case SECTION_ID_CONTACT:
                 default:
                     mRefresh.setVisible(false);

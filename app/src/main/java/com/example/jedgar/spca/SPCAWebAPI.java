@@ -162,12 +162,18 @@ public class SPCAWebAPI {
 
     }
 
-    public Animal callAdoptableDetails(int idx)
+    public Animal callAdoptableDetails(int idx, boolean updatingPictures, String animalID)
             throws Exception, IOException, SAXException
     {
         Log.d("SPCAWebAPI: ", "In callAdoptableDetails()");
+        Animal animal = null;
+        if(!updatingPictures)
+            animal = animals.get(idx);
+        else {
+            animal = new Animal();
+            animal.id = animalID;
+        }
 
-        Animal animal = animals.get(idx);
         if (animal == null) {
             throw new Exception("SPCAWebAPI:Unknown animalID");
         }

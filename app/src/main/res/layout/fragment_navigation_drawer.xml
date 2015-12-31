@@ -4,5 +4,5 @@
     android:layout_height="match_parent"
     android:divider="@android:color/holo_red_light"
     android:dividerHeight="0dp"
-    android:background="@color/translucent_red"
+    android:background="@color/vpi__background_holo_light"
     tools:context=".NavigationDrawerFragment" />

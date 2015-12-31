@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -377,7 +378,8 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                         Intent shareIntent = new Intent();
                         shareIntent.setAction(Intent.ACTION_SEND);
                         // type of file to share
-                        shareIntent.setType("text/html*");
+                        //shareIntent.setType("text/html*");
+                        shareIntent.setType("text/plain");
 
                         String html = "<!DOCTYPE html>" +
                                 "<html>" +
@@ -398,7 +400,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
 
 
                                 for(int i=0; i<animalURLT.size(); i++){
-                                  html+= "<p>" + animalURLT.get(i) + "</p>";
+                                  html+= "<p>" + "<a href=" +  animalURLT.get(i) + ">" + animalNameT + "_Image" + (i+1) + "</a>" + "</p>";
                                 }
                               }
                         html+="<p></p>";
@@ -536,8 +538,8 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
 
 
             ImageView detailsText = (ImageView)detail.findViewById(R.id.animalImage);
-            Picasso.with(getActivity().getApplicationContext()).load(imagesUrl.get(position)).into(detailsText);
 
+            Picasso.with(getActivity().getApplicationContext()).load(imagesUrl.get(position)).into(detailsText);
             ((ViewPager) collection).addView(detail, 0);
 
             return detail;

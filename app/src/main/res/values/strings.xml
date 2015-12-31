@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"> SPCA </string>
+    <string name="app_name"> SPCA Montreal </string>
 
     <!-- MainPageFragment -->
     <string name="InitialDownloadMsg">Downloading animal information</string>
@@ -16,9 +16,6 @@
     <!-- Here are the Strings for the main_page_fragment -->
     <!-- Adds to display in TextView on the main_page_fragment-->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
-    <string name="pub1">SPRING OFFERS</string>
-    <string name="pub2">ADOPT ONE ANIMALS AND GET TWO FOR FREE</string>
-    <string name="pub3">WE HAVE WHAT YOU NEED.FOR MORE INFO SEE THE INFO MENU</string>
 
 
     <string name="age_text_view">Age</string>
@@ -68,9 +65,10 @@
 
     <string name="dog_tab">Dogs</string>
             <string name="adoption_fees_dogs">
-                - Puppies – less than 8 months: $295 \n(if you adopt a second puppy at the same time, the adoption fees of second one are $200)\n
-                \n- Dogs – 8 months and older: $255 \n(if you adopt a second dog at the same time, the adoption fees of second one are $125)\n
+                - Puppies – less than 8 months: $295 \n
+                \n- Dogs – 8 months and older: $255 \n
                 \n- Compassionate adoption: $75
+                \n\n(Prices subject to change without notice)
             </string>
 
 
@@ -80,10 +78,8 @@
                 - Kitten – up to 5 months: $175
                 \n - Cat – 5 months and more: $125
                 \n - Compassionate adoption: $75
+                \n\n(Prices subject to change without notice)
             </string>
-
-
-
 
     <string name="others_tab">Others</string>
     <string name="rabbit_title">Rabbits</string>
@@ -118,15 +114,9 @@
         - Hedgehog $50\n
         - Mouse $5\n
         - Gerbil $5\n
-        - Degu $5
+        - Degu
+        \n\n(All prices subject to change without notice)
     </string>
-
-
-
-
-
-
-
 
     <!-- Here are the Strings for the contact_page_fragment -->
     <string name="spcaMontreal">SPCA Montreal</string>
@@ -134,10 +124,7 @@
     <string name="spcaPhone">(514)735-2711</string>
     <string name="spcaEmail">telephoniste@spcamontreal.com</string>
 
-
-
 <!-- TODO: Remove or change this placeholder text -->
-
 
        <string name="hello_blank_fragment">Hello blank fragment</string>
        <string name="title_activity_test">testActivity</string>
