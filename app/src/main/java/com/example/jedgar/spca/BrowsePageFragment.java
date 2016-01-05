@@ -55,8 +55,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
     private static SearchCriteria sc;
 
     private OnFragmentInteractionListener mListener;
-     DBHelper dbh;
-     static SQLiteDatabase db;
+    DBHelper dbh;
+    static SQLiteDatabase db;
 
     private  Cursor c;
 
@@ -123,7 +123,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         });
                                 builder.create();
                                 builder.show();
-                            } else if (cameFrom.equals("New")) {
+                            }
+                            /*else if (cameFrom.equals("New")) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setMessage(R.string.clearNew)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -141,7 +142,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                                         });
                                 builder.create();
                                 builder.show();
-                            }
+                            }*/
                             return false;
                         }
                     });
@@ -181,7 +182,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             c = dbh.getCursorForFavoriteList();
             cameFrom = "Favorites";
             emptyListMsg = getString(R.string.emptyListFavoritesMSG);
-        } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
+        }
+        /*else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             Log.d("Browse","New");
             SearchCriteria sc = new SearchCriteria(db);
             String sql = new String(sc.getCommandForNew());
@@ -189,7 +191,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
             c = dbh.getCursorForSelect(DBHelper.CURSOR_NAME_NEW_ANIMALS);
             cameFrom = "New";
             emptyListMsg = getString(R.string.emptyListNewMSG);
-        } else if (sender.equals(DBHelper.CURSOR_NAME_NOTIFICATIONS)) {
+        } */
+        else if (sender.equals(DBHelper.CURSOR_NAME_NOTIFICATIONS)) {
             Log.d("Browse","New notifs");
             String sql = data.getString("command");
             Log.d("Browse", sql);
@@ -231,7 +234,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                 }
             });
 
-        } else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
+        }
+        /*else if (sender.equals(DBHelper.CURSOR_NAME_NEW_ANIMALS)) {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
@@ -240,7 +244,8 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
                     ((MainActivity) BrowsePageFragment.this.getActivity()).doDetails(DBHelper.CURSOR_NAME_NEW_ANIMALS, position);
                 }
             });
-        } else if (sender.equals(DBHelper.CURSOR_NAME_NOTIFICATIONS)) {
+        } */
+        else if (sender.equals(DBHelper.CURSOR_NAME_NOTIFICATIONS)) {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView parent, View view,
@@ -299,7 +304,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
         }
         else //cameFrom equals search
-                   return R.string.searchResultsTitle;
+            return R.string.searchResultsTitle;
     }
 //
 //    @Override
@@ -376,7 +381,7 @@ public class BrowsePageFragment extends Fragment implements GetActionBarTitle {
 
             if(typeOfView.equals("Favorites")) {
 
-                String isFavAvailable = c.getString(DBHelper.C_FAVORITE_ANIMAL_AVAILABLE);
+                String isFavAvailable = c.getString(DBHelper.C_ANIMAL_AVAILABLE);
                 if(isFavAvailable.equals("N")){
                     TextView adoptedOverlayTV = (TextView)vi.findViewById(R.id.adoptedOverlayTV);
                     adoptedOverlayTV.setVisibility(View.VISIBLE);

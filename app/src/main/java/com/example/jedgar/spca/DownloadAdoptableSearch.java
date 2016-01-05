@@ -154,6 +154,8 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                 threadCount++;
             }
         } else {
+            //set all animals to unavailable
+            dbh.makeAllUnavailable(db);
             String where = "";
             String updateWhere = "";
             Log.d("DownloadWebTask", "animalList item count is " + animalList.getCount());
@@ -171,6 +173,7 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                 Animal animal = web.animals.get(i);
                 if (aID.equals(animal.id)) {
                     animalList.moveToNext();
+                    dbh.makeAvailable(db, aID);
                     /*
                     if (!animalList.isAfterLast())
                         Log.d("ALIST", animalList.getString(0));
@@ -187,9 +190,9 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                             Log.d("ALIST", animalList.getString(0) + " favorite no longer available.  Your flag:" + fav.getString(DBHelper.C_FAVORITE_ANIMAL_AVAILABLE));
                             */
                             if (updateWhere.equals(""))
-                                updateWhere += " " + DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID + " = '" + db_id + "'";
+                                updateWhere += " " + DBHelper.T_ANIMAL_ID + " = '" + db_id + "'";
                             else
-                                updateWhere += " OR " + DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID + " = '" + db_id + "'";
+                                updateWhere += " OR " + DBHelper.T_ANIMAL_ID + " = '" + db_id + "'";
 
                         } else {
                             //Log.d("ALIST", animalList.getString(0) + " no longer available.");
@@ -339,16 +342,16 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                 } else {
                     db.delete(DBHelper.TABLE_ANIMAL, deleteWhereClause, null);
                     Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_ANIMAL + " WHERE " + deleteWhereClause + ";");
-                    db.delete(DBHelper.TABLE_NEW_ANIMALS, deleteWhereClause, null);
-                    Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_NEW_ANIMALS + " WHERE " + deleteWhereClause + ";");
+                    //db.delete(DBHelper.TABLE_NEW_ANIMALS, deleteWhereClause, null);
+                    //Log.d("SQL", "DELETE FROM " + DBHelper.TABLE_NEW_ANIMALS + " WHERE " + deleteWhereClause + ";");
                 }
                 if (updateWhereClause == null || updateWhereClause.equals("")) {
                     Log.d("SQL", "No UPDATE ");
                 } else {
                     ContentValues args = new ContentValues();
-                    args.put(DBHelper.T_FAVORITE_ANIMALS_AVAILABLE, "N");
-                    Log.d("SQL", "UPDATE " + DBHelper.TABLE_FAVORITE_ANIMALS + " SET " + DBHelper.T_FAVORITE_ANIMALS_AVAILABLE + "='N' WHERE " + updateWhereClause + ";");
-                    db.update(DBHelper.TABLE_FAVORITE_ANIMALS, args, updateWhereClause, null);
+                    args.put(DBHelper.T_ANIMAL_AVAILABLE, "N");
+                    //Log.d("SQL", "UPDATE " + DBHelper.TABLE_FAVORITE_ANIMALS + " SET " + DBHelper.T_FAVORITE_ANIMALS_AVAILABLE + "='N' WHERE " + updateWhereClause + ";");
+                    db.update(DBHelper.TABLE_ANIMAL, args, updateWhereClause, null);
                 }
             } catch (Exception e) {
                 Log.e("JOB", "DownloadAdoptableSearch.Job failed.  Reason:" + e.getMessage());

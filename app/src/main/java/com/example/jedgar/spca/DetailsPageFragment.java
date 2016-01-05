@@ -132,7 +132,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                 int bookmark = c.getPosition();
                 c.moveToPosition(position);
                 String aID = c.getString(DBHelper.C_ANIMAL_ID);
-                dbh.removeFromNewList(db, aID);
+                //dbh.removeFromNewList(db, aID);
             }
 
             c.moveToPosition(position);
@@ -229,7 +229,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                     animalDeclawedTV.setText(getResources().getText(R.string.declawed) + ": " + getResources().getText(R.string.yes));
 
                 }
-                        else if (animalDeclawed.equalsIgnoreCase("Both")){
+                else if (animalDeclawed.equalsIgnoreCase("Both")){
                     animalDeclawedTV.setText(getResources().getText(R.string.declawed) + ": " + getResources().getText(R.string.both));
                 }
                 else if (animalDeclawed.equalsIgnoreCase("Front")){
@@ -384,7 +384,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                         String html = "<!DOCTYPE html>" +
                                 "<html>" +
                                 "<body>" +
-                               // "<p>" +getResources().getText(R.string.lookAtWhatIFound)+ "</p>" +
+                                // "<p>" +getResources().getText(R.string.lookAtWhatIFound)+ "</p>" +
                                 "<p>" +getResources().getText(R.string.name)+ ": " +  animalNameT + "</p>" +
                                 "<p>" + getResources().getText(R.string.animalID) +": " + animalIDT + "</p>" +
                                 "<p>" + getResources().getText(R.string.age)+ ": " + animalAgeT + "</p>" +
@@ -394,25 +394,25 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                             html += "<p>" +  getResources().getText(R.string.description)+": " + animalDescriptionT + "</p>";
                         }
 
-                              if(animalURLT.size() >0){
-                                  //html += "<p>" + getResources().getText(R.string.images)+"</p>";
-                                  html +=  getResources().getText(R.string.images)+ ":\n";
+                        if(animalURLT.size() >0){
+                            //html += "<p>" + getResources().getText(R.string.images)+"</p>";
+                            html +=  getResources().getText(R.string.images)+ ":\n";
 
 
-                                for(int i=0; i<animalURLT.size(); i++){
-                                  html+= "<p>" + "<a href=" +  animalURLT.get(i) + ">" + animalNameT + "_Image" + (i+1) + "</a>" + "</p>";
-                                }
-                              }
+                            for(int i=0; i<animalURLT.size(); i++){
+                                html+= "<p>" + "<a href=" +  animalURLT.get(i) + ">" + animalNameT + "_Image" + (i+1) + "</a>" + "</p>";
+                            }
+                        }
                         html+="<p></p>";
                         html+="<p></p>";
-                                html+= "<p>" +"\n\n" + getResources().getText(R.string.spcaMontreal) + "</p>" +
-                                       "<p>" + getResources().getText(R.string.spcaAddress) + "</p>";// +
+                        html+= "<p>" +"\n\n" + getResources().getText(R.string.spcaMontreal) + "</p>" +
+                                "<p>" + getResources().getText(R.string.spcaAddress) + "</p>";// +
 
-                                        html+="<br>";
-                                       html += "<p>" + getResources().getText(R.string.spcaPhone) + "</p>" +
-                                        "<p>" +getResources().getText(R.string.spcaEmail) + "</p>";
+                        html+="<br>";
+                        html += "<p>" + getResources().getText(R.string.spcaPhone) + "</p>" +
+                                "<p>" +getResources().getText(R.string.spcaEmail) + "</p>";
 
-                               html += "</body></html>";
+                        html += "</body></html>";
 
                         // Message subject
                         shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.spcaMontreal) + " - " + getResources().getText(R.string.helpMeFindAHome));
@@ -454,7 +454,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                     if(!isFav) {
                         btnFav.setImageResource(R.drawable.ic_favorite_black_36dp);
                         dbh.addToFavoriteList(db, anID);
-                       // Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getActivity(), ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID, Toast.LENGTH_LONG).show();
                         Log.d("ISFAV", ""+dbh.isFavorite(db, anID) + "....AnimalID: " + anID);
                         isFav = true;
                     }

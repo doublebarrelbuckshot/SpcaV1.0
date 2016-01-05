@@ -25,6 +25,8 @@ public class Animal {
     public String photo1;
     public String photo2;
     public String photo3;
+    public String available = "Y";
+    public String favorite = "N";
 
     public Animal(){
     }
@@ -32,7 +34,7 @@ public class Animal {
     public void dump() {
         Log.d("Animal INFO:", "ID:" + this.id + " Name:" + this.name + " species:" + this.species + " sex:" + this.sex +
                 " primaryBreed:" + this.primaryBreed + " age:" + this.age + " size:" + this.size + " primaryColor:" + this.primaryColor +
-                " sterile:" + this.sterile + " declawed:" + this.declawed + " intake_date:" + this.intake_date);
+                " sterile:" + this.sterile + " declawed:" + this.declawed + " intake_date:" + this.intake_date + " available:" + this.available);
         Log.d("           :", "ID:" + this.id + " photo1:" + this.photo1);
         Log.d("           :", "ID:" + this.id + " photo2:" + this.photo2);
         Log.d("           :", "ID:" + this.id + " photo3:" + this.photo3);

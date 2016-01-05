@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "SPCA.DB";
-    static final int DB_VERSION = 43;
+    static final int DB_VERSION = 47;
 
     // table AdoptableSearch Results
     static final String TABLE_ANIMAL_MATCHED = "animalMatched";
@@ -46,6 +46,9 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String T_ANIMAL_PHOTO2 = "photo2";
     static final String T_ANIMAL_PHOTO3 = "photo3";
     static final String TABLE_ANIMAL_SPECIES_IDX = "speciesIdx";
+    static final String T_ANIMAL_AVAILABLE = "available";
+    static final String T_ANIMAL_FAVORITE = "favorite";
+
 
     // Indexes des champs dans les cursors
     // si c'est pas les bons indexes, corriger stp.
@@ -66,8 +69,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int C_ANIMAL_PHOTO1 = 14;
     public static final int C_ANIMAL_PHOTO2 = 15;
     public static final int C_ANIMAL_PHOTO3 = 16;
-    public static final int C_FAVORITE_ANIMAL_AVAILABLE = 17;
-
+    public static final int C_ANIMAL_AVAILABLE = 17;
+    public static final int C_ANIMAL_FAVORITE = 18;
     // table photos
     static final String TABLE_ANIMAL_PHOTOS = "animalPhotos";
     static final String T_ANIMAL_PHOTOS_ANIMAL_ID = "_id";
@@ -122,16 +125,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //table favorites
-    static final String TABLE_FAVORITE_ANIMALS = "favorite_animals";
-    static final String T_FAVORITE_ANIMALS_ANIMAL_ID = "_id";
-    static final String T_FAVORITE_ANIMALS_AVAILABLE = "available";
+    //static final String TABLE_FAVORITE_ANIMALS = "favorite_animals";
+    //static final String T_FAVORITE_ANIMALS_ANIMAL_ID = "_id";
+    //static final String T_FAVORITE_ANIMALS_AVAILABLE = "available";
 
     //table favorites
+    /*
     static final String TABLE_NEW_ANIMALS = "new_animals";
     static final String T_NEW_ANIMALS_ANIMAL_ID = "_id";
     static final String T_NEW_ANIMALS_DATE = "indate";
 
     static final String CURSOR_NAME_NEW_ANIMALS = "New";
+    */
     static final String CURSOR_NAME_FAVORITE_ANIMALS = "Favorites";
     static final String CURSOR_NAME_NOTIFICATIONS = "Notifications";
     static final String CURSOR_NAME_SEARCH_ANIMALS = "Search";
@@ -179,8 +184,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 // pour une db digne de ce nom, on crée une autre table pour les champs qui suivent.
                 T_ANIMAL_PHOTO1 + " TEXT," +
                 T_ANIMAL_PHOTO2 + " TEXT," +
-                T_ANIMAL_PHOTO3 + " TEXT" +
-            ");";
+                T_ANIMAL_PHOTO3 + " TEXT, " +
+                T_ANIMAL_AVAILABLE + " char CHECK(" + T_ANIMAL_AVAILABLE + " IN('Y','N')), " +
+                T_ANIMAL_FAVORITE + " char CHECK(" + T_ANIMAL_FAVORITE + " IN('Y','N'))" +
+                ");";
         db.execSQL(sql);
         Log.d("DB", TABLE_ANIMAL + " table created");
 
@@ -229,6 +236,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(DBHelper.T_PREFERENCES_LAST_NOTIFICATION_DATE, "20000101000000");
         db.insertOrThrow(DBHelper.TABLE_PREFERENCES, null, cv);
 
+        /*
         sql = "CREATE TABLE " + TABLE_FAVORITE_ANIMALS + "(" +
                 T_FAVORITE_ANIMALS_ANIMAL_ID + " INT PRIMARY KEY     NOT NULL REFERENCES " + TABLE_ANIMAL + "(" + T_ANIMAL_ID + "), " +
                 T_FAVORITE_ANIMALS_AVAILABLE + " char CHECK(" + T_FAVORITE_ANIMALS_AVAILABLE + " IN('Y','N'))" +
@@ -242,6 +250,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ");";
         db.execSQL(sql);
         Log.d("DB", TABLE_NEW_ANIMALS + " table created");
+*/
     }
 
     @Override
@@ -253,8 +262,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_ANIMAL_PHOTOS + ";");
         db.execSQL("drop table if exists " + TABLE_ADOPTABLE_SEARCH + ";");
         db.execSQL("drop table if exists " + TABLE_PREFERENCES + ";");
-        db.execSQL("drop table if exists " + TABLE_FAVORITE_ANIMALS + ";");
-        db.execSQL("drop table if exists " + TABLE_NEW_ANIMALS + ";");
+        //db.execSQL("drop table if exists " + TABLE_FAVORITE_ANIMALS + ";");
+        //db.execSQL("drop table if exists " + TABLE_NEW_ANIMALS + ";");
         onCreate(db);
     }
 
@@ -310,15 +319,17 @@ public class DBHelper extends SQLiteOpenHelper {
         if (animal.photo1 != null) cv.put(DBHelper.T_ANIMAL_PHOTO1, animal.photo1);
         if (animal.photo2 != null) cv.put(DBHelper.T_ANIMAL_PHOTO2, animal.photo2);
         if (animal.photo3 != null) cv.put(DBHelper.T_ANIMAL_PHOTO3, animal.photo3);
+        cv.put(DBHelper.T_ANIMAL_AVAILABLE, animal.available);
+        cv.put(DBHelper.T_ANIMAL_FAVORITE, animal.favorite);
         db.beginTransaction();
         try {
             String now = getDate();
             Log.d("INSERTING", "NEW id:" + animal.id + " indate:" + now);
             db.insertOrThrow(DBHelper.TABLE_ANIMAL, null, cv);
             cv.clear();
-            cv.put(DBHelper.T_NEW_ANIMALS_ANIMAL_ID, animal.id);
-            cv.put(DBHelper.T_NEW_ANIMALS_DATE, now);
-            db.insertOrThrow(DBHelper.TABLE_NEW_ANIMALS, null, cv);
+            //cv.put(DBHelper.T_NEW_ANIMALS_ANIMAL_ID, animal.id);
+            //cv.put(DBHelper.T_NEW_ANIMALS_DATE, now);
+            //db.insertOrThrow(DBHelper.TABLE_NEW_ANIMALS, null, cv);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             animal.dump();
@@ -331,35 +342,42 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void addToFavoriteList(SQLiteDatabase db, String animalID) throws SQLException {
-        Log.d("DB", "FAV:Adding " + animalID);
-        ContentValues cv = new ContentValues();
-        cv.clear();
-        cv.put(DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID, animalID);
-        cv.put(DBHelper.T_FAVORITE_ANIMALS_AVAILABLE, "Y");
-        try {
-            db.insertOrThrow(DBHelper.TABLE_FAVORITE_ANIMALS, null, cv);
-        } catch (SQLException e) {
-            Log.d("DB","favorite already added" + e.getMessage());
-            throw e;
-        }
+        ContentValues data=new ContentValues();
+        data.put(T_ANIMAL_FAVORITE,"Y");
+        db.update(DBHelper.TABLE_ANIMAL, data, T_ANIMAL_ID + "=" + animalID, null);
     }
 
     public void removeFromFavoriteList(SQLiteDatabase db, String animalID){
+        ContentValues data=new ContentValues();
+        data.put(T_ANIMAL_FAVORITE,"N");
+        db.update(DBHelper.TABLE_ANIMAL, data, T_ANIMAL_ID + "=" + animalID, null);
         Log.d("DB", "FAV:Removing " + animalID);
-        db.delete(DBHelper.TABLE_FAVORITE_ANIMALS,
-                DBHelper.T_FAVORITE_ANIMALS_ANIMAL_ID + "=" + animalID,
-                null);
+
     }
 
     public void removeAllFromFavoriteList(SQLiteDatabase db){
-        Log.d("DB", "FAV:Clear favorite list.");
-        db.delete(DBHelper.TABLE_FAVORITE_ANIMALS,
-                null,
-                null);
+        ContentValues data=new ContentValues();
+        data.put(T_ANIMAL_FAVORITE,"N");
+        db.update(DBHelper.TABLE_ANIMAL, data, null, null);
     }
 
+
+    public void makeAllUnavailable(SQLiteDatabase db){
+        ContentValues data=new ContentValues();
+        data.put(T_ANIMAL_AVAILABLE,"N");
+        db.update(DBHelper.TABLE_ANIMAL, data, null, null);
+    }
+
+    public void makeAvailable(SQLiteDatabase db, String animalID){
+        ContentValues data=new ContentValues();
+        data.put(T_ANIMAL_AVAILABLE,"Y");
+        db.update(DBHelper.TABLE_ANIMAL, data, T_ANIMAL_ID + "=" + animalID, null);
+    }
+
+
     public String getFavoriteListSQL() {
-        return "SELECT a." +
+        Log.d("DB", "FAV:call get fav list sql");
+        return "SELECT " +
                 T_ANIMAL_ID + ", " +
                 T_ANIMAL_SPECIES + ", " +
                 T_ANIMAL_NAME + ", " +
@@ -377,10 +395,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_PHOTO1 + ", " +
                 T_ANIMAL_PHOTO2 + ", " +
                 T_ANIMAL_PHOTO3 + ", " +
-                T_FAVORITE_ANIMALS_AVAILABLE + " " +
-                " FROM " + TABLE_ANIMAL + " as a, " +
-                TABLE_FAVORITE_ANIMALS + " as f " +
-                " WHERE f." + T_FAVORITE_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
+                T_ANIMAL_AVAILABLE + " " +
+                " FROM " + TABLE_ANIMAL + //" as a, " +
+                //TABLE_FAVORITE_ANIMALS + " as f " +
+                " WHERE " + T_ANIMAL_FAVORITE + " = 'Y';"; // + T_ANIMAL_ID + ";";
+
 
     }
 
@@ -411,7 +430,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return true;
     }
-
+/*
     public String getNewAnimalsListSQL() {
         return "SELECT a." +
                 T_ANIMAL_ID + ", " +
@@ -434,7 +453,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " FROM " + TABLE_ANIMAL + " as a, " +
                 TABLE_NEW_ANIMALS + " as n " +
                 " WHERE n." + T_NEW_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
-    }
+    }*/
     public void updateAnimalPictures(SQLiteDatabase db, String animalID, String photo1, String photo2, String photo3)
     {
         String tableName = TABLE_ANIMAL;
@@ -456,7 +475,7 @@ public class DBHelper extends SQLiteOpenHelper {
         data.put(T_ANIMAL_PHOTO3,photo3);
         db.update(tableName, data, T_ANIMAL_ID + "=" + animalID, null);
     }
-
+/*
     public Cursor getNewAnimalsList(SQLiteDatabase db){
         // pas testée
         String sql = getNewAnimalsListSQL();
@@ -480,7 +499,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getCursorForNewAnimalsList() {
         return cursors.get(CURSOR_NAME_NEW_ANIMALS);
     }
-
+*/
     public String getAnimalSQL(String id, String[] extraFields) {
         return  "SELECT " +
                 T_ANIMAL_ID + ", " +
@@ -500,8 +519,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_PHOTO1 + ", " +
                 T_ANIMAL_PHOTO2 + ", " +
                 T_ANIMAL_PHOTO3 + " " +
-            " FROM " + TABLE_ANIMAL +
-            " WHERE " + T_ANIMAL_ID + "='" + id + "';";
+                " FROM " + TABLE_ANIMAL +
+                " WHERE " + T_ANIMAL_ID + "='" + id + "';";
     }
 
     public Cursor getAnimal(SQLiteDatabase db, String animalID) {
@@ -512,7 +531,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public String getFavoriteAnimalSQL(String favID) {
-        return "SELECT a." +
+        return "SELECT " +
                 T_ANIMAL_ID + ", " +
                 T_ANIMAL_SPECIES + ", " +
                 T_ANIMAL_NAME + ", " +
@@ -530,11 +549,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 T_ANIMAL_PHOTO1 + ", " +
                 T_ANIMAL_PHOTO2 + ", " +
                 T_ANIMAL_PHOTO3 + ", " +
-                "f." + T_FAVORITE_ANIMALS_AVAILABLE + " " +
-                " FROM " + TABLE_ANIMAL + " as a, " +
-                           TABLE_FAVORITE_ANIMALS + " as f " +
-                " WHERE f." + T_FAVORITE_ANIMALS_ANIMAL_ID + "='" + favID + "' " +
-                  " AND f." + T_FAVORITE_ANIMALS_ANIMAL_ID + " = a." + T_ANIMAL_ID + ";";
+                T_ANIMAL_AVAILABLE + " " +
+                " FROM " + TABLE_ANIMAL + //" as a, " +
+                // TABLE_FAVORITE_ANIMALS + " as f " +
+                " WHERE " + T_ANIMAL_ID + "='" + favID + "'" + //+ "' " +
+                " AND " + T_ANIMAL_FAVORITE + " = 'Y';"; // + T_ANIMAL_ID + ";";
     }
 
     public Cursor getFavoriteAnimal(SQLiteDatabase db, String favID) {
@@ -542,7 +561,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
-
+/*
     public boolean isNew(SQLiteDatabase db, String animalID){
         // pas testée
         String sql = "SELECT " + T_NEW_ANIMALS_ANIMAL_ID + " FROM " + TABLE_NEW_ANIMALS + " WHERE " + T_NEW_ANIMALS_ANIMAL_ID + " = " + animalID + ";";
@@ -574,7 +593,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 null);
     }
 
-
+*/
     public boolean appFirstTime(SQLiteDatabase db) {
         String sql = "SELECT " + T_PREFERENCES_APP_STATE + " FROM " + TABLE_PREFERENCES + ";";
         Cursor c = db.rawQuery(sql, null);

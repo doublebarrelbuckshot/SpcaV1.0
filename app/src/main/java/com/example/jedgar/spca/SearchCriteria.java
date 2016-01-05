@@ -12,11 +12,12 @@ import android.util.Log;
  * Created by pascal on 15/04/15.
  */
 public class SearchCriteria implements Parcelable {
-    public static final int SPECIES_DOG = 1;         // 0001
-    public static final int SPECIES_CAT = 2;         // 0010
-    public static final int SPECIES_RABBIT = 4;      // 0100
-    public static final int SPECIES_SMALLFURRY = 8;  // 1000
-    public static final int SPECIES_ALL  = 15;       // 1111
+    public static final int SPECIES_DOG = 1;         // 00001
+    public static final int SPECIES_CAT = 2;         // 00010
+    public static final int SPECIES_RABBIT = 4;      // 00100
+    public static final int SPECIES_SMALLFURRY = 8;  // 01000
+    public static final int SPECIES_BIRD = 16;  // 10000
+    public static final int SPECIES_ALL  = 31;       // 11111
 
     public static final int SEX_MALE  = 1;       // 1111
     public static final int SEX_FEMALE= 2;       // 1111
@@ -90,6 +91,9 @@ public class SearchCriteria implements Parcelable {
     }
     void searchSmallFurry() {
         species ^= SPECIES_SMALLFURRY;
+    }
+    void searchBirds() {
+        species ^= SPECIES_BIRD;
     }
     void setAgeMin(int min) {ageMin = min;}
     void setAgeMax(int max) {ageMax = max;}
@@ -175,12 +179,19 @@ public class SearchCriteria implements Parcelable {
                 where += " " + DBHelper.T_ANIMAL_SPECIES + "='Rabbit'";
                 and_or = true;
             }
+            if((species & SPECIES_BIRD) == SPECIES_BIRD){
+                if (and_or)
+                    where += " OR";
+                where += " " + DBHelper.T_ANIMAL_SPECIES + "='Bird'";
+                and_or = true;
+            }
             if ((species & SPECIES_SMALLFURRY) == SPECIES_SMALLFURRY) {
                 if (and_or)
                     where += " OR";
                 where += " (" +
                         DBHelper.T_ANIMAL_SPECIES + "!='Dog' AND " +
                         DBHelper.T_ANIMAL_SPECIES + "!='Cat' AND " +
+                        DBHelper.T_ANIMAL_SPECIES + "!='Bird' AND " +
                         DBHelper.T_ANIMAL_SPECIES + "!='Rabbit')";
                 and_or = true;
             }
@@ -194,6 +205,7 @@ public class SearchCriteria implements Parcelable {
                 where += " " + DBHelper.T_ADOPTABLE_SEARCH_SEX + "='Male'";
         }
 
+        where += " AND " + DBHelper.T_ANIMAL_AVAILABLE + " ='Y'";
         return where;
     }
 
@@ -205,7 +217,7 @@ public class SearchCriteria implements Parcelable {
         Log.d("SC", "SELECT * FROM " + DBHelper.TABLE_ANIMAL + where + ";");
         return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + where + ";";
     }
-
+/*
     public String getCommandForNotifs() {
         String where = getWhereFromPrefs();
         where += " AND n." + DBHelper.T_NEW_ANIMALS_ANIMAL_ID + " = a." + DBHelper.T_ANIMAL_ID +
@@ -228,7 +240,7 @@ public class SearchCriteria implements Parcelable {
         return "SELECT * FROM " + DBHelper.TABLE_ANIMAL + " as a, " +
                 DBHelper.TABLE_NEW_ANIMALS + " as n " + where;
     }
-
+*/
     public SearchCriteria (Parcel in){
         int[] data = new int[4];
 
