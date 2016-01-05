@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity
     static final int SECTION_ID_NOTIFICATIONS = 5;
     static final int SECTION_ID_CONTACT       = 6;
     static final int SECTION_ID_NEWS          = 7;
+    static final int SECTION_ID_FAQ           = 8;
 
 
     /**
@@ -99,28 +100,6 @@ public class MainActivity extends ActionBarActivity
 
         Bundle b = getIntent().getExtras();
 
-        /*
-         *
-         *   FOR NOTIFICATIONS
-         *
-         */
-//        if(b != null){
-//            if(b.getString("command") != null) { //on est venu du notification, mettre du code ici
-//                Log.d("FROM NOTIFI", b.getString("command"));
-//                /*
-//                *  ne pas mettre des extra ici.
-//                //getIntent().putExtra("sender", "notifs");
-//                //getIntent().putExtra("command", b.getString("command"));
-//                 */
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.container, BrowsePageFragment.newInstance(), DBHelper.CURSOR_NAME_NOTIFICATIONS)
-//                        .addToBackStack(null)
-//                        .commit();
-//                mTitle = getString(R.string.newTitle);
-//            }
-//        }
-
-
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -174,36 +153,19 @@ public class MainActivity extends ActionBarActivity
             mTitle = getString(R.string.favoritesTitle);
 
 
-/*
-        } else if (position == 3) {
-            getIntent().putExtra("sender", DBHelper.CURSOR_NAME_NEW_ANIMALS);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, BrowsePageFragment.newInstance(),DBHelper.CURSOR_NAME_NEW_ANIMALS)
-                    .addToBackStack(null)
-                    .commit();
-            mTitle = getString(R.string.newTitle);
-
-        } else if (position == 4) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, NotificationPageFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit();
-            mTitle = getString(R.string.notificationsTitle);
-*/
-
         } else if (position == 3/*5*/) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, ContactPageFragment.newInstance())
                     .addToBackStack(null)
                     .commit();
         }
-       // restoreActionBar();
-         /*else if (position == 6) {
-            getIntent().putExtra("sender", "Browse");
+        else if(position == 4){
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, BrowsePageFragment.newInstance())
+                    .replace(R.id.container, FAQFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
-        }*/
+        }
+
     }
 
 
@@ -236,6 +198,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case SECTION_ID_NEWS:
                 mTitle = getString(R.string.newsTitle);
+
+            case SECTION_ID_FAQ:
+                mTitle = "FAQ";
         }
         Log.d("SECTION ATTACHED", "" + number);
     }

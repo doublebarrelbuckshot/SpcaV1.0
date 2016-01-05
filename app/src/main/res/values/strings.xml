@@ -12,6 +12,7 @@
     <string name="title_section4">New</string>
     <string name="title_section5">Notifications</string>
     <string name="title_section6">Contact</string>
+    <string name="title_section7">FAQs</string>
 
     <!-- Here are the Strings for the main_page_fragment -->
     <!-- Adds to display in TextView on the main_page_fragment-->
@@ -183,6 +184,7 @@
     <string name="contactTitle">Contact</string>
     <string name="mainPageTitle">Main Page</string>
     <string name="newsTitle">News</string>
+    <string name="faqTitle">FAQ</string>
 
     <string name="searchResultsTitle">Search Results</string>
     <string name="detailsTitle">Details</string>
@@ -251,5 +253,40 @@ Visit www.makefurhistory.com to learn more about the campaign and to take the fu
 
     <!--Strings for notifications-->
     <string name="notificationText">There are new animals available matching your search criteria...</string>
-
+    <string name="faqText"><![CDATA[
+       <body> <p><h1>12 QUESTIONS TO ASK YOURSELF BEFORE ADOPTING</h1></p>
+       <p>The animal you are about to adopt will love you unconditionally and welcome you with joy every day. This new companion is a living being with physiological and psychological needs that you must accept and cater to. A good understanding of all the implications related to the adoption of a pet will allow you to make an informed decision and avoid regrets that could lead to an unhappy ending.</p>
+<p>Every year, hundreds of thousands of animals are abandoned in shelters. Before adopting, it is important to learn about the needs and personality traits of the animal you are interested in, so you can to make the right choice.</p>
+<p><strong>Here are 12 questions to take in consideration and determine if you are ready to adopt a pet.</strong></p>
+<p><strong>1. Are you ready to make a long-term commitment?</strong></p>
+<p>Nowadays, with the quality of care that animals can receive, their longevity has increased considerably. Cats and dogs can now live anywhere from 10 to 20 years, even more, depending on the individual and the race.
+If you adopt an animal, make sure you are ready to commit and ask yourself what your situation will be in five, ten and twenty years. Many owners abandon their pets due to relocation, divorce or new relationship, pregnancy or newborn, financial concerns, new job, retirement, illness, etc. Choosing to adopt a pet is a long-term responsibility.<strong></strong></p>
+<p><strong>2. Do you live alone? With a partner? Do you have children?</strong></p>
+<p>If you live with a spouse, with or without children, the decision to adopt an animal affects all family members. Discuss it together before making a decision. If you adopt an animal at the request of a child or teenager, be prepared to take care of the animal. We all know that a child’s promise can be short-lived, and often after the adoption, parents will be the ones taking care of the pet.</p>
+<p><strong>3. Are you ready to change your lifestyle?</strong></p>
+<p>Whether your new companion is a cat, a dog, or another animal, his presence will require you to change your lifestyle. All pets need attention and care. If you are not prepared to adapt your lifestyle to the responsibilities associated with having an animal, this option may not be for you.</p>
+<p><strong>4. Do you live in an apartment or a house?</strong></p>
+<p>Every animal has different needs regarding physical space. For example, cats often adapt more easily to a small space and staying indoors. While a dog may require more room and exercise. These are important aspects to consider when choosing your pet.</p>
+<p><strong>5. Do you rent or own your house?</strong></p>
+<p>Many people forget to ask their landlord if they are allowed to have an animal. Check with your landlord before adopting. Take note that the clause “No pets allowed,” when used by a landlord is considered discriminatory. However, pet ownership is not an absolute right, but a privilege given on two conditions: “it will not cause serious prejudice to the landlord” (such as property damage) and “does not disturb the normal enjoyment of other tenants “(e.g., a dog barking and disturbing the neighbors).</p>
+<p><strong>6. Are you ready to accept that there can be slight damage to your property?</strong></p>
+<p>Once you bring your pet home, allow time for him to adapt to his new environment and understand that he could cause some damage during this period. Some scenarios that you may face include: sofas covered with hair, chewed-up furniture, torn window screens, regurgitated hairballs on your carpet, threads pulled out on your new suit and the inevitable odors that betray the presence of Kitty or Puppy. Patience and tolerance are often required.<strong></strong></p>
+<p><strong>7. Do you suffer from allergies?</strong></p>
+<p>Many people will adopt an animal without realizing that a member of their family could be allergic. To avoid having to return your new pet, take the necessary measures to check for allergies.
+For example, become a foster home for a local shelter. They are often looking for families who can take in an animal that needs a transition period, like time to grow a little or heal from an illness. These programs allow you to be in contact with an animal without having to commit long term.
+Or, you can offer to look after a parent or friend’s animal during their absence. Not only will you be doing them a favor, you’ll also be able to check your tolerance to animals.</p>
+<p><strong>8. Are you financially prepared to take care of an animal?</strong></p>
+<p>The initial adoption fees are only part of those you need to plan for your pet. Food, litter, various care and hygiene products (brush, leash, collar, cage, toys), the kennel and veterinary costs (annual vaccinations and exams, sterilization, illness) are among the costs involved.</p>
+<p><strong>9. Do you know </strong><strong>someone reliable to take care of your animal during your vacations?</strong></p>
+<p>Before adopting, plan to have a responsible person who can take care of your pet or have a budget for kennel or a dog sitter. Take time to choose carefully, because many animals are lost by the person entrusted with their care. Most veterinary clinics offer the pension service. There are also excellent boarding houses at variable costs. Find out about the kennel’s reputation and ask for a full tour of the premises.<strong></strong></p>
+<p><strong>10. Can you spend quality time with your companion?</strong></p>
+<p>Determine if you have time and energy to take care of him every day. Did you know that animals can suffer from boredom just like humans? An animal who is bored may show signs of depression and develop behavioral problems. Animals love to play, run, be talked to and be cuddled. It is important to take time with them because the more they are stimulated, the more they will be balanced and more you will enjoy living with them.<strong></strong></p>
+<p><strong>11. Cat or Dog?</strong></p>
+<p>If you hesitate between a cat or a dog, consider their quality of life in combination with your lifestyle. A dog is a social animal who needs exercise every day and that has difficulty with solitude. While cats are more solitary animals they can adjust more easily to a small space and indoor living. Learn about the various requirements that may vary with age, size, or race, as well as exercise needs, grooming and potential health problems.</p>
+<p><strong>12. Other Pets</strong></p>
+<p>In addition to cats and dogs, there is a wide variety of animals available for adoption such as birds, rodents, reptiles and fishes. Understand well what is the necessary care needed, because most of these animals require a suitable environment, daily attention and special food, which can sometimes be expensive. Furthermore, these animals are often sold young, regardless of their size or their needs once they are adults. Before buying one, check with experienced people or on specialized websites.</p>
+<p>After answering all these questions, are you still ready to adopt a pet? Your new friend will thank you for taking the time to think about it before he arrives.</p>
+<p>At the Montreal SPCA, we have many animals waiting for a new home. Our adoption counsellors will be happy to advise you and help you make the right choice. Come visit us: Monday to Friday from noon to 8:00 pm and on weekends from 11:00 am to 5:00 pm.</p>
+  </body>]]>
+    </string>
 </resources>

@@ -41,6 +41,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     ImageButton catButton;
     ImageButton dogButton;
     ImageButton rabbitButton;
+    ImageButton birdButton;
     ImageButton otherButton;
     Button searchButton;
     TextView ageText;
@@ -176,6 +177,22 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                     //Toast.makeText(MainPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();
                 } else {
                     v.findViewById(R.id.rabbit_button).setSelected(false);
+                }
+            }
+        });
+
+        birdButton = (ImageButton) rootView.findViewById(R.id.bird_button);
+        if ((sc.species & SearchCriteria.SPECIES_BIRD) == SearchCriteria.SPECIES_BIRD)
+            birdButton.setSelected(true);
+        birdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sc.searchBirds();
+                if (!v.findViewById(R.id.bird_button).isSelected()) {
+                    v.findViewById(R.id.bird_button).setSelected(true);
+                    //Toast.makeText(MainPageFragment.this.getActivity(), "rabbit selected!", Toast.LENGTH_SHORT).show();
+                } else {
+                    v.findViewById(R.id.bird_button).setSelected(false);
                 }
             }
         });
@@ -509,10 +526,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             }
         }
     }*/
-
-
-
-
 
     public class DownloadNews extends AsyncTask<Void, Void, NewsWebAPI> {
         @Override
