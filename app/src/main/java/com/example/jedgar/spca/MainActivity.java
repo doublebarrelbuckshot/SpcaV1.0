@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
+
+import com.paypal.android.sdk.payments.PayPalAuthorization;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalProfileSharingActivity;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
+
+import org.json.JSONException;
 
 
 public class MainActivity extends ActionBarActivity
@@ -43,7 +56,21 @@ public class MainActivity extends ActionBarActivity
     static final int SECTION_ID_CONTACT       = 6;
     static final int SECTION_ID_NEWS          = 7;
     static final int SECTION_ID_FAQ           = 8;
+    static final int SECTION_ID_DONATE        = 9;
 
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+
+    // note that these credentials will differ between live & sandbox environments.
+    private static final String CONFIG_CLIENT_ID = "credential from developer.paypal.com";
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(CONFIG_ENVIRONMENT)
+            .clientId(CONFIG_CLIENT_ID)
+                    // The following are only used in PayPalFuturePaymentActivity.
+            .merchantName("Example Merchant")
+            .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
+            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
+    private static final int REQUEST_CODE_PAYMENT = 1;
+    private static final String TAG = "paymentExample";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -165,6 +192,12 @@ public class MainActivity extends ActionBarActivity
                     .addToBackStack(null)
                     .commit();
         }
+        else if(position == 5){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, DonateFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+        }
 
     }
 
@@ -200,7 +233,9 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.newsTitle);
 
             case SECTION_ID_FAQ:
-                mTitle = "FAQ";
+                mTitle = getString(R.string.faqTitle);
+            case SECTION_ID_DONATE:
+                mTitle = getString(R.string.donateTitle);
         }
         Log.d("SECTION ATTACHED", "" + number);
     }
@@ -358,6 +393,32 @@ public class MainActivity extends ActionBarActivity
         setSystemStateVisibility(menu);
     }
 
+    public void doDonation(PayPalPayment ppp) {
+            /*
+         * PAYMENT_INTENT_SALE will cause the payment to complete immediately.
+         * Change PAYMENT_INTENT_SALE to
+         *   - PAYMENT_INTENT_AUTHORIZE to only authorize payment and capture funds later.
+         *   - PAYMENT_INTENT_ORDER to create a payment for authorization and capture
+         *     later via calls from your server.
+         *
+         * Also, to include additional payment details and an item list, see getStuffToBuy() below.
+         */
+        PayPalPayment thingToBuy = ppp;
+
+        /*
+         * See getStuffToBuy(..) for examples of some available payment options.
+         */
+
+        Intent intent = new Intent(this, PaymentActivity.class);
+
+        // send the same configuration for restart resiliency
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
+
+        startActivityForResult(intent, REQUEST_CODE_PAYMENT);
+    }
+
 
 //    @Override
 //    public void goDetails() {
@@ -412,5 +473,70 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PAYMENT) {
+            if (resultCode == Activity.RESULT_OK) {
+                PaymentConfirmation confirm =
+                        data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirm != null) {
+                    try {
+                        Log.i(TAG, confirm.toJSONObject().toString(4));
+                        Log.i(TAG, confirm.getPayment().toJSONObject().toString(4));
+                        /**
+                         *  TODO: send 'confirm' (and possibly confirm.getPayment() to your server for verification
+                         * or consent completion.
+                         * See https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                         * for more details.
+                         *
+                         * For sample mobile backend interactions, see
+                         * https://github.com/paypal/rest-api-sdk-python/tree/master/samples/mobile_backend
+                         */
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "PaymentConfirmation info received from PayPal", Toast.LENGTH_LONG)
+                                .show();
+
+                    } catch (JSONException e) {
+                        Log.e(TAG, "an extremely unlikely failure occurred: ", e);
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i(TAG, "The user canceled.");
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Log.i(
+                        TAG,
+                        "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+            }
+
+        }
+    }
+
+    private void sendAuthorizationToServer(PayPalAuthorization authorization) {
+
+        /**
+         * TODO: Send the authorization response to your server, where it can
+         * exchange the authorization code for OAuth access and refresh tokens.
+         *
+         * Your server must then store these tokens, so that your server code
+         * can execute payments for this user in the future.
+         *
+         * A more complete example that includes the required app-server to
+         * PayPal-server integration is available from
+         * https://github.com/paypal/rest-api-sdk-python/tree/master/samples/mobile_backend
+         */
+
+    }
+
+    @Override
+    public void onDestroy() {
+        // Stop service when done
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
+    }
+
+
 }
 

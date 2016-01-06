@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -301,10 +302,14 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
             if(!p3.equals("")){
                 imagesUrl.add(p3);
             }
-
             Button adoptButton = (Button)detail.findViewById(R.id.adoptBtn);
             adoptButton.setTag(R.id.adoptIDTag, animalID);
-            adoptButton.setTag(R.id.adoptImageTag, imagesUrl.get(0));
+            if(imagesUrl.size()>0) {
+                adoptButton.setTag(R.id.adoptImageTag, imagesUrl.get(0));
+            }
+            else{
+                adoptButton.setTag(R.id.adoptImageTag, "");
+            }
             adoptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -320,7 +325,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
 
             //Log.d("IMAGE PAGER", "" + imageCounterImages.size());
 
-            ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, detail);
+            ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imagesUrl, detail, animalID);
 
             ViewPager imageViewPager = (ViewPager) detail.findViewById(R.id.imageViewPager);
             imageViewPager.setAdapter(imageAdapter);
@@ -500,11 +505,13 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
         boolean clicked = false;
         TextView detailsText;
         LinearLayout detailsLayout;
+        final String a_ID;
         LinearLayout detailsScrollLayout;
-        private ImagePagerAdapter(ArrayList<String> imagesUrl, LinearLayout detailsPageFrag ){
+        private ImagePagerAdapter(ArrayList<String> imagesUrl, LinearLayout detailsPageFrag, String animalID ){
 
             //  private ImagePagerAdapter(ArrayList<String> imagesUrl, ArrayList<ImageView> imageCounterImages, LinearLayout detailsPageFrag ){
             this.imagesUrl = imagesUrl;
+            this.a_ID = animalID;
             //this.imageCounterImages = imageCounterImages;
             this.detailsPageFrag = detailsPageFrag;
             detailsText = (TextView) detailsPageFrag.findViewById(R.id.detailsText);
@@ -537,9 +544,28 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
             // Button button = (Button)detail.findViewById(R.id.button);
 
 
-            ImageView detailsText = (ImageView)detail.findViewById(R.id.animalImage);
+            final ImageView detailsText = (ImageView)detail.findViewById(R.id.animalImage);
+            if(imagesUrl.size()>0) {
+                Picasso.with(getActivity().getApplicationContext())
+                        .load(imagesUrl.get(position))
+                        .into(detailsText, new Callback() {
 
-            Picasso.with(getActivity().getApplicationContext()).load(imagesUrl.get(position)).into(detailsText);
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError() {
+                        int[] unavail_image = new int[] {R.drawable.image_unavailable};
+                        Picasso.with(getActivity().getApplicationContext()).load(unavail_image[0])
+                                .into(detailsText);
+                        new UpdateAdoptableDetails(getActivity(), a_ID).execute();
+                    }
+                });
+            }
+            else{
+                Picasso.with(getActivity().getApplicationContext()).load(R.drawable.image_unavailable).into(detailsText);
+            }
             ((ViewPager) collection).addView(detail, 0);
 
             return detail;

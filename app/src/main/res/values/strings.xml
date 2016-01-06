@@ -13,7 +13,7 @@
     <string name="title_section5">Notifications</string>
     <string name="title_section6">Contact</string>
     <string name="title_section7">FAQs</string>
-
+    <string name="title_section8">Donate</string>
     <!-- Here are the Strings for the main_page_fragment -->
     <!-- Adds to display in TextView on the main_page_fragment-->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
@@ -185,6 +185,7 @@
     <string name="mainPageTitle">Main Page</string>
     <string name="newsTitle">News</string>
     <string name="faqTitle">FAQ</string>
+    <string name="donateTitle">Donate</string>
 
     <string name="searchResultsTitle">Search Results</string>
     <string name="detailsTitle">Details</string>

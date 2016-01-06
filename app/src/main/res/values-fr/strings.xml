@@ -14,7 +14,7 @@
     <string name="title_section5">Notifications</string>
     <string name="title_section6">Contact</string>
     <string name="title_section7">FAQs</string>
-
+    <string name="title_section8">Faire un don</string>
 
     <!-- Here are the Strings for the main_page_fragment -->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
@@ -190,7 +190,7 @@
     <string name="contactTitle">Contact</string>
     <string name="mainPageTitle">Accueil</string>
     <string name="faqTitle">FAQ</string>
-
+    <string name="donateTitle">Faire un don</string>
 
     <string name="searchResultsTitle">Résultats de la recherche</string>
     <string name="detailsTitle">Détails</string>
