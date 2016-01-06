@@ -25,7 +25,5 @@ dependencies {
     compile 'com.android.support:support-v13:22.0.0'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.paypal.sdk:paypal-android-sdk:2.12.4'
-    compile 'com.squareup.okhttp:okhttp:2.7.1'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
 }

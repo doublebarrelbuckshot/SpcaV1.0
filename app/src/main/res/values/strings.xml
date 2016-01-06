@@ -290,4 +290,9 @@ Or, you can offer to look after a parent or friend’s animal during their absen
 <p>At the Montreal SPCA, we have many animals waiting for a new home. Our adoption counsellors will be happy to advise you and help you make the right choice. Come visit us: Monday to Friday from noon to 8:00 pm and on weekends from 11:00 am to 5:00 pm.</p>
   </body>]]>
     </string>
+    <string name="donation_title">Montreal\'s SPCA needs YOU</string>
+     <string name="donation_description"> Since 1869, Montreal\'s SPCA has depended on the generosity of individuals like you to fund our life saving work. Together, with your support Montreal\'s SPCA will continue to provide our vital services. We take in about 14,000 homeless animals annually and rely almost exclusively on donations from the public to achieve our work. Please give what you can to help us carry on our mission.</string>
+   <string name="donation_fineprint">The Montreal SPCA is a registered charity with a tax-exempt status. Our charitable ID number is: 11921 9954 RR0001. All donations are tax deductible.</string>
+    <string name="donation_amount">Donation Amount: $</string>
+    <string name="make_donation">Make Donation</string>
 </resources>

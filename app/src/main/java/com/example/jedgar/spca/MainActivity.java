@@ -58,17 +58,27 @@ public class MainActivity extends ActionBarActivity
     static final int SECTION_ID_FAQ           = 8;
     static final int SECTION_ID_DONATE        = 9;
 
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+
+    /**
+     * - Set to PayPalConfiguration.ENVIRONMENT_PRODUCTION to move real money.
+     *
+     * - Set to PayPalConfiguration.ENVIRONMENT_SANDBOX to use your test credentials
+     * from https://developer.paypal.com
+     *
+     * - Set to PayPalConfiguration.ENVIRONMENT_NO_NETWORK to kick the tires
+     * without communicating to PayPal's servers.
+     */
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;//PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
 
     // note that these credentials will differ between live & sandbox environments.
-    private static final String CONFIG_CLIENT_ID = "credential from developer.paypal.com";
+    private static final String CONFIG_CLIENT_ID = "AR0bLsI4ZS36IYi3TJtXdu8rEtMzJJvwJewPUx0HghR5Ixx_Sc7XRDIdVMm2N_0-mN9GOHLkkw6BzNKG";//"credential from developer.paypal.com";
     private static PayPalConfiguration config = new PayPalConfiguration()
             .environment(CONFIG_ENVIRONMENT)
-            .clientId(CONFIG_CLIENT_ID)
+            .clientId(CONFIG_CLIENT_ID);/*
                     // The following are only used in PayPalFuturePaymentActivity.
             .merchantName("Example Merchant")
             .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
-            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
+            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));*/
     private static final int REQUEST_CODE_PAYMENT = 1;
     private static final String TAG = "paymentExample";
 

@@ -121,18 +121,11 @@
     <string name="text_titre">Gestion des notification</string>
 
 
-
-
-
-
-
-
     <!-- Here are the Strings for the contact_page_fragment -->
     <string name="spcaMontreal">SPCA Montreal</string>
     <string name="spcaAddress">5215 Jean-Talon West \nMontreal, Quebec\nH4P WX4</string>
     <string name="spcaPhone">(514)735-2711</string>
     <string name="spcaEmail">telephoniste@spcamontreal.com</string>
-
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -146,8 +139,6 @@
     <string name="title_activity_browsing">Browsing</string>
     <string name="title_activity_main_activity2">MainActivity2</string>
     <string name="title_activity_splash_page">SplashPage</string>
-
-
 
 
     <string name="rsbAgeFrom">" entre "</string>
@@ -211,16 +202,15 @@
     -->
 
 
+    <item name="favTag" type="id" />
+    <item name="anIDTag" type="id" />
 
-    <item type="id" name="favTag"/>
-    <item type="id" name="anIDTag"/>
-
-    <item type="id" name="animalIDTag"/>
-    <item type="id" name="animalNameTag"/>
-    <item type="id" name="animalAgeTag"/>
-    <item type="id" name="animalSexTag"/>
-    <item type="id" name="animalDescriptionTag"/>
-    <item type="id" name="animalURLTag"/>
+    <item name="animalIDTag" type="id" />
+    <item name="animalNameTag" type="id" />
+    <item name="animalAgeTag" type="id" />
+    <item name="animalSexTag" type="id" />
+    <item name="animalDescriptionTag" type="id" />
+    <item name="animalURLTag" type="id" />
 
 
     <!-- browse row -->
@@ -293,4 +283,11 @@ Ou bien, offrez de garder l’animal d’un parent ou d’un ami pendant son abs
 <p>À la SPCA de Montréal, nous avons beaucoup d’animaux en quête d’un nouveau foyer. Nos conseillers à l’adoption se feront un plaisir de vous renseigner et de vous aider à faire le bon choix. Venez nous voir du lundi au vendredi de midi à 20 h et le week-end de 11 h à 17 h.</p>
   </body>]]>
      </string>
+
+    <string name="donation_description"> Depuis 1869, la SPCA de Montréal compte sur la générosité de personnes comme vous pour financer son travail qui permet de sauver des vies. Ensemble, avec votre appui, nous pouvons continuer à offrir ces services essentiels. Nous prenons en charge plus de 14 000 animaux abandonnés par année et nous dépendons presque exclusivement de vos dons pour réaliser nos objectifs. Merci de donner ce que vous pouvez pour nous aider à poursuivre nos activités.</string>
+    <string name="donation_title">La SPCA de Montréal à besoin de VOUS</string>
+   <string name="donation_fineprint">La SPCA de Montréal est un organisme de bienfaisance enregistré avec un statut d’exonération fiscale. Notre numéro d’identification de bienfaisance est: 11921 9954 RR0001</string>
+    <string name="donation_amount">Montant: $</string>
+    <string name="make_donation">Faire un don</string>
+
 </resources>

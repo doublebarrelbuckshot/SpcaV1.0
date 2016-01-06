@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,33 +17,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
-import com.paypal.android.sdk.payments.PayPalItem;
-import com.paypal.android.sdk.payments.PayPalOAuthScopes;
 import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalPaymentDetails;
-import com.paypal.android.sdk.payments.PayPalProfileSharingActivity;
 import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.paypal.android.sdk.payments.ShippingAddress;
-
-import org.json.JSONException;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+
 
 
 /**
  * Created by JEdgar on 4/19/2015.
  */
 public class DonateFragment extends Fragment implements View.OnClickListener, GetActionBarTitle {
-    private static final String TAG = "paymentExample";
+
+
+//    TextView tv_donation_description;
+//    TextView tv_donation_fineprint;
     /**
      * - Set to PayPalConfiguration.ENVIRONMENT_PRODUCTION to move real money.
      *
@@ -53,19 +42,19 @@ public class DonateFragment extends Fragment implements View.OnClickListener, Ge
      * - Set to PayPalConfiguration.ENVIRONMENT_NO_NETWORK to kick the tires
      * without communicating to PayPal's servers.
      */
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;// PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
 
     // note that these credentials will differ between live & sandbox environments.
-    private static final String CONFIG_CLIENT_ID = "credential from developer.paypal.com";
+    private static final String CONFIG_CLIENT_ID = "AR0bLsI4ZS36IYi3TJtXdu8rEtMzJJvwJewPUx0HghR5Ixx_Sc7XRDIdVMm2N_0-mN9GOHLkkw6BzNKG";//"credential from developer.paypal.com";
 
 
     private static PayPalConfiguration config = new PayPalConfiguration()
             .environment(CONFIG_ENVIRONMENT)
-            .clientId(CONFIG_CLIENT_ID)
+            .clientId(CONFIG_CLIENT_ID);
                     // The following are only used in PayPalFuturePaymentActivity.
-            .merchantName("Example Merchant")
+            /*.merchantName("Example Merchant")
             .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
-            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
+            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));*/
     Button btn_give;
     EditText et_donation_amount;
 
@@ -83,6 +72,12 @@ public class DonateFragment extends Fragment implements View.OnClickListener, Ge
         btn_give = (Button) rootView.findViewById(R.id.btn_give);
         btn_give.setOnClickListener(this);
         et_donation_amount = (EditText) rootView.findViewById(R.id.donation_amount);
+//        tv_donation_description = (TextView) rootView.findViewById(R.id.text_donation_description);
+//        Spanned description = Html.fromHtml(getString(R.string.donation_description));
+//        tv_donation_description.setText(description.toString().trim());
+
+//        tv_donation_fineprint  = (TextView) rootView.findViewById(R.id.text_donation_fineprint);
+//        tv_donation_fineprint.setText(Html.fromHtml(getString(R.string.donation_fineprint)));
         Intent intent = new Intent(getActivity(), PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         getActivity().startService(intent);
