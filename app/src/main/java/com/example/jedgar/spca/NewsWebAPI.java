@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Created by a on 4/22/2015.
@@ -31,19 +32,29 @@ public class NewsWebAPI {
     int errorCode; //if 0 all ok, else error occured
 
     public NewsWebAPI(Context c){
-        String url = "http://doublebarrelbuckshot.github.io/apptest/";
+        String url = "http://doublebarrelbuckshot.github.io"; //"http://doublebarrelbuckshot.github.io/apptest/";
 
         try {
             HttpEntity page = getHttp(url);
             String content = EntityUtils.toString(page, HTTP.UTF_8);
             JSONObject js = new JSONObject(content);
-            this.newsImage = js.getString("newsImage");
-            this.newsText = js.getString("newsText");
-            this.newsHeadline = js.getString("newsHeadline");
-            this.errorCode = 0;
 
+            if(Locale.getDefault().getISO3Language().equals("eng"))
+            {
+                this.newsImage = js.getString("newsImageEN");
+                this.newsText = js.getString("newsTextEN");
+                this.newsHeadline = js.getString("newsHeadlineEN");
+                this.errorCode = 0;
+            }
+            else{
+                    this.newsImage = js.getString("newsImageFR");
+                    this.newsText = js.getString("newsTextFR");
+                    this.newsHeadline = js.getString("newsHeadlineFR");
+                    this.errorCode = 0;
+            }
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Log.d("Web ", "Erreur: " + e.getMessage());
             this.errorCode = 1;
 

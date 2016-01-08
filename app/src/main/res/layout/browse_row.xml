@@ -13,8 +13,8 @@
         android:visibility="visible">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/adoptedCAPS"
             android:id="@+id/adoptedOverlayTV"
@@ -29,9 +29,9 @@
             android:gravity="center" />
 
         <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/animalImage" />
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/animalImage" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,15 +58,15 @@
             android:layout_toEndOf="@+id/animalImage"/>
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:textColor="#000000"
-        android:id="@+id/animalID"
-        android:layout_alignTop="@+id/animalAge"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:textColor="#000000"
+            android:id="@+id/animalID"
+            android:layout_alignTop="@+id/animalAge"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
         <ImageButton
