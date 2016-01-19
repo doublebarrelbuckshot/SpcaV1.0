@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 public class SearchPageFragment extends Fragment implements View.OnClickListener {
 
     ImageButton catButton;
@@ -94,6 +96,8 @@ public class SearchPageFragment extends Fragment implements View.OnClickListener
                 }
             }
         });
+
+
         return rootView;
     }
 

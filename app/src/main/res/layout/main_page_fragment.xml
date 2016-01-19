@@ -119,6 +119,62 @@
             android:indeterminate="false"
             />
 
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:id="@+id/size_layout"
+            android:visibility="gone"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Size(Dogs)"
+                android:textSize="25sp"
+                android:id = "@+id/sizeTV"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size_small"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:id="@+id/small_checkBox"
+                android:layout_gravity="left"
+                android:layout_below="@+id/sizeTV"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size_medium"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:id="@+id/medium_checkBox"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size_large"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:id="@+id/large_checkBox"
+                android:layout_gravity="right"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+
+
         <!--       <SeekBar
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
@@ -126,27 +182,36 @@
                android:padding="20dp"
                android:indeterminate="false" /> -->
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gender_text_view"
-            android:textSize="25sp"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_female"
-            android:textSize="20sp"
-            android:textAlignment="center"
-            android:id="@+id/female_checkBox"
-            android:layout_gravity="left|center_horizontal|right" />
+            android:paddingBottom="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender_text_view"
+                android:textSize="25sp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkbox_female"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:id="@+id/female_checkBox"
+                android:layout_gravity="left|center_horizontal|right" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_male"
-            android:textSize="20sp"
-            android:id="@+id/male_checkBox"
-            android:layout_gravity="left|center_horizontal" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkbox_male"
+                android:textSize="20sp"
+                android:id="@+id/male_checkBox"
+                android:layout_gravity="left|center_horizontal" />
+
+
+        </LinearLayout>
+
 
 
         <RelativeLayout

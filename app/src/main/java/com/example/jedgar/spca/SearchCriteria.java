@@ -23,6 +23,12 @@ public class SearchCriteria implements Parcelable {
     public static final int SEX_FEMALE= 2;       // 1111
     public static final int SEX_ALL   = 3;
 
+    public static final int SIZE_SMALL  = 1;       // 0001
+    public static final int SIZE_MEDIUM= 2;       // 0010
+    public static final int SIZE_LARGE   = 4;     // 0100
+    public static final int SIZE_ALL   = 16;     // 1111
+
+
     public static final int BOOL_YES  = 1;       // 1111
     public static final int BOOL_NO   = 2;       // 1111
 
@@ -33,10 +39,11 @@ public class SearchCriteria implements Parcelable {
     int declawed;       //('Y = 1','N = 2')
     int ageMin;
     int ageMax;
+    int size;            //('Small = 1', 'Medium = 2', 'Large = 3')
     String lastCallDate;
 
     public void dump() {
-        Log.d("SC", "species:" + species + " ageMin:" + ageMin + " ageMax:" + ageMax + " sex:" + sex);
+        Log.d("SC", "species:" + species + " ageMin:" + ageMin + " ageMax:" + ageMax + " sex:" + sex + " size:" + size);
     }
 
     public SearchCriteria() {
@@ -51,6 +58,7 @@ public class SearchCriteria implements Parcelable {
         declawed = 0;
         ageMin = 0;
         ageMax = 0;
+        size = 0;
     }
 
     public SearchCriteria(SQLiteDatabase db) {
@@ -98,6 +106,10 @@ public class SearchCriteria implements Parcelable {
     void setAgeMin(int min) {ageMin = min;}
     void setAgeMax(int max) {ageMax = max;}
 
+    void searchSmall() { size ^= SIZE_SMALL;}
+    void searchMedium() { size ^= SIZE_MEDIUM;}
+    void searchLarge() { size ^= SIZE_LARGE;}
+
     void setSearchCriteria() {
         if (species == SPECIES_ALL)
             species = 0;
@@ -107,6 +119,9 @@ public class SearchCriteria implements Parcelable {
             sterile = 0;
         if (declawed == 0x03)
             declawed = 0;
+        if (size == 0x0f)
+            size = 0;
+
     }
 
     void saveSearchCriteria(SQLiteDatabase db) {
@@ -164,7 +179,32 @@ public class SearchCriteria implements Parcelable {
         if (species != 0 && species != SPECIES_ALL) {
             where += " AND (";
             if ((species & SPECIES_DOG) == SPECIES_DOG) {
-                where += " " + DBHelper.T_ANIMAL_SPECIES + "='Dog'";
+                where += " " + "( " +DBHelper.T_ANIMAL_SPECIES + "='Dog'";
+
+                if (size != 0 && size != SIZE_ALL) {
+                    where += " AND (";
+                    boolean needOR = false;
+                    if((size & SIZE_SMALL) == SIZE_SMALL){
+                        where += DBHelper.T_ANIMAL_SIZE + "='S'";
+                        needOR = true;
+                    }
+                    if((size & SIZE_MEDIUM) == SIZE_MEDIUM){
+                        if(needOR)
+                            where += " OR ";
+                        needOR = true;
+                        where += DBHelper.T_ANIMAL_SIZE + "='M'";
+                    }
+                    if((size & SIZE_LARGE) == SIZE_LARGE){
+                        if(needOR)
+                            where += " OR ";
+                        where += DBHelper.T_ANIMAL_SIZE + "='L'";
+                        where += " OR " + DBHelper.T_ANIMAL_SIZE + "='XL'";
+                    }
+                    where += ")";
+                }
+
+
+                where +=")";
                 and_or = true;
             }
             if ((species & SPECIES_CAT) == SPECIES_CAT) {

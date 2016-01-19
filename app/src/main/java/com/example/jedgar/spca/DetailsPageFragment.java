@@ -2,7 +2,12 @@ package com.example.jedgar.spca;
 
 import android.app.Activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -30,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by a on 3/31/2015.
@@ -379,6 +385,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                     ArrayList<String> animalURLT = (ArrayList<String>)v.getTag(R.id.animalURLTag);
 
                     try{
+
                         // Construct a ShareIntent
                         Intent shareIntent = new Intent();
                         shareIntent.setAction(Intent.ACTION_SEND);
@@ -386,7 +393,7 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                         //shareIntent.setType("text/html*");
                         shareIntent.setType("text/plain");
 
-                        String html = "<!DOCTYPE html>" +
+                        String html_email = "<!DOCTYPE html>" +
                                 "<html>" +
                                 "<body>" +
                                 // "<p>" +getResources().getText(R.string.lookAtWhatIFound)+ "</p>" +
@@ -396,38 +403,124 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                                 "<p>" + getResources().getText(R.string.sex) + ": " + animalSexT + "</p>";
 
                         if(!animalDescriptionT.equals("")){
-                            html += "<p>" +  getResources().getText(R.string.description)+": " + animalDescriptionT + "</p>";
+                            html_email += "<p>" +  getResources().getText(R.string.description)+": " + animalDescriptionT + "</p>";
                         }
 
                         if(animalURLT.size() >0){
                             //html += "<p>" + getResources().getText(R.string.images)+"</p>";
-                            html +=  getResources().getText(R.string.images)+ ":\n";
+                            html_email +=  getResources().getText(R.string.images)+ ":\n";
 
 
                             for(int i=0; i<animalURLT.size(); i++){
-                                html+= "<p>" + "<a href=" +  animalURLT.get(i) + ">" + animalNameT + "_Image" + (i+1) + "</a>" + "</p>";
+                                html_email+= "<p>" + "<a href=" +  animalURLT.get(i) + ">" + animalNameT + "_Image" + (i+1) + "</a>" + "</p>";
                             }
                         }
-                        html+="<p></p>";
-                        html+="<p></p>";
-                        html+= "<p>" +"\n\n" + getResources().getText(R.string.spcaMontreal) + "</p>" +
+                        html_email+="<p></p>";
+                        html_email+="<p></p>";
+                        html_email+= "<p>" +"\n\n" + getResources().getText(R.string.spcaMontreal) + "</p>" +
                                 "<p>" + getResources().getText(R.string.spcaAddress) + "</p>";// +
 
-                        html+="<br>";
-                        html += "<p>" + getResources().getText(R.string.spcaPhone) + "</p>" +
+                        html_email+="<br>";
+                        html_email += "<p>" + getResources().getText(R.string.spcaPhone) + "</p>" +
                                 "<p>" +getResources().getText(R.string.spcaEmail) + "</p>";
 
-                        html += "</body></html>";
+                        html_email += "</body></html>";
 
                         // Message subject
                         shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.spcaMontreal) + " - " + getResources().getText(R.string.helpMeFindAHome));
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(html));
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(html_email));
+
 
                         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
 
+                        //For SMS
+                        Intent smsIntent = new Intent();
+                        smsIntent.setAction(Intent.ACTION_SEND);
+                        // type of file to share
+                        //shareIntent.setType("text/html*");
+                        smsIntent.setType("text/plain");
 
-                        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.share_with)));
+                        String smsText =  getResources().getText(R.string.lookAtWhatIFound) + "\n" +
+                                getResources().getText(R.string.name)+ ": " +  animalNameT + "\n" +
+                                getResources().getText(R.string.animalID) +": " + animalIDT + "\n" +
+                                getResources().getText(R.string.age)+ ": " + animalAgeT + "\n" +
+                                getResources().getText(R.string.sex) + ": " + animalSexT + "\n";
+
+                        if(animalURLT.size() >0){
+                            //html += "<p>" + getResources().getText(R.string.images)+"</p>";
+                            smsText +=  getResources().getText(R.string.images)+ ":\n";
+
+
+                            for(int i=0; i<animalURLT.size(); i++){
+                                smsText+= (i+1) + ") " +animalURLT.get(i) + "\n";
+                            }
+                        }
+
+                        smsIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.spcaMontreal) + " - " + getResources().getText(R.string.helpMeFindAHome));
+                        smsIntent.putExtra(Intent.EXTRA_TEXT, html_email);
+
+
+                        //Twitter Text:
+
+                        String twitterText = getResources().getText(R.string.lookAtWhatIFound) + "\n" +
+                                getResources().getText(R.string.name)+ ": " +  animalNameT + "\n" +
+                                getResources().getText(R.string.animalID) +": " + animalIDT + "\n" +
+                                getResources().getText(R.string.age)+ ": " + animalAgeT + "\n" +
+                                getResources().getText(R.string.sex) + ": " + animalSexT + "\n";
+                        if(animalURLT.size() >0) {
+                            //html += "<p>" + getResources().getText(R.string.images)+"</p>";
+                            twitterText += getResources().getText(R.string.images) + ":\n";
+                            twitterText += animalURLT.get(0) + "\n";
+                        }
+
+
+                        //Build chooser and take care of cases individually
+                        Resources resources = getResources();
+
+                        PackageManager pm = getActivity().getPackageManager();
+                        Intent openInChooser = Intent.createChooser(shareIntent,getResources().getText(R.string.share_with));
+
+                        List<ResolveInfo> resInfo = pm.queryIntentActivities(smsIntent, 0);
+                        List<LabeledIntent> intentList = new ArrayList<LabeledIntent>();
+                        for (int i = 0; i < resInfo.size(); i++) {
+                            // Extract the label, append it, and repackage it in a LabeledIntent
+                            ResolveInfo ri = resInfo.get(i);
+                            String packageName = ri.activityInfo.packageName;
+                            if (packageName.contains("android.email")) {
+                                shareIntent.setPackage(packageName);
+                            } else if (packageName.contains("twitter") || packageName.contains("facebook") || packageName.contains("mms") || packageName.contains("android.gm")) {
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName(packageName, ri.activityInfo.name));
+                                intent.setAction(Intent.ACTION_SEND);
+                                intent.setType("text/plain");
+                                if (packageName.contains("twitter")) {
+                                    intent.putExtra(Intent.EXTRA_TEXT, twitterText);
+                                }else if (packageName.contains("facebook")) {
+                                    // Warning: Facebook IGNORES our text. They say "These fields are intended for users to express themselves. Pre-filling these fields erodes the authenticity of the user voice."
+                                    // One workaround is to use the Facebook SDK to post, but that doesn't allow the user to choose how they want to share. We can also make a custom landing page, and the link
+                                    // will show the <meta content ="..."> text from that page with our link in Facebook.
+                                    intent.putExtra(Intent.EXTRA_TEXT, smsText);
+                                }else if (packageName.contains("mms")) {
+                                    intent.putExtra(Intent.EXTRA_TEXT, smsText);
+                                } else if (packageName.contains("android.gm")) { // If Gmail shows up twice, try removing this else-if clause and the reference to "android.gm" above
+                                    /*intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("Share GMAILx"));
+                                    intent.putExtra(Intent.EXTRA_SUBJECT, "SHARE GMAIL SUBJECT");*/
+                                    intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.spcaMontreal) + " - " + getResources().getText(R.string.helpMeFindAHome));
+                                    intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(html_email));
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                    intent.setType("message/rfc822");
+                                }
+
+                                intentList.add(new LabeledIntent(intent, packageName, ri.loadLabel(pm), ri.icon));
+                            }
+                        }
+                        LabeledIntent[] extraIntents = intentList.toArray( new LabeledIntent[ intentList.size() ]);
+
+                        openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+                        startActivity(openInChooser);
+
+                        //startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.share_with)));
                     }catch (Exception e){
                         // Log any error messages to LogCat using Log.e()
                         e.printStackTrace();
@@ -482,6 +575,9 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
         }
         @Override
         public int getCount() {
+            if(c == null){
+                return 0;
+            }
             return c.getCount();
         }
 

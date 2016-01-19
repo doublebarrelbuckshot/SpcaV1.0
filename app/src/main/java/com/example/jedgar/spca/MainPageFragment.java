@@ -24,10 +24,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
+import java.util.Random;
 
 
 public class MainPageFragment extends Fragment implements View.OnClickListener, GetActionBarTitle, DownloadAdoptableSearch.AsyncTaskDelegate {
@@ -45,6 +49,9 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     ImageButton otherButton;
     Button searchButton;
     TextView ageText;
+    CheckBox small_checkBox;
+    CheckBox medium_checkBox;
+    CheckBox large_checkBox;
     CheckBox femaleCheckBox;
     CheckBox maleCheckBox;
     RangeSeekBar<Integer> seekBar;
@@ -99,7 +106,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.main_page_fragment, container, false);
-
+        final RelativeLayout dog_size_layout = (RelativeLayout) rootView.findViewById(R.id.size_layout);
        /*
        Load news image and information
         */
@@ -149,17 +156,21 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         });
 
         dogButton = (ImageButton) rootView.findViewById(R.id.dog_button);
-        if ((sc.species & SearchCriteria.SPECIES_DOG) == SearchCriteria.SPECIES_DOG)
+        if ((sc.species & SearchCriteria.SPECIES_DOG) == SearchCriteria.SPECIES_DOG) {
             dogButton.setSelected(true);
+            dog_size_layout.setVisibility(View.VISIBLE);
+        }
         dogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sc.searchDogs();
                 if (!v.findViewById(R.id.dog_button).isSelected()) {
                     v.findViewById(R.id.dog_button).setSelected(true);
+                    dog_size_layout.setVisibility(View.VISIBLE);
                     //Toast.makeText(MainPageFragment.this.getActivity(), "dog selected!", Toast.LENGTH_SHORT).show();
                 } else {
                     v.findViewById(R.id.dog_button).setSelected(false);
+                    dog_size_layout.setVisibility(View.GONE);
                 }
 
             }
@@ -213,6 +224,13 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             }
         });
 
+        if(Locale.getDefault().getISO3Language().equals("eng")) {
+            otherButton.setImageResource(R.drawable.other_pressed);
+        }
+        else{
+            otherButton.setImageResource(R.drawable.other_pressed_fr);
+        }
+
         searchButton = (Button) rootView.findViewById(R.id.search_button);
         searchButton.setOnClickListener(this);
 
@@ -229,7 +247,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
                 // handle changed range values
                 //Log.i("rangeSeek", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
-                sc.setAgeMin(minValue*12);
+                sc.setAgeMin(minValue * 12);
                 if (maxValue == seekBar.getAbsoluteMaxValue()) {
                     ageText.setText(getResources().getString(R.string.age_text_view) +
                             getResources().getString(R.string.rsbAgeFrom) + minValue +
@@ -240,13 +258,50 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                             getResources().getString(R.string.rsbAgeFrom) + minValue +
                             getResources().getString(R.string.rsbAgeTo) + maxValue +
                             getResources().getString(R.string.rsbAgeYears));
-                    sc.setAgeMax(maxValue*12);
+                    sc.setAgeMax(maxValue * 12);
                 }
             }
         });
 //https://github.com/yahoo/android-range-seek-bar
         LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.seekbar_placeholder);
         layout.addView(seekBar);
+
+        small_checkBox = (CheckBox) rootView.findViewById(R.id.small_checkBox);
+        if ((sc.size & SearchCriteria.SIZE_SMALL) == SearchCriteria.SIZE_SMALL)
+            small_checkBox.setChecked(true);
+        else
+            small_checkBox.setChecked(false);
+        small_checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sc.searchSmall();
+            }
+        });
+
+        medium_checkBox= (CheckBox) rootView.findViewById(R.id.medium_checkBox);
+        if ((sc.size & SearchCriteria.SIZE_MEDIUM) == SearchCriteria.SIZE_MEDIUM)
+            medium_checkBox.setChecked(true);
+        else
+            medium_checkBox.setChecked(false);
+        medium_checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sc.searchMedium();
+            }
+        });
+
+        large_checkBox= (CheckBox) rootView.findViewById(R.id.large_checkBox);
+        if ((sc.size & SearchCriteria.SIZE_LARGE) == SearchCriteria.SIZE_LARGE)
+            large_checkBox.setChecked(true);
+        else
+            large_checkBox.setChecked(false);
+        large_checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sc.searchLarge();
+            }
+        });
+
 
         maleCheckBox = (CheckBox) rootView.findViewById(R.id.male_checkBox);
         if ((sc.sex & SearchCriteria.SEX_MALE) == SearchCriteria.SEX_MALE)
@@ -549,10 +604,14 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
             if (nwapi == null || activity == null)
                 return;
 
+            //Got NEWS WITHOUT ERRORS
             if (nwapi.errorCode == 0) {
-                newsText = nwapi.newsText;
-                newsHeadline = nwapi.newsHeadline;
-                Picasso.with(getActivity().getApplicationContext()).load(nwapi.newsImage).into(important_message);
+                //Choose news item at random
+                Random rand = new Random();
+                int randomIndex = rand.nextInt((nwapi.itemCount-1 - 0) + 1) + 0;
+                newsText = nwapi.newsText.get(randomIndex);
+                newsHeadline = nwapi.newsHeadline.get(randomIndex);
+                Picasso.with(getActivity().getApplicationContext()).load(nwapi.newsImage.get(randomIndex)).into(important_message);
             }
             else{
                 Picasso.with(getActivity().getApplicationContext()).load(R.drawable.makefurhistory).into(important_message);

@@ -27,6 +27,10 @@
     <string name="more_details">Details</string>
     <string name="loading_data">Loading Data</string>
 
+    <string name="size_small">Small</string>
+    <string name="size_medium">Medium</string>
+    <string name="size_large">Large</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

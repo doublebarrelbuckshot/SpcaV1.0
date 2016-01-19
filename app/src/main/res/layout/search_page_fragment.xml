@@ -56,7 +56,8 @@
                 android:id="@+id/other_button"
                 android:padding="1dp"
                 android:layout_weight="1"
-                android:src="@drawable/other_pressed"/>
+                android:src="@drawable/dog_pressed"/>
+
 
         </LinearLayout>
 
