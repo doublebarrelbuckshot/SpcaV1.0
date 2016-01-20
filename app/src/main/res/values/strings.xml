@@ -36,7 +36,7 @@
 
 
 
-    <string name="spcaHours">Hours:\nMonday to Friday: 12pm to 7pm\nSaturday and Sunday: 11am to 5am\nHours may change during holidays or special events.</string>
+    <string name="spcaHours">Adoption Hours:\nMonday to Friday: 12pm to 7pm\nSaturday and Sunday: 11am to 5am\nHours may change during holidays or special events.</string>
 
     <!-- Here are the Strings for the all tabs on the info_page_fragment -->
     <string name="adoption">Adoption</string>
