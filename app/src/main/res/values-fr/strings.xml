@@ -13,7 +13,7 @@
     <string name="title_section4">Nouveau</string>
     <string name="title_section5">Notifications</string>
     <string name="title_section6">Contact</string>
-    <string name="title_section7">FAQs</string>
+    <string name="title_section7">Avant d\'adopter</string>
     <string name="title_section8">Faire un don</string>
 
     <!-- Here are the Strings for the main_page_fragment -->
@@ -34,6 +34,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="spcaHours">Heures d’adoption: Du lundi au vendredi de 12h à 19h\nsamedi et dimanche de 11h à 17h.\nLes heures peuvent changer lors de jours fériés ou d’événements spéciaux.</string>
 
     <!-- Here are the Strings for the all tabs on the info_page_fragment -->
     <string name="adoption">Adoption</string>
@@ -186,7 +189,7 @@
     <string name="infoTitle">Info</string>
     <string name="contactTitle">Contact</string>
     <string name="mainPageTitle">Accueil</string>
-    <string name="faqTitle">FAQ</string>
+    <string name="faqTitle">Avant d\'adopter</string>
     <string name="donateTitle">Faire un don</string>
 
     <string name="searchResultsTitle">Résultats de la recherche</string>
@@ -254,7 +257,7 @@ Visitez www.finilafourrure.com afin d’en apprendre davantage sur la campagne e
     <!--Strings for notifications-->
     <string name="notificationText">Il y a des nouveaux animaux qui correspond à vos criteres de recherche...</string>
     <string name="faqText"><![CDATA[
-       <body> <p><h1>12 QUESTIONS À SE POSER AVANT D’ADOPTER</h1></p>
+       <body> <p><h3>12 QUESTIONS À SE POSER AVANT D’ADOPTER</h3></p>
        <p>L’animal que vous vous apprêtez à adopter vous aimera d’un amour inconditionnel et vous accueillera avec joie tous les jours. Ce nouveau compagnon est un être vivant qui a des besoins physiologiques et psychologiques qu’il vous faudra accepter et combler. Bien comprendre toutes les implications liées à l’acquisition d’un animal vous permettra de prendre une décision réfléchie et d’éviter les regrets qui pourraient mener à un triste dénouement.
        Chaque année, des centaines de milliers d’animaux sont abandonnés dans les refuges. Avant d’adopter, il est important de bien se renseigner afin de connaître les besoins et les traits de personnalité de l’animal qui vous intéresse pour ainsi faire le bon choix.</p>
 <p><strong>Voici 12 questions pour vous guider dans votre réflexion et savoir si vous êtes prêt à adopter un animal.</strong></p>

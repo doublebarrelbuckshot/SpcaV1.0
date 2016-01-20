@@ -504,8 +504,6 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                                 }else if (packageName.contains("mms")) {
                                     intent.putExtra(Intent.EXTRA_TEXT, smsText);
                                 } else if (packageName.contains("android.gm")) { // If Gmail shows up twice, try removing this else-if clause and the reference to "android.gm" above
-                                    /*intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("Share GMAILx"));
-                                    intent.putExtra(Intent.EXTRA_SUBJECT, "SHARE GMAIL SUBJECT");*/
                                     intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.spcaMontreal) + " - " + getResources().getText(R.string.helpMeFindAHome));
                                     intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(html_email));
                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

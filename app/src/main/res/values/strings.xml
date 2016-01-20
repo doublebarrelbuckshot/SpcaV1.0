@@ -12,7 +12,7 @@
     <string name="title_section4">New</string>
     <string name="title_section5">Notifications</string>
     <string name="title_section6">Contact</string>
-    <string name="title_section7">FAQs</string>
+    <string name="title_section7">Before Adopting</string>
     <string name="title_section8">Donate</string>
     <!-- Here are the Strings for the main_page_fragment -->
     <!-- Adds to display in TextView on the main_page_fragment-->
@@ -36,7 +36,7 @@
 
 
 
-
+    <string name="spcaHours">Hours:\nMonday to Friday: 12pm to 7pm\nSaturday and Sunday: 11am to 5am\nHours may change during holidays or special events.</string>
 
     <!-- Here are the Strings for the all tabs on the info_page_fragment -->
     <string name="adoption">Adoption</string>
@@ -188,7 +188,7 @@
     <string name="contactTitle">Contact</string>
     <string name="mainPageTitle">Main Page</string>
     <string name="newsTitle">News</string>
-    <string name="faqTitle">FAQ</string>
+    <string name="faqTitle">Before Adopting</string>
     <string name="donateTitle">Donate</string>
 
     <string name="searchResultsTitle">Search Results</string>
