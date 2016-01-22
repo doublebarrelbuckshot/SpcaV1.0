@@ -7,6 +7,14 @@
     <!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>-->
     <!--<uses-permission android:name="android.permission.VIBRATE" ></uses-permission>-->
     <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
+    <!-- for credit card i/o scanning -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- for most things, including card.io & paypal -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -26,6 +34,21 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <service android:name="com.paypal.android.sdk.payments.PayPalService"
+                android:exported="false" />
+
+            <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.PayPalFuturePaymentActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.FuturePaymentConsentActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
+            <activity
+                android:name="io.card.payment.CardIOActivity"
+                android:configChanges="keyboardHidden|orientation" />
+            <activity android:name="io.card.payment.DataEntryActivity" />
+
         </activity>
 
         <!--activity

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.ShippingAddress;
 
 import java.math.BigDecimal;
 
@@ -42,10 +43,10 @@ public class DonateFragment extends Fragment implements View.OnClickListener, Ge
      * - Set to PayPalConfiguration.ENVIRONMENT_NO_NETWORK to kick the tires
      * without communicating to PayPal's servers.
      */
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;// PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;//PayPalConfiguration.ENVIRONMENT_SANDBOX;// PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
 
     // note that these credentials will differ between live & sandbox environments.
-    private static final String CONFIG_CLIENT_ID = "AR0bLsI4ZS36IYi3TJtXdu8rEtMzJJvwJewPUx0HghR5Ixx_Sc7XRDIdVMm2N_0-mN9GOHLkkw6BzNKG";//"credential from developer.paypal.com";
+    private static final String CONFIG_CLIENT_ID = "ATwtGvOKmfr3XHZWIn5QS7SqGxZGmQoGTIwpC2C8wzHlNXXoBr-EJ0nP217ChEf4sKHVgiYWspXvKQF5";//"AR0bLsI4ZS36IYi3TJtXdu8rEtMzJJvwJewPUx0HghR5Ixx_Sc7XRDIdVMm2N_0-mN9GOHLkkw6BzNKG";//"credential from developer.paypal.com";
 
 
     private static PayPalConfiguration config = new PayPalConfiguration()
@@ -101,8 +102,16 @@ public class DonateFragment extends Fragment implements View.OnClickListener, Ge
         else {
             PayPalPayment ppp = new PayPalPayment(new BigDecimal(donation_amount), "CAD", "SPCA Donation",
                     PayPalPayment.PAYMENT_INTENT_SALE);
+            enableShippingAddressRetrieval(ppp, true);
             ((MainActivity) DonateFragment.this.getActivity()).doDonation(ppp);
         }
+    }
+
+    /*
+     * Enable retrieval of shipping addresses from buyer's PayPal account
+     */
+    private void enableShippingAddressRetrieval(PayPalPayment paypalPayment, boolean enable) {
+        paypalPayment.enablePayPalShippingAddressesRetrieval(enable);
     }
 
     @Override
