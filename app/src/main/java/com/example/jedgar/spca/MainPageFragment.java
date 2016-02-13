@@ -242,6 +242,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
         else
             seekBar.setSelectedMaxValue(sc.ageMax/12);
         seekBar.setSelectedMinValue(sc.ageMin/12);
+        seekBar.setNotifyWhileDragging(true);
         seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {

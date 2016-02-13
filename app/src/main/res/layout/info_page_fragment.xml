@@ -3,6 +3,8 @@
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    app:tabTextColor="@color/black"
+    app:tabSelectedTextColor="@color/black"
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/home_page"

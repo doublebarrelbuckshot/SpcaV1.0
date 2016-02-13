@@ -43,13 +43,14 @@ public class DonateFragment extends Fragment implements View.OnClickListener, Ge
      * - Set to PayPalConfiguration.ENVIRONMENT_NO_NETWORK to kick the tires
      * without communicating to PayPal's servers.
      */
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;// PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;//ENVIRONMENT_SANDBOX;// PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
 
     // note that these credentials will differ between live & sandbox environments.
-    private static final String CONFIG_CLIENT_ID = "AZwfgYU9KJ6fLvOX_5TvjSjHu068ZD3Zr_04z-eeanSZrsKVHe_u1JYDQlpgpYwKco5mhdBFmIBb5uG-";//"ATwtGvOKmfr3XHZWIn5QS7SqGxZGmQoGTIwpC2C8wzHlNXXoBr-EJ0nP217ChEf4sKHVgiYWspXvKQF5";//"AR0bLsI4ZS36IYi3TJtXdu8rEtMzJJvwJewPUx0HghR5Ixx_Sc7XRDIdVMm2N_0-mN9GOHLkkw6BzNKG";//"credential from developer.paypal.com";
+    private static final String CONFIG_CLIENT_ID = "AYoNGOVMZGUeur10Oj_4S5eLHq8R24lqvdbicZj6B60lwQhvCZB5pUSeQFzIidXZLN_gUnbVIcQq_G_p";//"AbfSckYTLi5pS-KXLvRbejFbUHO0oL4EIZ4_wyF8gDwBmDw3wiMTdIoAi15rDPqzV-zvL_ojAMx8yCDs";//"AZwfgYU9KJ6fLvOX_5TvjSjHu068ZD3Zr_04z-eeanSZrsKVHe_u1JYDQlpgpYwKco5mhdBFmIBb5uG-";//"ATwtGvOKmfr3XHZWIn5QS7SqGxZGmQoGTIwpC2C8wzHlNXXoBr-EJ0nP217ChEf4sKHVgiYWspXvKQF5";//"AR0bLsI4ZS36IYi3TJtXdu8rEtMzJJvwJewPUx0HghR5Ixx_Sc7XRDIdVMm2N_0-mN9GOHLkkw6BzNKG";//"credential from developer.paypal.com";
 
 
     private static PayPalConfiguration config = new PayPalConfiguration()
+            .acceptCreditCards(false)
             .environment(CONFIG_ENVIRONMENT)
             .clientId(CONFIG_CLIENT_ID);
                     // The following are only used in PayPalFuturePaymentActivity.

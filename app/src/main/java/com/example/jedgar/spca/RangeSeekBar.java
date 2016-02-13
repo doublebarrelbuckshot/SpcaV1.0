@@ -30,8 +30,8 @@ import android.widget.ImageView;
  */
 public class RangeSeekBar<T extends Number> extends ImageView {
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Bitmap thumbImage = BitmapFactory.decodeResource(getResources(), R.drawable.seek_thumb_normal);
-    private final Bitmap thumbPressedImage = BitmapFactory.decodeResource(getResources(), R.drawable.seek_thumb_pressed);
+    private final Bitmap thumbImage = BitmapFactory.decodeResource(getResources(), R.drawable.apptheme_scrubber_control_normal_holo);
+    private final Bitmap thumbPressedImage = BitmapFactory.decodeResource(getResources(), R.drawable.apptheme_scrubber_control_pressed_holo);
     private final float thumbWidth = thumbImage.getWidth();
     private final float thumbHalfWidth = 0.5f * thumbWidth;
     private final float thumbHalfHeight = 0.5f * thumbImage.getHeight();
@@ -49,7 +49,7 @@ public class RangeSeekBar<T extends Number> extends ImageView {
     /**
      * Default color of a {@link RangeSeekBar}, #FF33B5E5. This is also known as "Ice Cream Sandwich" blue.
      */
-    public static final int DEFAULT_COLOR = Color.argb(0xFF, 0x33, 0xB5, 0xE5);
+    public static final int DEFAULT_COLOR = Color.argb(0xFF, 0x00, 0x00, 0x00);
 
     /**
      * An invalid pointer id.
@@ -363,11 +363,11 @@ public class RangeSeekBar<T extends Number> extends ImageView {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        int barColor = getContext().getResources().getColor(R.color.range_seek_bar_barcolor);
         // draw seek bar background line
         final RectF rect = new RectF(padding, 0.5f * (getHeight() - lineHeight), getWidth() - padding, 0.5f * (getHeight() + lineHeight));
         paint.setStyle(Style.FILL);
-        paint.setColor(Color.RED);
+        paint.setColor(barColor);
         paint.setAntiAlias(true);
         canvas.drawRect(rect, paint);
 
@@ -376,7 +376,7 @@ public class RangeSeekBar<T extends Number> extends ImageView {
         rect.right = normalizedToScreen(normalizedMaxValue);
 
         // orange color
-        paint.setColor(Color.RED);
+        paint.setColor(barColor);
         canvas.drawRect(rect, paint);
 
         // draw minimum thumb

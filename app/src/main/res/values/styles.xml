@@ -1,0 +1,43 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="android:checkboxStyle">@style/CheckBoxAppTheme</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonAppTheme</item>
+        <item name="android:buttonStyle">@style/ButtonAppTheme</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonAppTheme</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector</item>
+    </style>
+
+    <style name="ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <!--<item name="android:background">#ba0c2f</item>-->
+        <item name="background">@color/action_bar_background</item>
+        <item name="titleTextStyle">@style/ActionBarTitleText</item>
+    </style>
+
+    <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/action_bar_text_color</item>
+    </style>
+
+    <style parent="android:Widget.CompoundButton.CheckBox" name="CheckBoxAppTheme">
+        <item name="android:button">@drawable/apptheme_btn_check_holo_light</item>
+    </style>
+
+    <style name="RadioButtonAppTheme" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/apptheme_btn_radio_holo_light</item>
+    </style>
+
+    <style name="ButtonAppTheme" parent="android:Widget.Button">
+        <item name="android:background">@drawable/apptheme_btn_default_holo_light</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">64dip</item>
+        <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
+    <style name="ImageButtonAppTheme" parent="android:Widget.ImageButton">
+        <item name="android:background">@drawable/apptheme_btn_default_holo_light</item>
+    </style>
+
+</resources>
