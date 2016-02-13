@@ -55,11 +55,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
-                        android:ems="10"
+                        android:ems="12"
                         android:id="@+id/donation_amount"
                         android:layout_alignParentTop="true"
                         android:layout_toRightOf="@+id/text_donation_amount"
-                        android:layout_toEndOf="@+id/text_donation_amount" />
+                        android:layout_toEndOf="@+id/text_donation_amount"
+                        />
         </RelativeLayout>
         <Button
             android:id="@+id/btn_give"
