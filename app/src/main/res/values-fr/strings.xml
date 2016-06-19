@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SPCA Montreal</string>
+    <string name="app_name">SPCA de Montréal</string>
 
     <!-- MainPageFragment -->
     <string name="InitialDownloadMsg">Téléchargement des informations</string>
@@ -18,7 +18,7 @@
 
     <!-- Here are the Strings for the main_page_fragment -->
     <string name="important_message">FREE STUFF OR CATS OR WTV</string>
-    <string name="age_text_view">Age</string>
+    <string name="age_text_view">Âge</string>
     <string name="gender_text_view">Sexe</string>
     <string name="checkbox_male">Mâle</string>
     <string name="checkbox_female">Femelle</string>
@@ -26,7 +26,7 @@
     <string name="more_details">Détails</string>
     <string name="loading_data">Chargement de données </string>
 
-
+    <string name="size_dogs">Taille (chiens)</string>
     <string name="size_small">Petit </string>
     <string name="size_medium">Moyen</string>
     <string name="size_large">Grand</string>
@@ -44,43 +44,42 @@
     <string name="general_tab">Général</string>
     <string name="b4_adoption_title">Avant d\'adopter</string>
         <string name="before_adoption">
-            il est important de :\n
-            - Évaluer les coûts reliés à avoir un animal: nourriture,\n visites chez le vétérinaire, divers produits de soin animal, etc\n.
+            Il est important de :\n
+            - Évaluer les coûts qu’engendre un animal: nourriture,\n visites chez le vétérinaire, divers produits de soin animal, etc\n
             - Connaître son espérance de vie et déterminer si vous avez le temps et l’énergie d’en prendre soin jour après jour.\n
-            - Prévoir une période d’adaptation à son nouvel environnement\n et comprendre que l’animal pourrait causer certains dégâts durant cette période.
+            - Prévoir une période d’adaptation à son nouvel environnement et comprendre que l’animal pourrait causer certains dégâts durant cette période.
         </string>
 
     <string name="open_hours">Heures D\'Ouverture</string>
 
         <string name="opening_hours">
-            - Lundi a Vendredi: 12:00 pm to 8:00 pm\n
-            - Samedi et Dimanche: 11:00 am to 5:00 pm
+            Du lundi au vendredi: 12h à 20h,\n
+            samedi et dimanche 11h à 17h
         </string>
 
 
     <string name="fees">Frais</string>
         <string name="mandatory">
-            frais incluent la stérilisation obligatoire pour tous les chiens et chats adopté), le premier vaccin de base, un traitement contre les vers, une micropuce et 15 jours de garantie de santé
-            (des frais 20$ additionnels sont applicables pour l’ouverture d’un dossier).
+            Les frais incluent la stérilisation obligatoire pour tous les chiens et chats adopté), le premier vaccin de base, un traitement contre les vers, une micropuce et 15 jours de garantie de santé
+            (des frais 20$ additionnels sont applicables pour l’ouverture d’un dossier).\n
             ** Un dépôt de 100 $ est exigé pour les animaux qui ne peuvent être stérilisés lors de l’adoption.\n
             Ce dépôt est remboursable lors de la stérilisation.
         </string>
 
     <string name="dog_tab">Chiens</string>
     <string name="adoption_fees_dogs">
-        - Chiots – moins de 8 mois : 295$ \n
-        \n- Chiens – 8 mois et plus : 255$ \n
-        \n- Adoption humanitaire: $75
+        - Chiots – moins de 8 mois : 295$
+        \n- Chiens – 8 mois et plus : 255$
+        \n- Adoption humanitaire: 75$
         \n\n(Les prix sont sujets à changement sans préavis).
     </string>
 
     <string name="cat_tab">Chats</string>
     <string name="adoption_fees_cats">
-                - Chaton – moins de 5 mois: 175$
-                \n- Chat – 5 mois et plus: 125$
-                \n- Adoption humanitaire: 75$
-                \n\n(Les prix sont sujets à changement sans préavis).
-
+        - Chaton – moins de 5 mois: 175$
+        \n- Chat – 5 mois et plus: 125$
+        \n- Adoption humanitaire: 75$
+        \n\n(Les prix sont sujets à changement sans préavis).
      </string>
 
     <string name="others_tab">Autres</string>
@@ -90,32 +89,31 @@
 
     <string name="rabbits_adopt_info">
 
-         - Mâle stérilisé 60 $\n
-         - Femelle stérilisée 80 $\n
-         - Femelle non stérilisée 20 $
+         - Mâle stérilisé 100 $\n
+         - Femelle stérilisée 100 $
     </string>
 
     <string name="birds_adopt_info">
 
-        - Inséparables 50 $\n
-        - Canari 40 $\n
-        - Cockatiel 35 $\n
-        - Pinson 15 $\n
-        - Perruche 10 $\n
-        - Colombe 8 $\n
-        - Tourterelle 8 $
+        - Inséparables 50$\n
+        - Canari 40$\n
+        - Cockatiel 35$\n
+        - Pinson 15$\n
+        - Perruche 10$\n
+        - Colombe 8$\n
+        - Tourterelle 8$
     </string>
 
     <string name="adoption_fees_exotic_animal">
-        Furet 100 $\n
-        Chinchilla 50 $\n
-        Cochon d’inde 15 $\n
-        Rat 10 $\n
-        Hamster 5 $\n
-        Hérisson 50 $\n
-        Souris 5 $\n
-        Gerbille 5 $\n
-        Dégu 5 $
+        Furet 100$\n
+        Chinchilla 100$\n
+        Cochon d’inde 30$\n
+        Rat 15$\n
+        Hamster 10$\n
+        Hérisson 75$\n
+        Souris 10$\n
+        Gerbille 15$\n
+        Dégu 15$
         \n\n(Les prix sont sujets à changement sans préavis).
 
     </string>
@@ -131,11 +129,11 @@
 
 
     <!-- Here are the Strings for the contact_page_fragment -->
-    <string name="spcaMontreal">SPCA Montreal</string>
-    <string name="spcaAddress">5215 Jean-Talon West \nMontreal, Quebec\nH4P WX4</string>
-    <string name="spcaPhone">(514)735-2711</string>
-    <string name="spcaEmail">telephoniste@spcamontreal.com</string>
-
+    <string name="spcaMontreal">SPCA de Montréal</string>
+    <string name="spcaAddress">5215 Jean-Talon West \nMontréal, Québec\nH4P WX4</string>
+    <string name="spcaPhone">(514)735-2711 Poste 2223</string>
+    <string name="spcaEmail">adoption@spca.com</string>
+    <string name="emailSPCAtitle">Communiquez avec la SPCA</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
@@ -163,25 +161,25 @@
 
     <string name="yes">Oui</string>
     <string name="no">Non</string>
-    <string name="front">Front</string>
-    <string name="back">Back</string>
-    <string name="both">Both</string>
+    <string name="front">Avant</string>
+    <string name="back">Arrière</string>
+    <string name="both">4 pattes</string>
 
     <string name="years">ans</string>
     <string name="months">mois</string>
 
 
-    <string name="name">Name</string>
-    <string name="animalID">Animal ID</string>
+    <string name="name">Nom</string>
+    <string name="animalID">No d\'identification</string>
 
 
-    <string name="spcaPetProfile">SPCA Montreal- Pet Profile</string>
-    <string name="age">Age</string>
-    <string name="sex">Sex</string>
+    <string name="spcaPetProfile">SPCA de Montréal - profil de  l\'animal</string>
+    <string name="age">Âge</string>
+    <string name="sex">Sexe</string>
     <string name="description">Description</string>
     <string name="images">Images</string>
     <string name="lookAtWhatIFound">Regardez ce que je trouve!</string>
-
+    <string name="availableAtSPCA">Disponible pour adoption à la SPCA de Montréal</string>
 
     <string name="favoritesTitle">Favoris</string>
     <string name="newTitle">Nouveau</string>
@@ -225,7 +223,7 @@
     <!-- browse row -->
     <string name="browseID">ID</string>
     <string name="browseName">Nom</string>
-    <string name="browseAge">Age</string>
+    <string name="browseAge">Âge</string>
 
     <string name="newsTitle">Nouvelles</string>
 
@@ -256,42 +254,40 @@ Visitez www.finilafourrure.com afin d’en apprendre davantage sur la campagne e
 
     <!--Strings for notifications-->
     <string name="notificationText">Il y a des nouveaux animaux qui correspond à vos criteres de recherche...</string>
-    <string name="faqText"><![CDATA[
-       <body> <p><h3>12 QUESTIONS À SE POSER AVANT D’ADOPTER</h3></p>
-       <p>L’animal que vous vous apprêtez à adopter vous aimera d’un amour inconditionnel et vous accueillera avec joie tous les jours. Ce nouveau compagnon est un être vivant qui a des besoins physiologiques et psychologiques qu’il vous faudra accepter et combler. Bien comprendre toutes les implications liées à l’acquisition d’un animal vous permettra de prendre une décision réfléchie et d’éviter les regrets qui pourraient mener à un triste dénouement.
-       Chaque année, des centaines de milliers d’animaux sont abandonnés dans les refuges. Avant d’adopter, il est important de bien se renseigner afin de connaître les besoins et les traits de personnalité de l’animal qui vous intéresse pour ainsi faire le bon choix.</p>
-<p><strong>Voici 12 questions pour vous guider dans votre réflexion et savoir si vous êtes prêt à adopter un animal.</strong></p>
-<p><strong>1. Êtes-vous prêt à vous engager à long terme?</strong></p>
-<p>De nos jours, avec la qualité des soins que les animaux reçoivent, leur longévité s’est accrue considérablement. Les chats et chiens peuvent vivre de 10 à 20 ans, voir davantage, selon l’espèce et la race.
-Si vous adoptez un animal, assurez-vous d’être prêts à vous engager et demandez-vous quelle sera votre situation dans cinq, dix et vingt ans. De nombreux propriétaires abandonnent leur animal pour cause de déménagement, divorce ou nouvelle relation, grossesse ou nouveau-né, préoccupations financières, nouveau travail, retraite, maladie, etc. Choisir d’adopter un animal est une responsabilité à long terme.<strong></strong></p>
-<p><strong>2. Vivez-vous seul? Avec un conjoint? Avez-vous des enfants?</strong></p>
-<p>Si vous vivez avec un conjoint, avec ou sans enfant, la décision d’adopter un animal touche tous les membres de la famille. Discutez-en ensemble avant de prendre une décision. Si vous adoptez un animal à la demande d’un enfant ou d’un adolescent, soyez prêt à vous occuper de l’animal. Nous savons tous que les promesses d’enfant peuvent être éphémères, et que souvent après l’adoption, les parents devront prendre la relève pour en prendre soin.</p>
-<p><strong>3. Êtes-vous prêt à modifier vos habitudes de vie?</strong></p>
-<p>Que votre nouveau compagnon soit un chat, un chien ou autre, sa présence exigera que vous changiez vos habitudes de vie. Tous les animaux requièrent de l’attention et des soins. Si vous n’êtes pas prêt à adapter votre style de vie aux responsabilités liées à la possession d’un animal, cette option n’est peut-être pas pour vous.</p>
-<p><strong>4. Vivez-vous en appartement ou dans une maison?</strong></p>
-<p>Tous les animaux n’ont pas les mêmes besoins en matière d’espace physique. Par exemple, les chats s’adaptent souvent plus facilement à un espace restreint et à demeurer à l’intérieur. Alors qu’un chien peut exiger plus d’espace et d’exercice. Ce sont des aspects importants à considérer lors du choix de votre animal.</p>
-<p><strong>5. Êtes-vous locataire ou propriétaire?</strong></p>
-<p>Plusieurs personnes oublient de s’informer auprès de leur propriétaire pour savoir s’ils ont l’autorisation d’avoir un animal. Informez-vous auprès de votre propriétaire avant d’adopter. À noter que la clause « Animaux interdits » inscrite par le propriétaire est considérée comme discriminatoire. Cependant, posséder un animal n’est pas un droit absolu, mais un privilège assorti de deux conditions : « qu’il ne cause aucun préjudice sérieux au locateur » (comme des dommages à la propriété) et « qu’il ne trouble pas la jouissance normale des autres locataires » (par exemple, un chien qui jappe et dérange les voisins).</p>
-<p><strong>6. Êtes-vous prêt à accepter que certains de vos biens puissent être abîmés?</strong></p>
-<p>Pour chaque animal, il faut toujours prévoir une phase d’adaptation à son nouvel environnement et comprendre qu’il pourrait causer certains dégâts durant cette période. Voici différents scénarios auxquels vous pourriez devoir faire face selon l’animal choisi : des sofas couverts de poils, des meubles grugés, des moustiquaires éventrés, des boules de poils régurgitées sur votre tapis, des fils tirés sur votre nouveau costume et les immanquables odeurs qui trahissent la présence de Minou ou de Pitou. Patience et tolérance sont souvent requises.<strong></strong></p>
-<p><strong>7. Souffrez-vous d’allergies?</strong></p>
-<p>Bien des gens adoptent un animal sans savoir que l’un des membres de la famille souffre d’allergies. Afin d’éviter de devoir retourner votre nouveau compagnon, prenez les dispositions nécessaires pour vérifier la présence d’allergies.
-Par exemple, proposez-vous comme famille d’accueil pour un refuge de votre quartier. Ceux-ci sont souvent à la recherche de foyers pour accueillir un animal qui a besoin d’une période de transition, le temps de grandir un peu ou de guérir d’une maladie. Ce programme vous permet de prendre contact avec un animal sans devoir vous engager auprès de lui à long terme.
-Ou bien, offrez de garder l’animal d’un parent ou d’un ami pendant son absence. Tout en leur rendant service, vous serez également en mesure de vérifier votre seuil de tolérance aux animaux.</p>
-<p><strong>8. Êtes-vous prêt à assumer tous les frais pour les soins de l’animal?</strong></p>
-<p>Les frais d’adoption initiaux ne représentent qu’une partie de ceux que vous devrez prévoir pour votre animal. La nourriture, la litière, les divers produits de soin et d’hygiène (brosse, laisse, collier, cage, jouets), les frais de gardiennage et de vétérinaire (vaccins et examens annuels, stérilisation, maladies) sont parmi les coûts à prévoir.</p>
-<p><strong>9. Connaissez-vous quelqu’un de fiable pour prendre soin de votre animal pendant vos vacances?</strong></p>
-<p>Avant d’adopter, prévoyez pouvoir compter sur une personne responsable pour garder votre compagnon ou de disposer d’un budget pour des services de garde ou de pension. Prenez le temps de bien choisir, car de nombreux animaux sont perdus par des personnes à qui la surveillance avait été confiée. La majorité des cliniques vétérinaires offre le service de pension. Il existe aussi d’excellentes maisons de pension dont les frais sont variables. Renseignez-vous sur la réputation de l’établissement et exigez une visite complète des lieux.</p>
-<p><strong>10. Pouvez-vous passer du temps de qualité avec votre compagnon?</strong></p>
-<p>Déterminez si vous avez le temps et l’énergie d’en prendre soin jour après jour. Saviez-vous que les animaux peuvent souffrir d’ennui tout comme les êtres humains Un animal qui s’ennuie peut montrer des signes de dépression et développer des problèmes de comportement. Les animaux aiment jouer, courir, qu’on leur parle et être caressés. Il est important de prendre du temps avec eux, car plus ils seront stimulés, plus ils seront équilibrés et plus vous prendrez plaisir à vivre en leur compagnie.</p>
-<p><strong>11. Un chien ou un chat?</strong></p>
-<p>Si vous hésitez entre un chat ou un chien, songez à sa qualité de vie combinée à votre style de vie. Un chien est un animal social qui a besoin de faire de l’exercice tous les jours et qui s’adapte difficilement à la solitude. Tandis que le chat est un animal plus solitaire qui peut s’ajuster plus facilement à un espace restreint et à la vie à l’intérieur. Renseignez-vous sur les différentes exigences qui peuvent varier selon l’âge, la taille, ou la race, ainsi que sur les besoins d’exercice, de toilettage et les problèmes de santé potentiels.</p>
-<p><strong>12. Autres animaux de compagnie</strong></p>
-<p>En plus des chats et des chiens, il existe une grande variété d’animaux qui peuvent être adoptés, notamment des oiseaux, rongeurs, reptiles et poissons. Soyez bien informés des soins à donner, car la plupart de ces animaux nécessitent un environnement adapté, des soins quotidiens et de la nourriture spéciale, parfois coûteuse. De plus, ces animaux sont souvent vendus jeunes, sans tenir compte de leur taille ou de leurs besoins à l’âge adulte. Avant d’en acheter un, consultez des personnes expérimentées ou des sites internet spécialisés.</p>
-<p>Après avoir répondu à toutes ces questions, êtes-vous toujours prêts à adopter un animal? Votre nouveau compagnon vous sera reconnaissant d’avoir pris le temps de bien réfléchir avant son arrivée.</p>
-<p>À la SPCA de Montréal, nous avons beaucoup d’animaux en quête d’un nouveau foyer. Nos conseillers à l’adoption se feront un plaisir de vous renseigner et de vous aider à faire le bon choix. Venez nous voir du lundi au vendredi de midi à 20 h et le week-end de 11 h à 17 h.</p>
-  </body>]]>
+     <string name="faqText"><![CDATA[
+<html><head><title></title></head><body>
+<h1>12 QUESTIONS &Agrave; SE POSER AVANT D&#39;ADOPTER</h1>
+<p align=\"justify\">L&#39;animal que vous vous appr&ecirc;tez &agrave; adopter vous aimera d&#39;un amour inconditionnel et vous accueillera avec joie tous les jours. Ce nouveau compagnon est un &ecirc;tre vivant qui a des besoins physiologiques et psychologiques qu&#39;il vous faudra accepter et combler. Bien comprendre toutes les implications li&eacute;es &agrave; l&#39;acquisition d&#39;un animal vous permettra de prendre une d&eacute;cision r&eacute;fl&eacute;chie et d&#39;&eacute;viter les regrets qui pourraient mener &agrave; un triste d&eacute;nouement. Chaque ann&eacute;e, des centaines de milliers d&#39;animaux sont abandonn&eacute;s dans les refuges. Avant d&#39;adopter, il est important de bien se renseigner afin de conna&icirc;tre les besoins et les traits de personnalit&eacute; de l&#39;animal qui vous int&eacute;resse pour ainsi faire le bon choix.</p>\n\n
+<p align=\"justify\"><strong>Voici 12 questions pour vous guider dans votre r&eacute;flexion et savoir si vous &ecirc;tes pr&ecirc;t &agrave; adopter un animal.</strong></p>\n\n
+<p><strong>1. &Ecirc;tes-vous pr&ecirc;t &agrave; vous engager &agrave; long terme?</strong></p>\n\n
+<p align=\"justify\">De nos jours, avec la qualit&eacute; des soins que les animaux re&ccedil;oivent, leur long&eacute;vit&eacute; s&#39;est accrue consid&eacute;rablement. Les chats et chiens peuvent vivre de 10 &agrave; 20 ans, voir davantage, selon l&#39;esp&egrave;ce et la race. Si vous adoptez un animal, assurez-vous d&#39;&ecirc;tre pr&ecirc;ts &agrave; vous engager et demandez-vous quelle sera votre situation dans cinq, dix et vingt ans. De nombreux propri&eacute;taires abandonnent leur animal pour cause de d&eacute;m&eacute;nagement, divorce ou nouvelle relation, grossesse ou nouveau-n&eacute;, pr&eacute;occupations financi&egrave;res, nouveau travail, retraite, maladie, etc. Choisir d&#39;adopter un animal est une responsabilit&eacute; &agrave; long terme.</p>\n\n
+<p><strong>2. Vivez-vous seul? Avec un conjoint? Avez-vous des enfants?</strong></p>\n\n
+<p align=\"justify\">Si vous vivez avec un conjoint, avec ou sans enfant, la d&eacute;cision d&#39;adopter un animal touche tous les membres de la famille. Discutez-en ensemble avant de prendre une d&eacute;cision. Si vous adoptez un animal &agrave; la demande d&#39;un enfant ou d&#39;un adolescent, soyez pr&ecirc;t &agrave; vous occuper de l&#39;animal. Nous savons tous que les promesses d&#39;enfant peuvent &ecirc;tre &eacute;ph&eacute;m&egrave;res, et que souvent apr&egrave;s l&#39;adoption, les parents devront prendre la rel&egrave;ve pour en prendre soin.</p>\n\n
+<p><strong>3. &Ecirc;tes-vous pr&ecirc;t &agrave; modifier vos habitudes de vie?</strong></p>\n\n
+<p align=\"justify\">Que votre nouveau compagnon soit un chat, un chien ou autre, sa pr&eacute;sence exigera que vous changiez vos habitudes de vie. Tous les animaux requi&egrave;rent de l&#39;attention et des soins. Si vous n&#39;&ecirc;tes pas pr&ecirc;t &agrave; adapter votre style de vie aux responsabilit&eacute;s li&eacute;es &agrave; la possession d&#39;un animal, cette option n&#39;est peut-&ecirc;tre pas pour vous.</p>\n\n
+<p><strong>4. Vivez-vous en appartement ou dans une maison?</strong></p>\n\n
+<p align=\"justify\">Tous les animaux n&#39;ont pas les m&ecirc;mes besoins en mati&egrave;re d&#39;espace physique. Par exemple, les chats s&#39;adaptent souvent plus facilement &agrave; un espace restreint et &agrave; demeurer &agrave; l&#39;int&eacute;rieur. Alors qu&#39;un chien peut exiger plus d&#39;espace et d&#39;exercice. Ce sont des aspects importants &agrave; consid&eacute;rer lors du choix de votre animal.</p>\n\n
+<p><strong>5. &Ecirc;tes-vous locataire ou propri&eacute;taire?</strong></p>\n\n
+<p align=\"justify\">Plusieurs personnes oublient de s&#39;informer aupr&egrave;s de leur propri&eacute;taire pour savoir s&#39;ils ont l&#39;autorisation d&#39;avoir un animal. Informez-vous aupr&egrave;s de votre propri&eacute;taire avant d&#39;adopter. &Agrave; noter que la clause &laquo; Animaux interdits &raquo; inscrite par le propri&eacute;taire est consid&eacute;r&eacute;e comme discriminatoire. Cependant, poss&eacute;der un animal n&#39;est pas un droit absolu, mais un privil&egrave;ge assorti de deux conditions : &laquo; qu&#39;il ne cause aucun pr&eacute;judice s&eacute;rieux au locateur &raquo; (comme des dommages &agrave; la propri&eacute;t&eacute;) et &laquo; qu&#39;il ne trouble pas la jouissance normale des autres locataires &raquo; (par exemple, un chien qui jappe et d&eacute;range les voisins).</p>\n\n
+<p><strong>6. &Ecirc;tes-vous pr&ecirc;t &agrave; accepter que certains de vos biens puissent &ecirc;tre ab&icirc;m&eacute;s?</strong></p>\n\n
+<p align=\"justify\">Pour chaque animal, il faut toujours pr&eacute;voir une phase d&#39;adaptation &agrave; son nouvel environnement et comprendre qu&#39;il pourrait causer certains d&eacute;g&acirc;ts durant cette p&eacute;riode. Voici diff&eacute;rents sc&eacute;narios auxquels vous pourriez devoir faire face selon l&#39;animal choisi : des sofas couverts de poils, des meubles grug&eacute;s, des moustiquaires &eacute;ventr&eacute;s, des boules de poils r&eacute;gurgit&eacute;es sur votre tapis, des fils tir&eacute;s sur votre nouveau costume et les immanquables odeurs qui trahissent la pr&eacute;sence de Minou ou de Pitou. Patience et tol&eacute;rance sont souvent requises.</p>\n\n
+<p><strong>7. Souffrez-vous d&#39;allergies?</strong></p>\n\n
+<p align=\"justify\">Bien des gens adoptent un animal sans savoir que l&#39;un des membres de la famille souffre d&#39;allergies. Afin d&#39;&eacute;viter de devoir retourner votre nouveau compagnon, prenez les dispositions n&eacute;cessaires pour v&eacute;rifier la pr&eacute;sence d&#39;allergies. Par exemple, proposez-vous comme famille d&#39;accueil pour un refuge de votre quartier. Ceux-ci sont souvent &agrave; la recherche de foyers pour accueillir un animal qui a besoin d&#39;une p&eacute;riode de transition, le temps de grandir un peu ou de gu&eacute;rir d&#39;une maladie. Ce programme vous permet de prendre contact avec un animal sans devoir vous engager aupr&egrave;s de lui &agrave; long terme. Ou bien, offrez de garder l&#39;animal d&#39;un parent ou d&#39;un ami pendant son absence. Tout en leur rendant service, vous serez &eacute;galement en mesure de v&eacute;rifier votre seuil de tol&eacute;rance aux animaux.</p>\n\n
+<p><strong>8. &Ecirc;tes-vous pr&ecirc;t &agrave; assumer tous les frais pour les soins de l&#39;animal?</strong></p>\n\n
+<p align=\"justify\">Les frais d&#39;adoption initiaux ne repr&eacute;sentent qu&#39;une partie de ceux que vous devrez pr&eacute;voir pour votre animal. La nourriture, la liti&egrave;re, les divers produits de soin et d&#39;hygi&egrave;ne (brosse, laisse, collier, cage, jouets), les frais de gardiennage et de v&eacute;t&eacute;rinaire (vaccins et examens annuels, st&eacute;rilisation, maladies) sont parmi les co&ucirc;ts &agrave; pr&eacute;voir.</p>\n\n
+<p><strong>9. Connaissez-vous quelqu&#39;un de fiable pour prendre soin de votre animal pendant vos vacances?</strong></p>\n\n
+<p align=\"justify\">Avant d&#39;adopter, pr&eacute;voyez pouvoir compter sur une personne responsable pour garder votre compagnon ou de disposer d&#39;un budget pour des services de garde ou de pension. Prenez le temps de bien choisir, car de nombreux animaux sont perdus par des personnes &agrave; qui la surveillance avait &eacute;t&eacute; confi&eacute;e. La majorit&eacute; des cliniques v&eacute;t&eacute;rinaires offre le service de pension. Il existe aussi d&#39;excellentes maisons de pension dont les frais sont variables. Renseignez-vous sur la r&eacute;putation de l&#39;&eacute;tablissement et exigez une visite compl&egrave;te des lieux.</p>\n\n
+<p><strong>10. Pouvez-vous passer du temps de qualit&eacute; avec votre compagnon?</strong></p>\n\n
+<p align=\"justify\">D&eacute;terminez si vous avez le temps et l&#39;&eacute;nergie d&#39;en prendre soin jour apr&egrave;s jour. Saviez-vous que les animaux peuvent souffrir d&#39;ennui tout comme les &ecirc;tres humains Un animal qui s&#39;ennuie peut montrer des signes de d&eacute;pression et d&eacute;velopper des probl&egrave;mes de comportement. Les animaux aiment jouer, courir, qu&#39;on leur parle et &ecirc;tre caress&eacute;s. Il est important de prendre du temps avec eux, car plus ils seront stimul&eacute;s, plus ils seront &eacute;quilibr&eacute;s et plus vous prendrez plaisir &agrave; vivre en leur compagnie.</p>\n\n
+<p><strong>11. Un chien ou un chat?</strong></p>\n\n
+<p align=\"justify\">Si vous h&eacute;sitez entre un chat ou un chien, songez &agrave; sa qualit&eacute; de vie combin&eacute;e &agrave; votre style de vie. Un chien est un animal social qui a besoin de faire de l&#39;exercice tous les jours et qui s&#39;adapte difficilement &agrave; la solitude. Tandis que le chat est un animal plus solitaire qui peut s&#39;ajuster plus facilement &agrave; un espace restreint et &agrave; la vie &agrave; l&#39;int&eacute;rieur. Renseignez-vous sur les diff&eacute;rentes exigences qui peuvent varier selon l&#39;&acirc;ge, la taille, ou la race, ainsi que sur les besoins d&#39;exercice, de toilettage et les probl&egrave;mes de sant&eacute; potentiels.</p>\n\n
+<p><strong>12. Autres animaux de compagnie</strong></p>\n\n
+<p align=\"justify\">En plus des chats et des chiens, il existe une grande vari&eacute;t&eacute; d&#39;animaux qui peuvent &ecirc;tre adopt&eacute;s, notamment des oiseaux, rongeurs, reptiles et poissons. Soyez bien inform&eacute;s des soins &agrave; donner, car la plupart de ces animaux n&eacute;cessitent un environnement adapt&eacute;, des soins quotidiens et de la nourriture sp&eacute;ciale, parfois co&ucirc;teuse. De plus, ces animaux sont souvent vendus jeunes, sans tenir compte de leur taille ou de leurs besoins &agrave; l&#39;&acirc;ge adulte. Avant d&#39;en acheter un, consultez des personnes exp&eacute;riment&eacute;es ou des sites internet sp&eacute;cialis&eacute;s.</p>\n\n
+<p align=\"justify\">Apr&egrave;s avoir r&eacute;pondu &agrave; toutes ces questions, &ecirc;tes-vous toujours pr&ecirc;ts &agrave; adopter un animal? Votre nouveau compagnon vous sera reconnaissant d&#39;avoir pris le temps de bien r&eacute;fl&eacute;chir avant son arriv&eacute;e.</p>\n\n
+<p align=\"justify\">&Agrave; la SPCA de Montr&eacute;al, nous avons beaucoup d&#39;animaux en qu&ecirc;te d&#39;un nouveau foyer. Nos conseillers &agrave; l&#39;adoption se feront un plaisir de vous renseigner et de vous aider &agrave; faire le bon choix. Venez nous voir du lundi au vendredi de midi &agrave; 20 h et le week-end de 11 h &agrave; 17 h.</p>\n
+</body>\n</html>]]>
      </string>
+
 
     <string name="donation_description"> Depuis 1869, la SPCA de Montréal compte sur la générosité de personnes comme vous pour financer son travail qui permet de sauver des vies. Ensemble, avec votre appui, nous pouvons continuer à offrir ces services essentiels. Nous prenons en charge plus de 14 000 animaux abandonnés par année et nous dépendons presque exclusivement de vos dons pour réaliser nos objectifs. Merci de donner ce que vous pouvez pour nous aider à poursuivre nos activités.</string>
     <string name="donation_title">La SPCA de Montréal à besoin de VOUS</string>

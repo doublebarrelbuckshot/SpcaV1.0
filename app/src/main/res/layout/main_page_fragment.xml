@@ -132,7 +132,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Size(Dogs)"
+                android:text="@string/size_dogs"
                 android:textSize="25sp"
                 android:id = "@+id/sizeTV"
                 android:layout_alignParentTop="true"
