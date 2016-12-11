@@ -53,7 +53,7 @@ public class SPCAWebAPI {
     public void callAdoptableSearch() throws IOException, SAXException, ParserConfigurationException {
         Log.d("SPCAWebAPI: ", "In callAdoptableSearch()");
 
-        String url = "http://www.petango.com/webservices/wsadoption.asmx";
+        String url = "http://ws.petango.com/webservices/wsadoption.asmx";
         String soapEnvelope = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
                 "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
                                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
@@ -178,7 +178,7 @@ public class SPCAWebAPI {
             throw new Exception("SPCAWebAPI:Unknown animalID");
         }
 
-        String url = "http://www.petango.com/webservices/wsadoption.asmx";
+        String url = "http://ws.petango.com/webservices/wsadoption.asmx";
         String soapEnvelope =
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
                         "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +

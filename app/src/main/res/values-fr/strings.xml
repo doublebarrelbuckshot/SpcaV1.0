@@ -68,15 +68,16 @@
 
     <string name="dog_tab">Chiens</string>
     <string name="adoption_fees_dogs">
-        - Chiots – moins de 8 mois : 295$
-        \n- Chiens – 8 mois et plus : 255$
+        - Chiots – moins de 8 mois : 350$
+        \n- Chiens – 8 mois et plus : 295$
         \n- Adoption humanitaire: 75$
+        \n\n Un dépôt de 200$ sera exigé pour tous les chiots et certains chiens adultes. Il sera remboursé avec une preuve de cours d’obeissance.
         \n\n(Les prix sont sujets à changement sans préavis).
     </string>
 
     <string name="cat_tab">Chats</string>
     <string name="adoption_fees_cats">
-        - Chaton – moins de 5 mois: 175$
+        - Chaton – moins de 5 mois: 195$
         \n- Chat – 5 mois et plus: 125$
         \n- Adoption humanitaire: 75$
         \n\n(Les prix sont sujets à changement sans préavis).

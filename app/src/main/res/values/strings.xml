@@ -69,15 +69,16 @@
 
     <string name="dog_tab">Dogs</string>
             <string name="adoption_fees_dogs">
-                - Puppies – less than 8 months: $295
-                \n- Dogs – 8 months and older: $255
+                - Puppies – less than 8 months: $350
+                \n- Dogs – 8 months and older: $295
                 \n- Compassionate adoption: $75
+                \n\n Note: A $200 deposit will be required for all puppies and some adult dogs. It will be reimbused upon proof that an obedience course has been completed.
                 \n\n(Prices subject to change without notice)
             </string>
 
     <string name="cat_tab">Cats</string>
             <string name="adoption_fees_cats">
-                - Kitten – up to 5 months: $175
+                - Kitten – up to 5 months: $195
                 \n- Cat – 5 months and more: $125
                 \n- Compassionate adoption: $75
                 \n\n(Prices subject to change without notice)

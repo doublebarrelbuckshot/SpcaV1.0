@@ -205,6 +205,17 @@ public class DetailsPageFragment extends Fragment implements GetActionBarTitle{/
                 else if(animalPrimaryBreed.equalsIgnoreCase("Domestic Longhair")) {
                     animalPrimaryBreed = "Domestique à poil long";
                 }
+
+                else if(animalPrimaryBreed.toLowerCase().contains("Mixed Breed, Large".toLowerCase())) {
+                    animalPrimaryBreed = "Race croisée, grande taille (plus de 20 kg adulte)";
+                }
+                else if(animalPrimaryBreed.toLowerCase().contains("Mixed Breed, Medium".toLowerCase())) {
+                    animalPrimaryBreed = "Race croisée, taille moyenne (de 11 à 20 kg adulte)";
+                }
+                else if(animalPrimaryBreed.toLowerCase().contains("Mixed Breed, Small".toLowerCase())) {
+                    animalPrimaryBreed = "Race croisée, petite taille (moins de 11 kg adulte)";
+                }
+
             }
 
 
