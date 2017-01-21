@@ -11,6 +11,8 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -140,6 +142,16 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
         Log.d("DownloadWebTask:", "Processing list of " + web.animals.size() + " elements.");
         int size = web.animals.size();
         long threadCount = 0;
+
+        //Sort data from API call, so that it's in order by IDs
+        //Our algo depends on it being in proper order in order to see
+        //if animals should be removed or not
+        Collections.sort(web.animals, new Comparator<Animal>() {
+            public int compare(Animal animal1, Animal animal2) {
+                return Integer.parseInt(animal1.id) - Integer.parseInt(animal2.id);
+            }
+        });
+
         if (refresh == false) {
             for (int i = 0; i < size; i += downloadRangeSizePerThread) {
                 DownloadWebAdoptableDetailsTask dadt =
@@ -195,7 +207,6 @@ public class DownloadAdoptableSearch extends AsyncTask<Void, Integer, Void> {
                                 updateWhere += " OR " + DBHelper.T_ANIMAL_ID + " = '" + db_id + "'";
 
                         } else {
-                            //Log.d("ALIST", animalList.getString(0) + " no longer available.");
                             if (where.equals(""))
                                 where += " " + DBHelper.T_ANIMAL_ID + " = '" + db_id + "'";
                             else
